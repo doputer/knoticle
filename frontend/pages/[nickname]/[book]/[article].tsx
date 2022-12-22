@@ -6,10 +6,10 @@ import { useEffect, useState } from 'react';
 
 import { getArticleApi } from '@apis/articleApi';
 import { getBookApi } from '@apis/bookApi';
+import ArticleContainer from '@components/article/ArticleContent';
+import TOC from '@components/article/TOC';
+import ViewerHead from '@components/article/ViewerHead';
 import GNB from '@components/common/GNB';
-import ArticleContainer from '@components/viewer/ArticleContent';
-import TOC from '@components/viewer/TOC';
-import ViewerHead from '@components/viewer/ViewerHead';
 import useFetch from '@hooks/useFetch';
 import { IArticleBook, IBookScraps } from '@interfaces';
 import { Flex, PageGNBHide, PageNoScrollWrapper } from '@styles/layout';
@@ -21,7 +21,7 @@ interface ArticlePageProps {
 
 export default function ArticlePage({ article }: ArticlePageProps) {
   const Modal = dynamic(() => import('@components/common/Modal'));
-  const ScrapModal = dynamic(() => import('@components/viewer/ScrapModal'));
+  const ScrapModal = dynamic(() => import('@components/article/ScrapModal'));
 
   const router = useRouter();
 
