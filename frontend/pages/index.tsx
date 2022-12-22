@@ -1,14 +1,14 @@
-import { useEffect, useState } from 'react';
+import { ReactElement, useEffect, useState } from 'react';
 
 import { getOrderedBookListApi } from '@apis/bookApi';
 import Footer from '@components/common/Footer';
-import GNB from '@components/common/GNB';
 import HomeHead from '@components/home/HomeHead';
 import Slider from '@components/home/Slider';
+import HeaderLayout from '@components/layout/HeaderLayout';
 import useFetch from '@hooks/useFetch';
 import { PageInnerLarge, PageWrapper } from '@styles/layout';
 
-export default function Home() {
+export default function HomePage() {
   const {
     data: newestBookList,
     isLoading: isNewBookListLoading,
@@ -57,7 +57,6 @@ export default function Home() {
   return (
     <>
       <HomeHead />
-      <GNB />
       <PageWrapper>
         <PageInnerLarge>
           {numberPerPage !== 0 && (
@@ -82,3 +81,7 @@ export default function Home() {
     </>
   );
 }
+
+HomePage.getLayout = function getLayout(page: ReactElement) {
+  return <HeaderLayout>{page}</HeaderLayout>;
+};

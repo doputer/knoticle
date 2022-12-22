@@ -1,7 +1,7 @@
 import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 
-import { useEffect, useState } from 'react';
+import { ReactElement, useEffect, useState } from 'react';
 
 import { useRecoilState } from 'recoil';
 
@@ -10,7 +10,7 @@ import { getUserProfileApi, updateUserProfileApi } from '@apis/userApi';
 import curBookmarkedBookListState from '@atoms/curBookmarkedBookList';
 import curKnottedBookListState from '@atoms/curKnottedBookList';
 import signInStatusState from '@atoms/signInStatus';
-import GNB from '@components/common/GNB';
+import HeaderLayout from '@components/layout/HeaderLayout';
 import BookListTab from '@components/shelf/BookListTab';
 import EditUserProfile from '@components/shelf/EditUserProfile';
 import StudyHead from '@components/shelf/StudyHead';
@@ -98,7 +98,6 @@ export default function ShelfPage({ userProfile }: ShelfPageProps) {
         userDescription={userProfile.description}
         userImage={userProfile.profile_image}
       />
-      <GNB />
       {curUserProfile && (
         <PageWrapper>
           <PageInnerLarge>
@@ -134,4 +133,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const data = await getUserProfileApi(nickname.slice(1));
 
   return { props: { userProfile: data } };
+};
+
+ShelfPage.getLayout = function getLayout(page: ReactElement) {
+  return <HeaderLayout>{page}</HeaderLayout>;
 };
