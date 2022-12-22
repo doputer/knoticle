@@ -1,6 +1,7 @@
 import {
   CreateArticle,
   CreateTemporaryArticle,
+  GetArticle,
   SearchArticles,
 } from '@apis/articles/articles.interface';
 import { prisma } from '@config/orm.config';
@@ -67,10 +68,13 @@ const searchArticles = async (searchArticles: SearchArticles) => {
   };
 };
 
-const getArticle = async (articleId: number) => {
+const getArticle = async ({ id, title }: GetArticle) => {
   const article = await prisma.article.findFirst({
     where: {
-      id: articleId,
+      OR: {
+        id: id ? id : undefined,
+        title,
+      },
     },
     select: {
       id: true,
@@ -81,6 +85,7 @@ const getArticle = async (articleId: number) => {
       book_id: true,
       book: {
         select: {
+          title: true,
           user: {
             select: {
               id: true,

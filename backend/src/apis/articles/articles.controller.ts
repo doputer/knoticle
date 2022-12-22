@@ -25,10 +25,14 @@ const searchArticles = async (req: Request, res: Response) => {
 };
 
 const getArticle = async (req: Request, res: Response) => {
-  const articleId = Number(req.params.articleId);
-  const articleData = await articlesService.getArticle(articleId);
+  const { id, title } = req.query as unknown as {
+    id: string;
+    title: string;
+  };
 
-  return res.status(200).send(articleData);
+  const article = await articlesService.getArticle({ id: +id, title });
+
+  return res.status(200).send(article);
 };
 
 const createArticle = async (req: Request, res: Response) => {

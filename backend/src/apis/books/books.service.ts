@@ -85,6 +85,16 @@ const getBook = async (bookId: number, userId: number) => {
               id: true,
               title: true,
               deleted_at: true,
+              book: {
+                select: {
+                  title: true,
+                  user: {
+                    select: {
+                      nickname: true,
+                    },
+                  },
+                },
+              },
             },
           },
         },

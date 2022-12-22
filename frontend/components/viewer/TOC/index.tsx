@@ -10,6 +10,7 @@ import useBookmark from '@hooks/useBookmark';
 import { IBookScraps } from '@interfaces';
 import { TextMedium, TextSmall } from '@styles/common';
 import { FlexCenter, FlexSpaceBetween } from '@styles/layout';
+import encodeURL from '@utils/encode-url';
 
 import {
   TocWrapper,
@@ -49,7 +50,7 @@ export default function TOC({
   handleSideBarToggle,
   isscrolldown,
 }: TocProps) {
-  const { id, title, user, scraps } = book;
+  const { title, user, scraps } = book;
   const { handleBookmarkClick, curBookmarkCnt, curBookmarkId } = useBookmark(book);
 
   const [isArticleShown, setIsArticleShown] = useState(true);
@@ -83,7 +84,13 @@ export default function TOC({
             <TocList>
               {scraps.map((v) => {
                 return v.article.id !== articleId ? (
-                  <TocArticle href={`/viewer/${id}/${v.article.id}`} key={v.order}>
+                  <TocArticle
+                    href={`/@${user.nickname}/${encodeURL(
+                      v.article.book?.title || '',
+                      v.article.title
+                    )}`}
+                    key={v.order}
+                  >
                     {v.order}.{v.article.title}
                   </TocArticle>
                 ) : (

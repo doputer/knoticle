@@ -1,5 +1,3 @@
-import { useRouter } from 'next/router';
-
 import { useEffect, useState } from 'react';
 
 import { useRecoilState, useRecoilValue } from 'recoil';
@@ -18,12 +16,11 @@ import { toastSuccess } from '@utils/toast';
 import { ArticleWrapper, DragArticleText, Label, ScrapModalWrapper, WarningLabel } from './styled';
 
 interface ScrapModalProps {
-  bookId: number;
   handleModalClose: () => void;
   article: IArticle;
 }
 
-export default function ScrapModal({ bookId, handleModalClose, article }: ScrapModalProps) {
+export default function ScrapModal({ handleModalClose, article }: ScrapModalProps) {
   const [selectedBookIndex, setSelectedBookIndex] = useState(-1);
   const [filteredScraps, setFilteredScraps] = useState<IScrap[]>([]);
   const { data: createScrapData, execute: createScrap } = useFetch(createScrapApi);
@@ -35,8 +32,6 @@ export default function ScrapModal({ bookId, handleModalClose, article }: ScrapM
   const [scrapList, setScrapList] = useRecoilState(scrapState);
 
   const [isSelectedBookUnavailable, setSelectedBookUnavailable] = useState(false);
-
-  const router = useRouter();
 
   const createBookDropdownItems = (items: IBook[]) =>
     items.map((item) => {
@@ -97,7 +92,6 @@ export default function ScrapModal({ bookId, handleModalClose, article }: ScrapM
 
   useEffect(() => {
     if (createScrapData === undefined) return;
-    router.push(`/viewer/${bookId}/${article.id}`);
     toastSuccess(`${article.title}글이 스크랩되었습니다.`);
     handleModalClose();
   }, [createScrapData]);

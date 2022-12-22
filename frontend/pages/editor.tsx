@@ -11,7 +11,7 @@ import signInStatusState from '@atoms/signInStatus';
 import EditHead from '@components/edit/EditHead';
 import Editor from '@components/edit/Editor';
 import useFetch from '@hooks/useFetch';
-import { IArticle } from '@interfaces';
+import { IArticleBook } from '@interfaces';
 import { PageNoScrollWrapper } from '@styles/layout';
 import { toastError } from '@utils/toast';
 
@@ -23,7 +23,7 @@ export default function EditorPage() {
   const router = useRouter();
 
   const [isModalShown, setModalShown] = useState(false);
-  const [originalArticle, setOriginalArticle] = useState<IArticle | undefined>(undefined);
+  const [originalArticle, setOriginalArticle] = useState<IArticleBook | undefined>(undefined);
 
   const handleModalOpen = () => setModalShown(true);
   const handleModalClose = () => setModalShown(false);
@@ -50,7 +50,7 @@ export default function EditorPage() {
   }, [user.nickname]);
 
   useEffect(() => {
-    if (router.query.id) getArticle(router.query.id);
+    if (router.query.id) getArticle({ id: router.query.id });
   }, [router.query]);
 
   useEffect(() => {
