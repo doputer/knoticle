@@ -10,7 +10,7 @@ import PersonIcon from '@assets/ico_person.svg';
 import SearchIcon from '@assets/ico_search.svg';
 import signInStatusState from '@atoms/signInStatus';
 
-import { GNBbar, Icon, IconsContainer, Logo, LogoWrapper } from './styled';
+import { GNBContainer, Icon, IconWrapper, Logo, LogoWrapper } from './styled';
 
 export default function GNB() {
   const Modal = dynamic(() => import('@components/common/Modal'));
@@ -30,33 +30,28 @@ export default function GNB() {
   const handleBackwardBtnClicked = () => setCurrentModalState('SignIn');
 
   return (
-    <GNBbar>
+    <GNBContainer>
       <LogoWrapper>
         <Logo href="/">knoticle</Logo>
       </LogoWrapper>
-      <IconsContainer>
-        {signInStatus.id !== 0 && (
-          <Link href="/write">
-            <Icon
-              src={ArticleIcon}
-              alt="Article Icon"
-              isvisible={(signInStatus.id !== 0).toString()}
-            />
-          </Link>
-        )}
 
+      <IconWrapper>
         {signInStatus.id !== 0 ? (
-          <Link href={`/@${signInStatus.nickname}`}>
-            <Icon src={PersonIcon} alt="Person Icon" />
-          </Link>
+          <>
+            <Link href="/write">
+              <Icon src={ArticleIcon} alt="Article Icon" />
+            </Link>
+            <Link href={`/@${signInStatus.nickname}`}>
+              <Icon src={PersonIcon} alt="Person Icon" />
+            </Link>
+          </>
         ) : (
           <Icon src={PersonIcon} alt="Person Icon" onClick={handleModalOpen} />
         )}
-
         <Link href="/search">
           <Icon src={SearchIcon} alt="Search Icon" />
         </Link>
-      </IconsContainer>
+      </IconWrapper>
 
       {isModalShown &&
         ((currentModalState === 'SignUp' && (
@@ -76,6 +71,6 @@ export default function GNB() {
             />
           </Modal>
         ))}
-    </GNBbar>
+    </GNBContainer>
   );
 }

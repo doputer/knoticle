@@ -3,56 +3,49 @@ import Link from 'next/link';
 
 import styled from 'styled-components';
 
-import { FlexCenter, TopBar } from '@styles/layout';
-
-export const GNBbar = styled(TopBar)`
-  position: relative;
+export const GNBContainer = styled.div`
   width: 100%;
-  border-bottom: 1px solid #222222;
+  background-color: var(--light-yellow-color);
+  padding: 16px 32px;
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  padding: 4px 30px;
+  position: relative;
+  box-shadow: rgb(0 0 0 / 16%) 0px 0px 8px;
   box-sizing: border-box;
-  background-color: var(--light-yellow-color);
 `;
 
-export const LogoWrapper = styled(FlexCenter)`
+export const LogoWrapper = styled.div`
   position: absolute;
-  width: 110px;
-  left: 0;
-  right: 0;
-  margin: auto;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 
   @media ${(props) => props.theme.mobile} {
     left: 0;
-    right: none;
-    margin-left: 30px;
+    transform: translate(0, -50%);
+    margin-left: 32px;
   }
 `;
 
 export const Logo = styled(Link)`
-  margin: auto;
+  color: var(--title-active-color);
   font-family: 'Sofia';
   font-style: normal;
   font-weight: 500;
   font-size: 32px;
-  line-height: 57px;
-  color: var(--title-active-color);
   text-decoration: none;
 `;
 
-export const IconsContainer = styled.div`
-  /* width: 96px; */
-  gap: 20px;
+export const IconWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 16px;
 `;
 
-export const Icon = styled(Image)<{ isvisible?: string }>`
+export const Icon = styled(Image)`
   width: 20px;
   height: 20px;
   cursor: pointer;
-  ${(props) => (props.isvisible === 'false' ? 'visibility : hidden' : '')}
 `;
