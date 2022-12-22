@@ -38,7 +38,6 @@ export const FullPageWrapper = styled.div`
 
 export const PageWrapper = styled.div`
   padding-top: 64px;
-  min-height: calc(100vh - 131px);
   background-color: var(--light-yellow-color);
 `;
 
