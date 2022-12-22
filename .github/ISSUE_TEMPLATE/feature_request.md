@@ -1,25 +1,11 @@
 ---
 name: Feature Request
 about: 서비스에 필요한 기능을 요청해주세요!
-title: '[0-0] '
+title: ''
 labels: FEAT
 assignees: ''
-
 ---
 
-## Story
+## 할 일
 
-
-
-## To-Do
-
-- [ ] 
-
-<details>
-<summary>Reference</summary>
-<div markdown="1">
-
-- 
-
-</div>
-</details>
+- [ ]
