@@ -107,7 +107,7 @@ export default function TOC({
             </TocList>
           </TocContainer>
         </TocSideBar>
-        <TocProfile href={`/study/${user.nickname}`}>
+        <TocProfile href={`/@${user.nickname}`}>
           <TocProfileText>
             <TextSmall>Knotted by</TextSmall>
             <TextMedium>{user.nickname}</TextMedium>

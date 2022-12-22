@@ -19,7 +19,7 @@ import useFetch from '@hooks/useFetch';
 import { IUser } from '@interfaces';
 import { PageInnerLarge, PageWrapper } from '@styles/layout';
 
-interface StudyProps {
+interface ShelfPageProps {
   userProfile: {
     id: number;
     profile_image: string;
@@ -28,7 +28,7 @@ interface StudyProps {
   };
 }
 
-export default function Study({ userProfile }: StudyProps) {
+export default function ShelfPage({ userProfile }: ShelfPageProps) {
   const router = useRouter();
 
   const { data: updatedUserProfile, execute: updateUserProfile } = useFetch(updateUserProfileApi);
@@ -52,12 +52,13 @@ export default function Study({ userProfile }: StudyProps) {
   };
 
   useEffect(() => {
-    if (!router.query.data) return;
+    const { nickname } = router.query;
 
-    const nickname = router.query.data;
-    getKnottedBookList(nickname);
-    getBookmarkedBookList(nickname);
-  }, [router.query.data]);
+    if (!nickname) return;
+
+    getKnottedBookList(nickname.slice(1));
+    getBookmarkedBookList(nickname.slice(1));
+  }, []);
 
   useEffect(() => {
     if (!userProfile) return;
@@ -75,7 +76,7 @@ export default function Study({ userProfile }: StudyProps) {
       ...signInStatus,
       nickname: curUserProfile.nickname,
     });
-    window.history.replaceState(null, '', `/study/${curUserProfile.nickname}`);
+    window.history.replaceState(null, '', `/@${curUserProfile.nickname}`);
   }, [updatedUserProfile]);
 
   useEffect(() => {
@@ -128,8 +129,9 @@ export default function Study({ userProfile }: StudyProps) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const nickname = context.query.data as string;
-  const data = await getUserProfileApi(nickname);
+  const { nickname } = context.query as { [key: string]: string };
+
+  const data = await getUserProfileApi(nickname.slice(1));
 
   return { props: { userProfile: data } };
 };

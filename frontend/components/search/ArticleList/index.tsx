@@ -22,7 +22,7 @@ export default function ArticleList({ articles, keywords }: ArticleListProps) {
           nickname={article.book.user.nickname}
           profileImage={article.book.user.profile_image}
           articleUrl={`/viewer/${article.book.id}/${article.id}`}
-          studyUrl={`/study/${article.book.user.nickname}`}
+          studyUrl={`/@${article.book.user.nickname}`}
         />
       ))}
     </>

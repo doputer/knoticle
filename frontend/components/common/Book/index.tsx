@@ -52,7 +52,7 @@ export default function Book({ book }: BookProps) {
             >
               <TextLarge>{title}</TextLarge>
             </BookLink>
-            <AuthorLink href={`/study/${user.nickname}`}>by {user.nickname}</AuthorLink>
+            <AuthorLink href={`/@${user.nickname}`}>by {user.nickname}</AuthorLink>
           </BookTitle>
           <Bookmark>
             <BookmarkIcon
