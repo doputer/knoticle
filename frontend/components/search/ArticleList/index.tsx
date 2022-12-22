@@ -1,5 +1,6 @@
 import ArticleItem from '@components/search/ArticleItem';
 import { IArticleBook } from '@interfaces';
+import encodeURL from '@utils/encode-url';
 import { getTextAfterLastNewLine, highlightKeyword } from '@utils/highlight-keyword';
 import { markdown2text } from '@utils/parser';
 
@@ -21,8 +22,11 @@ export default function ArticleList({ articles, keywords }: ArticleListProps) {
           )}
           nickname={article.book.user.nickname}
           profileImage={article.book.user.profile_image}
-          articleUrl={`/viewer/${article.book.id}/${article.id}`}
-          studyUrl={`/study/${article.book.user.nickname}`}
+          articleUrl={`/@${article.book.user.nickname}/${encodeURL(
+            article.book.title,
+            article.title
+          )}`}
+          studyUrl={`/@${article.book.user.nickname}`}
         />
       ))}
     </>

@@ -8,7 +8,7 @@ import editInfoState from '@atoms/editInfo';
 import scrapState from '@atoms/scrap';
 import Book from '@components/common/Book';
 import Modal from '@components/common/Modal';
-import FAB from '@components/study/FAB';
+import FAB from '@components/shelf/FAB';
 import { IBookScraps } from '@interfaces';
 
 import EditBookModal from '../EditBookModal';

@@ -21,10 +21,15 @@ export const searchArticlesApi = async (data: SearchArticlesApi) => {
   return response.data;
 };
 
-export const getArticleApi = async (articleId: string) => {
-  const url = `/api/articles/${articleId}`;
+interface GetArticleApi {
+  id?: string;
+  title?: string;
+}
 
-  const response = await api({ url, method: 'GET' });
+export const getArticleApi = async (data: GetArticleApi) => {
+  const url = `/api/articles`;
+
+  const response = await api({ url, method: 'GET', params: data });
 
   return response.data;
 };

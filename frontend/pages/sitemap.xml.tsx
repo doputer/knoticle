@@ -2,6 +2,8 @@ import { GetServerSidePropsContext } from 'next';
 import { getServerSideSitemap } from 'next-sitemap';
 
 import { getScrapsApi } from '@apis/scrapApi';
+import { IArticleBook } from '@interfaces';
+import encodeURL from '@utils/encode-url';
 
 export default function SiteMapXML() {
   // eslint-disable-next-line react/jsx-no-useless-fragment
@@ -22,8 +24,11 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
     },
   ];
 
-  const scrapFields = scraps.map((scrap: { book_id: number; article_id: number }) => ({
-    loc: `${process.env.NEXT_PUBLIC_CLIENT_URL}/viewer/${scrap.book_id}/${scrap.article_id}`,
+  const scrapFields = scraps.map((scrap: { article: IArticleBook }) => ({
+    loc: `${process.env.NEXT_PUBLIC_CLIENT_URL}/@${scrap.article.book.user.nickname}/${encodeURL(
+      scrap.article.book.title,
+      scrap.article.title
+    )}`,
     changefreq: 'daily',
     priority: '1.0',
     lastmod,

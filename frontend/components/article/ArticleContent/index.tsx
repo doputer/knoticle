@@ -16,6 +16,7 @@ import Content from '@components/common/Content';
 import useFetch from '@hooks/useFetch';
 import useScrollDetector from '@hooks/useScrollDetector';
 import { IArticleBook, IScrap } from '@interfaces';
+import encodeURL from '@utils/encode-url';
 import { toastSuccess } from '@utils/toast';
 
 import ArticleButton from './Button';
@@ -59,19 +60,31 @@ export default function Article({
   const router = useRouter();
 
   const handleOriginalBtnOnClick = () => {
-    router.push(`/viewer/${article.book_id}/${article.id}`);
+    router.push(`/@${article.book.user.nickname}/${encodeURL(article.book.title, article.title)}`);
   };
 
   const handleLeftBtnOnClick = () => {
     const prevOrder = scraps.filter((scrap) => scrap.article.id === article.id)[0].order - 1;
-    const prevArticleId = scraps.filter((scrap) => scrap.order === prevOrder)[0].article.id;
-    router.push(`/viewer/${bookId}/${prevArticleId}`);
+    const prevArticle = scraps.filter((scrap) => scrap.order === prevOrder)[0].article;
+
+    router.push(
+      `/@${prevArticle.book?.user.nickname}/${encodeURL(
+        prevArticle.book?.title || '',
+        prevArticle.title
+      )}`
+    );
   };
 
   const handleRightBtnOnClick = () => {
     const nextOrder = scraps.filter((scrap) => scrap.article.id === article.id)[0].order + 1;
-    const nextArticleId = scraps.filter((scrap) => scrap.order === nextOrder)[0].article.id;
-    router.push(`/viewer/${bookId}/${nextArticleId}`);
+    const nextArticle = scraps.filter((scrap) => scrap.order === nextOrder)[0].article;
+
+    router.push(
+      `/@${nextArticle.book?.user.nickname}/${encodeURL(
+        nextArticle.book?.title || '',
+        nextArticle.title
+      )}`
+    );
   };
 
   const handleDeleteBtnOnClick = () => {
@@ -100,7 +113,7 @@ export default function Article({
   };
 
   const handleModifyBtnOnClick = () => {
-    router.push(`/editor?id=${article.id}`);
+    router.push(`/write?id=${article.id}`);
   };
 
   useEffect(() => {
@@ -111,7 +124,13 @@ export default function Article({
     if (updateScrapsData === undefined) return;
 
     if (updateScrapsData.length !== 0) {
-      router.push(`/viewer/${bookId}/${updateScrapsData[0].article.id}`);
+      router.push(
+        `/@${updateScrapsData[0].article.book.user.nickname}/${encodeURL(
+          updateScrapsData[0].article.book.title,
+          updateScrapsData[0].article.title
+        )}`
+      );
+
       return;
     }
     router.push('/');

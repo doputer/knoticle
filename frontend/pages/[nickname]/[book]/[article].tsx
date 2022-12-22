@@ -6,22 +6,22 @@ import { useEffect, useState } from 'react';
 
 import { getArticleApi } from '@apis/articleApi';
 import { getBookApi } from '@apis/bookApi';
+import ArticleContainer from '@components/article/ArticleContent';
+import TOC from '@components/article/TOC';
+import ViewerHead from '@components/article/ViewerHead';
 import GNB from '@components/common/GNB';
-import ArticleContainer from '@components/viewer/ArticleContent';
-import TOC from '@components/viewer/TOC';
-import ViewerHead from '@components/viewer/ViewerHead';
 import useFetch from '@hooks/useFetch';
 import { IArticleBook, IBookScraps } from '@interfaces';
 import { Flex, PageGNBHide, PageNoScrollWrapper } from '@styles/layout';
 import { parseHeadings } from '@utils/toc';
 
-interface ViewerProps {
+interface ArticlePageProps {
   article: IArticleBook;
 }
 
-export default function Viewer({ article }: ViewerProps) {
+export default function ArticlePage({ article }: ArticlePageProps) {
   const Modal = dynamic(() => import('@components/common/Modal'));
-  const ScrapModal = dynamic(() => import('@components/viewer/ScrapModal'));
+  const ScrapModal = dynamic(() => import('@components/article/ScrapModal'));
 
   const router = useRouter();
 
@@ -58,11 +58,8 @@ export default function Viewer({ article }: ViewerProps) {
   }, []);
 
   useEffect(() => {
-    if (Array.isArray(router.query.data) && router.query.data?.length === 2) {
-      const bookId = router.query.data[0];
-      getBook(bookId);
-    }
-  }, [router.query.data]);
+    getBook(article.book_id);
+  }, []);
 
   useEffect(() => {
     if (book === undefined) return;
@@ -103,7 +100,7 @@ export default function Viewer({ article }: ViewerProps) {
       )}
       {isModalShown && book && (
         <Modal title="글 스크랩하기" handleModalClose={handleModalClose}>
-          <ScrapModal bookId={book.id} handleModalClose={handleModalClose} article={article} />
+          <ScrapModal handleModalClose={handleModalClose} article={article} />
         </Modal>
       )}
     </PageNoScrollWrapper>
@@ -111,8 +108,9 @@ export default function Viewer({ article }: ViewerProps) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const [, articleId] = context.query.data as string[];
-  const article = await getArticleApi(articleId);
+  const { article: articleTitle } = context.query as { [key: string]: string };
+
+  const article = await getArticleApi({ title: articleTitle });
 
   return { props: { article } };
 };

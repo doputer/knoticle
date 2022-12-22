@@ -67,6 +67,21 @@ const getScraps = async () => {
     select: {
       book_id: true,
       article_id: true,
+      article: {
+        select: {
+          title: true,
+          book: {
+            select: {
+              title: true,
+              user: {
+                select: {
+                  nickname: true,
+                },
+              },
+            },
+          },
+        },
+      },
     },
     where: {
       is_original: true,

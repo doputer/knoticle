@@ -2,16 +2,18 @@ import { useRouter } from 'next/router';
 
 import { useEffect, useState } from 'react';
 
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 
 import { createArticleApi } from '@apis/articleApi';
 import articleState from '@atoms/article';
 import scrapState from '@atoms/scrap';
+import signInStatusState from '@atoms/signInStatus';
 import DragArticle from '@components/common/DragDrop';
 import Dropdown from '@components/common/Dropdown';
 import ModalButton from '@components/common/Modal/ModalButton';
 import useFetch from '@hooks/useFetch';
 import { IBook, IBookScraps, IScrap } from '@interfaces';
+import encodeURL from '@utils/encode-url';
 import { toastSuccess } from '@utils/toast';
 
 import { ArticleWrapper, DragArticleText, Label, PublishModalWrapper } from './styled';
@@ -27,6 +29,7 @@ export default function PublishModal({ books }: PublishModalProps) {
 
   // 전역으로 관리해야할까?
   const [article, setArticle] = useRecoilState(articleState);
+  const signInStatus = useRecoilValue(signInStatusState);
 
   const [selectedBookIndex, setSelectedBookIndex] = useState(-1);
   const [filteredScraps, setFilteredScraps] = useState<IScrap[]>([]);
@@ -75,8 +78,13 @@ export default function PublishModal({ books }: PublishModalProps) {
 
   useEffect(() => {
     if (createdArticle) {
-      const { id, title } = createdArticle.createdArticle;
-      router.push(`/viewer/${selectedBookIndex}/${id}`);
+      const { title } = createdArticle.createdArticle;
+      const bookTitle = books.find((book) => book.id === selectedBookIndex)?.title;
+
+      if (!bookTitle) return;
+
+      router.push(`/@${signInStatus.nickname}/${encodeURL(bookTitle, title)}`);
+
       toastSuccess(`${title}글이 발행되었습니다.`);
     }
   }, [createdArticle]);

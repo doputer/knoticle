@@ -11,14 +11,15 @@ import DragArticle from '@components/common/DragDrop';
 import Dropdown from '@components/common/Dropdown';
 import ModalButton from '@components/common/Modal/ModalButton';
 import useFetch from '@hooks/useFetch';
-import { IArticle, IBook, IBookScraps, IScrap } from '@interfaces';
+import { IArticle, IArticleBook, IBook, IBookScraps, IScrap } from '@interfaces';
+import encodeURL from '@utils/encode-url';
 import { toastSuccess } from '@utils/toast';
 
 import { ArticleWrapper, DragArticleText, Label, ModifyModalWrapper, WarningLabel } from './styled';
 
 interface ModifyModalProps {
   books: IBookScraps[];
-  originalArticle: IArticle;
+  originalArticle: IArticleBook;
 }
 
 export default function ModifyModal({ books, originalArticle }: ModifyModalProps) {
@@ -97,8 +98,10 @@ export default function ModifyModal({ books, originalArticle }: ModifyModalProps
 
   useEffect(() => {
     if (modifiedArticle) {
-      const { id, title } = modifiedArticle.modifiedArticle;
-      router.push(`/viewer/${selectedBookIndex}/${id}`);
+      const { title } = modifiedArticle.modifiedArticle;
+      router.push(
+        `/@${originalArticle.book.user.nickname}/${encodeURL(originalArticle.book.title, title)}`
+      );
       toastSuccess(`${title}글이 수정되었습니다.`);
     }
   }, [modifiedArticle]);

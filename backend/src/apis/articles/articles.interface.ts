@@ -6,6 +6,11 @@ export interface SearchArticles {
   isUsers?: string;
 }
 
+export interface GetArticle {
+  id?: number;
+  title?: string;
+}
+
 export interface CreateArticle {
   title: string;
   content: string;

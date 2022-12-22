@@ -5,6 +5,7 @@ import useBookmark from '@hooks/useBookmark';
 import { IBookScraps } from '@interfaces';
 import { TextLarge, TextXSmall, TextSmall } from '@styles/common';
 import { FlexSpaceBetween } from '@styles/layout';
+import encodeURL from '@utils/encode-url';
 
 import {
   BookWrapper,
@@ -25,7 +26,7 @@ interface BookProps {
 }
 
 export default function Book({ book }: BookProps) {
-  const { id, title, user, scraps } = book;
+  const { title, user, scraps } = book;
   const { handleBookmarkClick, curBookmarkCnt, curBookmarkId } = useBookmark(book);
 
   return (
@@ -33,7 +34,7 @@ export default function Book({ book }: BookProps) {
     <BookWrapper>
       <BookLink
         isarticleexists={scraps[0] ? 'true' : 'false'}
-        href={scraps[0] ? `/viewer/${id}/${scraps[0].article.id}` : ``}
+        href={scraps[0] ? `/@${user.nickname}/${encodeURL(title, scraps[0].article.title)}` : ``}
       >
         <BookThumbnail
           src={book.thumbnail_image || sampleImage}
@@ -48,11 +49,13 @@ export default function Book({ book }: BookProps) {
           <BookTitle>
             <BookLink
               isarticleexists={scraps[0] ? 'true' : 'false'}
-              href={scraps[0] ? `/viewer/${id}/${scraps[0].article.id}` : ``}
+              href={
+                scraps[0] ? `/@${user.nickname}/${encodeURL(title, scraps[0].article.title)}` : ``
+              }
             >
               <TextLarge>{title}</TextLarge>
             </BookLink>
-            <AuthorLink href={`/study/${user.nickname}`}>by {user.nickname}</AuthorLink>
+            <AuthorLink href={`/@${user.nickname}`}>by {user.nickname}</AuthorLink>
           </BookTitle>
           <Bookmark>
             <BookmarkIcon
@@ -70,7 +73,14 @@ export default function Book({ book }: BookProps) {
             {scraps.map(
               (scrap, idx) =>
                 idx < 4 && (
-                  <ArticleLink key={scrap.article.id} href={`/viewer/${id}/${scrap.article.id}`}>
+                  <ArticleLink
+                    key={scrap.article.id}
+                    href={
+                      scraps[0]
+                        ? `/@${user.nickname}/${encodeURL(title, scraps[0].article.title)}`
+                        : ``
+                    }
+                  >
                     <span>
                       {idx + 1}. {scrap.article.title}
                     </span>

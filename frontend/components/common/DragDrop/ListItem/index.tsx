@@ -46,7 +46,7 @@ export const ListItem = memo(function Scrap({
   const [editInfo, setEditInfo] = useRecoilState(editInfoState);
 
   // Drag
-  const [{ isDragging }, drag] = useDrag(
+  const [, drag] = useDrag(
     () => ({
       // 타입설정 useDrop의 accept와 일치시켜야함
       type: ItemTypes.Scrap,

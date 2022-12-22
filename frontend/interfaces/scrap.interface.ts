@@ -5,5 +5,11 @@ export interface IScrap {
   article: {
     id: number;
     title: string;
+    book?: {
+      title: string;
+      user: {
+        nickname: string;
+      };
+    };
   };
 }
