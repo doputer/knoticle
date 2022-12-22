@@ -36,7 +36,7 @@ export default function GNB() {
       </LogoWrapper>
       <IconsContainer>
         {signInStatus.id !== 0 && (
-          <Link href="/editor">
+          <Link href="/write">
             <Icon
               src={ArticleIcon}
               alt="Article Icon"

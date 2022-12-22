@@ -113,7 +113,7 @@ export default function Article({
   };
 
   const handleModifyBtnOnClick = () => {
-    router.push(`/editor?id=${article.id}`);
+    router.push(`/write?id=${article.id}`);
   };
 
   useEffect(() => {

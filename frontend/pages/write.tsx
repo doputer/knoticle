@@ -15,7 +15,7 @@ import { IArticleBook } from '@interfaces';
 import { PageNoScrollWrapper } from '@styles/layout';
 import { toastError } from '@utils/toast';
 
-export default function EditorPage() {
+export default function WritePage() {
   const Modal = dynamic(() => import('@components/common/Modal'));
   const PublishModal = dynamic(() => import('@components/edit/PublishModal'));
   const ModifyModal = dynamic(() => import('@components/edit/ModifyModal'));
