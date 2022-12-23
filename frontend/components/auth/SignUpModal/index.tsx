@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 import { createUserApi } from '@apis/authApi';
 import LabeledInput from '@components/common/LabeledInput';
-import Button from '@components/common/Modal/ModalButton';
+import Button from '@components/common/ModalButton';
 import useFetch from '@hooks/useFetch';
 import useModal from '@hooks/useModal';
 import { toastSuccess } from '@utils/toast';

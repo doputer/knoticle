@@ -6,7 +6,7 @@ import { addBookApi } from '@apis/bookApi';
 import SampleThumbnail from '@assets/img_sample_thumbnail.jpg';
 import curKnottedBookListState from '@atoms/curKnottedBookList';
 import signInStatusState from '@atoms/signInStatus';
-import Button from '@components/common/Modal/ModalButton';
+import Button from '@components/common/ModalButton';
 import useFetch from '@hooks/useFetch';
 import useInput from '@hooks/useInput';
 import useModal from '@hooks/useModal';

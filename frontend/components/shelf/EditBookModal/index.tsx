@@ -10,7 +10,7 @@ import curKnottedBookListState from '@atoms/curKnottedBookList';
 import editInfoState from '@atoms/editInfo';
 import scrapState from '@atoms/scrap';
 import DragArticle from '@components/common/DragDrop';
-import Button from '@components/common/Modal/ModalButton';
+import Button from '@components/common/ModalButton';
 import useFetch from '@hooks/useFetch';
 import useInput from '@hooks/useInput';
 import useModal from '@hooks/useModal';
