@@ -6,13 +6,13 @@ import { ReactElement, useEffect, useState } from 'react';
 
 import { getArticleApi } from '@apis/articleApi';
 import { getBookApi } from '@apis/bookApi';
-import ArticleContainer from '@components/article/ArticleContent';
+import Article from '@components/article/ArticleContent';
 import TOC from '@components/article/TOC';
 import ViewerHead from '@components/article/ViewerHead';
 import HeaderLayout from '@components/layout/HeaderLayout';
 import useFetch from '@hooks/useFetch';
 import { IArticleBook, IBookScraps } from '@interfaces';
-import { Flex, PageNoScrollWrapper } from '@styles/layout';
+import { Flex } from '@styles/layout';
 import { parseHeadings } from '@utils/toc';
 
 interface ArticlePageProps {
@@ -69,7 +69,7 @@ export default function ArticlePage({ article }: ArticlePageProps) {
   const [isScrollDown, setIsScrollDown] = useState<'true' | 'false'>('false');
 
   return (
-    <PageNoScrollWrapper>
+    <>
       {article && <ViewerHead articleTitle={article.title} articleContent={article.content} />}
       {book && article && (
         <Flex>
@@ -83,7 +83,7 @@ export default function ArticlePage({ article }: ArticlePageProps) {
           />
 
           {book.scraps.find((scrap) => scrap.article.id === article.id) && (
-            <ArticleContainer
+            <Article
               article={article}
               scraps={book.scraps}
               bookId={book.id}
@@ -100,7 +100,7 @@ export default function ArticlePage({ article }: ArticlePageProps) {
           <ScrapModal handleModalClose={handleModalClose} article={article} />
         </Modal>
       )}
-    </PageNoScrollWrapper>
+    </>
   );
 }
 
@@ -113,5 +113,5 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 };
 
 ArticlePage.getLayout = function getLayout(page: ReactElement) {
-  return <HeaderLayout>{page}</HeaderLayout>;
+  return <HeaderLayout fix>{page}</HeaderLayout>;
 };
