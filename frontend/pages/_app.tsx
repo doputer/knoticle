@@ -8,6 +8,7 @@ import { RecoilRoot } from 'recoil';
 import { ThemeProvider } from 'styled-components';
 
 import CheckSignInStatus from '@components/auth/CheckSignInStatus';
+import GlobalModal from '@components/common/GlobalModal';
 import GlobalStyle from '@styles/GlobalStyle';
 import responsive from '@styles/responsive';
 
@@ -32,6 +33,7 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
         <ThemeProvider theme={responsive}>
           {getLayout(<Component {...pageProps} />)}
           <ToastContainer limit={3} />
+          <GlobalModal />
         </ThemeProvider>
       </CheckSignInStatus>
     </RecoilRoot>
