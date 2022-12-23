@@ -7,7 +7,7 @@ export default function useModal() {
   const [modal, setModal] = useRecoilState(modalState);
 
   const openModal = ({ modalType, modalProps }: ModalType) => {
-    setModal((prev) => prev.concat({ modalType, modalProps }));
+    setModal((prev) => prev.concat({ modalType, modalProps } as ModalType));
   };
 
   const closeModal = () => {
