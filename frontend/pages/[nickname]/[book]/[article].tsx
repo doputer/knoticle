@@ -2,17 +2,17 @@ import { GetServerSideProps } from 'next';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 
-import { useEffect, useState } from 'react';
+import { ReactElement, useEffect, useState } from 'react';
 
 import { getArticleApi } from '@apis/articleApi';
 import { getBookApi } from '@apis/bookApi';
-import ArticleContainer from '@components/article/ArticleContent';
+import Article from '@components/article/ArticleContent';
 import TOC from '@components/article/TOC';
 import ViewerHead from '@components/article/ViewerHead';
-import GNB from '@components/common/GNB';
+import HeaderLayout from '@components/layout/HeaderLayout';
 import useFetch from '@hooks/useFetch';
 import { IArticleBook, IBookScraps } from '@interfaces';
-import { Flex, PageGNBHide, PageNoScrollWrapper } from '@styles/layout';
+import { Flex } from '@styles/layout';
 import { parseHeadings } from '@utils/toc';
 
 interface ArticlePageProps {
@@ -69,11 +69,8 @@ export default function ArticlePage({ article }: ArticlePageProps) {
   const [isScrollDown, setIsScrollDown] = useState<'true' | 'false'>('false');
 
   return (
-    <PageNoScrollWrapper>
+    <>
       {article && <ViewerHead articleTitle={article.title} articleContent={article.content} />}
-      <PageGNBHide isscrolldown={isScrollDown}>
-        <GNB />
-      </PageGNBHide>
       {book && article && (
         <Flex>
           <TOC
@@ -86,7 +83,7 @@ export default function ArticlePage({ article }: ArticlePageProps) {
           />
 
           {book.scraps.find((scrap) => scrap.article.id === article.id) && (
-            <ArticleContainer
+            <Article
               article={article}
               scraps={book.scraps}
               bookId={book.id}
@@ -103,7 +100,7 @@ export default function ArticlePage({ article }: ArticlePageProps) {
           <ScrapModal handleModalClose={handleModalClose} article={article} />
         </Modal>
       )}
-    </PageNoScrollWrapper>
+    </>
   );
 }
 
@@ -113,4 +110,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const article = await getArticleApi({ title: articleTitle });
 
   return { props: { article } };
+};
+
+ArticlePage.getLayout = function getLayout(page: ReactElement) {
+  return <HeaderLayout fix>{page}</HeaderLayout>;
 };

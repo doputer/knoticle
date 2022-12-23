@@ -11,28 +11,29 @@ interface TocWrapperProps {
 }
 
 export const TocWrapper = styled(FlexColumnSpaceBetween)<TocWrapperProps>`
-  flex-basis: ${(props) => (props.isOpen ? '300px' : '0')};
-  height: calc(var(--window-inner-height) - 67px);
+  width: ${(props) => (props.isOpen ? '300px' : '0')};
+  height: calc(100vh - 64px);
   color: var(--white-color);
   background-color: var(--primary-color);
   transition: all 0.3s ease;
   overflow: hidden;
-  z-index: 80;
+  z-index: 100;
+  position: sticky;
+  top: 64px;
 
   * {
     white-space: nowrap;
   }
 
   @media ${(props) => props.theme.mobile} {
-    position: absolute;
-    z-index: 5;
-    width: ${(props) => (props.isOpen ? '100%' : '0')};
-    height: calc(var(--window-inner-height));
+    width: ${(props) => (props.isOpen ? '100vw' : '0')};
+    height: calc(100vh - 64px);
+    position: fixed;
   }
 `;
 
 export const TocOpenButton = styled.button<{ isscrolldown: 'true' | 'false' }>`
-  position: absolute;
+  position: fixed;
   margin-top: 24px;
   z-index: 0;
 
@@ -74,10 +75,6 @@ export const TocContainer = styled.div`
   ::-webkit-scrollbar-thumb {
     background-color: var(--grey-02-color);
     border-radius: 10px;
-  }
-
-  @media ${(props) => props.theme.mobile} {
-    height: calc(var(--window-inner-height)-290px);
   }
 `;
 

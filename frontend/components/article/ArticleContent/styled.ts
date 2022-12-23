@@ -4,11 +4,9 @@ import { Flex, FlexColumn, FlexSpaceBetween } from '@styles/layout';
 
 export const ArticleContainer = styled(FlexColumn)`
   flex: 1;
-  height: calc(var(--window-inner-height) - 67px);
-  @media ${(props) => props.theme.mobile} {
-    height: calc(var(--window-inner-height));
-  }
+  min-height: calc(100vh - 64px);
 `;
+
 export const ArticleLeftBtn = styled.div<{ visibility: string }>`
   position: fixed;
   top: 50%;
@@ -21,6 +19,7 @@ export const ArticleLeftBtn = styled.div<{ visibility: string }>`
     position: static;
   }
 `;
+
 export const ArticleRightBtn = styled.div<{ visibility: string }>`
   position: fixed;
   top: 50%;
@@ -32,11 +31,11 @@ export const ArticleRightBtn = styled.div<{ visibility: string }>`
     position: static;
   }
 `;
+
 export const ArticleMain = styled(Flex)`
   flex-direction: column;
   width: 100%;
   padding: 36px 50px;
-  overflow-y: scroll;
   box-sizing: border-box;
 
   ::-webkit-scrollbar {
@@ -51,12 +50,14 @@ export const ArticleMain = styled(Flex)`
     padding: 112px 16px 32px 16px;
   }
 `;
+
 export const ArticleTitle = styled.h1`
   padding: 25px 0;
   text-align: left;
   font-size: 24px;
   font-weight: 700;
 `;
+
 export const ArticleTitleBtnBox = styled(Flex)`
   gap: 8px;
   margin-top: 16px;
@@ -68,6 +69,7 @@ export const ArticleTitleBtnBox = styled(Flex)`
     margin-bottom: 10px;
   }
 `;
+
 export const ArticleContents = styled.div`
   margin-top: 20px;
   height: 481px;

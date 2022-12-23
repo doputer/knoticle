@@ -1,6 +1,7 @@
+import type { NextPage } from 'next';
 import type { AppProps } from 'next/app';
 
-import 'react-toastify/dist/ReactToastify.css';
+import type { ReactElement, ReactNode } from 'react';
 import { ToastContainer } from 'react-toastify';
 
 import { RecoilRoot } from 'recoil';
@@ -10,15 +11,26 @@ import CheckSignInStatus from '@components/auth/CheckSignInStatus';
 import GlobalStyle from '@styles/GlobalStyle';
 import responsive from '@styles/responsive';
 
+import 'react-toastify/dist/ReactToastify.css';
 import '@styles/font.css';
 
-export default function App({ Component, pageProps }: AppProps) {
+export type NextPageWithLayout<P = unknown, IP = P> = NextPage<P, IP> & {
+  getLayout?: (page: ReactElement) => ReactNode;
+};
+
+type AppPropsWithLayout = AppProps & {
+  Component: NextPageWithLayout;
+};
+
+export default function App({ Component, pageProps }: AppPropsWithLayout) {
+  const getLayout = Component.getLayout ?? ((page) => page);
+
   return (
     <RecoilRoot>
       <CheckSignInStatus>
         <GlobalStyle />
         <ThemeProvider theme={responsive}>
-          <Component {...pageProps} />
+          {getLayout(<Component {...pageProps} />)}
           <ToastContainer limit={3} />
         </ThemeProvider>
       </CheckSignInStatus>

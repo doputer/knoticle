@@ -1,14 +1,14 @@
-import { useEffect, useState } from 'react';
+import { ReactElement, useEffect, useState } from 'react';
 
 import { getOrderedBookListApi } from '@apis/bookApi';
 import Footer from '@components/common/Footer';
-import GNB from '@components/common/GNB';
 import HomeHead from '@components/home/HomeHead';
 import Slider from '@components/home/Slider';
+import HeaderLayout from '@components/layout/HeaderLayout';
 import useFetch from '@hooks/useFetch';
 import { PageInnerLarge, PageWrapper } from '@styles/layout';
 
-export default function Home() {
+export default function HomePage() {
   const {
     data: newestBookList,
     isLoading: isNewBookListLoading,
@@ -57,28 +57,29 @@ export default function Home() {
   return (
     <>
       <HomeHead />
-      <GNB />
-      <PageWrapper>
-        <PageInnerLarge>
-          {numberPerPage !== 0 && (
-            <>
-              <Slider
-                bookList={popularBookList}
-                title="가장 인기 있는 책"
-                isLoading={isPopularBookListLoading}
-                numberPerPage={numberPerPage}
-              />
-              <Slider
-                bookList={newestBookList}
-                title="새로 엮은 책"
-                isLoading={isNewBookListLoading}
-                numberPerPage={numberPerPage}
-              />
-              <Footer />
-            </>
-          )}
-        </PageInnerLarge>
-      </PageWrapper>
+      <PageInnerLarge>
+        {numberPerPage !== 0 && (
+          <>
+            <Slider
+              bookList={popularBookList}
+              title="가장 인기 있는 책"
+              isLoading={isPopularBookListLoading}
+              numberPerPage={numberPerPage}
+            />
+            <Slider
+              bookList={newestBookList}
+              title="새로 엮은 책"
+              isLoading={isNewBookListLoading}
+              numberPerPage={numberPerPage}
+            />
+            <Footer />
+          </>
+        )}
+      </PageInnerLarge>
     </>
   );
 }
+
+HomePage.getLayout = function getLayout(page: ReactElement) {
+  return <HeaderLayout>{page}</HeaderLayout>;
+};

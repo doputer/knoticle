@@ -1,8 +1,9 @@
-import { ChangeEvent, RefObject, useEffect, useRef, useState } from 'react';
+import { ChangeEvent, ReactElement, RefObject, useEffect, useRef, useState } from 'react';
 
 import { searchArticlesApi } from '@apis/articleApi';
 import { searchBooksApi } from '@apis/bookApi';
 import GNB from '@components/common/GNB';
+import HeaderLayout from '@components/layout/HeaderLayout';
 import ArticleList from '@components/search/ArticleList';
 import BookList from '@components/search/BookList';
 import SearchBar from '@components/search/SearchBar';
@@ -15,7 +16,7 @@ import useIntersectionObserver from '@hooks/useIntersectionObserver';
 import useSessionStorage from '@hooks/useSessionStorage';
 import { PageInnerSmall, PageWrapperWithHeight } from '@styles/layout';
 
-export default function Search() {
+export default function SearchPage() {
   const { value: articles, setValue: setArticles } = useSessionStorage('articles', []);
   const { value: books, setValue: setBooks } = useSessionStorage('books', []);
 
@@ -217,7 +218,7 @@ export default function Search() {
   return (
     <>
       <SearchHead />
-      <GNB />
+
       <PageWrapperWithHeight initialHeight={initialHeight}>
         <PageInnerSmall>
           <SearchBar onChange={handleKeywordOnChange} value={keyword} />
@@ -238,3 +239,7 @@ export default function Search() {
     </>
   );
 }
+
+SearchPage.getLayout = function getLayout(page: ReactElement) {
+  return <HeaderLayout>{page}</HeaderLayout>;
+};
