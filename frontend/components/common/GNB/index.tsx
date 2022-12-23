@@ -13,10 +13,10 @@ import signInStatusState from '@atoms/signInStatus';
 import { GNBContainer, Icon, IconWrapper, Logo, LogoWrapper } from './styled';
 
 interface GNBProps {
-  visible: boolean;
+  delta: number;
 }
 
-export default function GNB({ visible }: GNBProps) {
+export default function GNB({ delta }: GNBProps) {
   const Modal = dynamic(() => import('@components/common/Modal'));
   const SignInModal = dynamic(() => import('@components/auth/SignInModal'));
   const SignUpModal = dynamic(() => import('@components/auth/SignUpModal'));
@@ -34,7 +34,7 @@ export default function GNB({ visible }: GNBProps) {
   const handleBackwardBtnClicked = () => setCurrentModalState('SignIn');
 
   return (
-    <GNBContainer className={visible ? 'show' : 'hide'}>
+    <GNBContainer delta={delta}>
       <LogoWrapper>
         <Logo href="/">knoticle</Logo>
       </LogoWrapper>

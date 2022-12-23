@@ -3,7 +3,11 @@ import Link from 'next/link';
 
 import styled from 'styled-components';
 
-export const GNBContainer = styled.div`
+interface GNBContainerProps {
+  delta: number;
+}
+
+export const GNBContainer = styled.div<GNBContainerProps>`
   width: 100%;
   height: 64px;
   background-color: var(--light-yellow-color);
@@ -11,21 +15,12 @@ export const GNBContainer = styled.div`
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  position: fixed;
+  position: sticky;
   top: 0;
-  left: 0;
   box-shadow: rgb(0 0 0 / 16%) 0px 0px 8px;
   box-sizing: border-box;
   z-index: 100;
-  transition: all 0.2s ease;
-
-  &.show {
-    transform: translateY(0);
-  }
-
-  &.hide {
-    transform: translateY(-64px);
-  }
+  transform: translateY(${(props) => -props.delta}px);
 `;
 
 export const LogoWrapper = styled.div`

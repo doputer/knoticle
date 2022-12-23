@@ -37,8 +37,8 @@ export const FullPageWrapper = styled.div`
 `;
 
 export const PageWrapper = styled.div`
-  padding-top: 64px;
   background-color: var(--light-yellow-color);
+  min-height: 100vh;
 `;
 
 export const PageInnerSmall = styled(FlexColumnAlignCenter)`

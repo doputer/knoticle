@@ -1,24 +1,30 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 
 import GNB from '@components/common/GNB';
 import { PageWrapper } from '@styles/layout';
 
 interface HeaderLayoutProps {
+  fix?: boolean;
   children: React.ReactNode;
 }
 
-export default function HeaderLayout({ children }: HeaderLayoutProps) {
+export default function HeaderLayout({ fix, children }: HeaderLayoutProps) {
   const [scrollPosition, setScrollPosition] = useState(0);
   const [lastScrollPosition, setLastScrollPosition] = useState(0);
-  const [scrollDirection, setScrollDirection] = useState<'up' | 'down'>('up');
-  const [visible, setVisible] = useState(true);
+  const [delta, setDelta] = useState(0);
 
   const handleScroll = () => {
     setScrollPosition(window.scrollY);
 
-    if (scrollPosition >= lastScrollPosition) setScrollDirection('down');
-    else setScrollDirection('up');
+    const gap = scrollPosition - lastScrollPosition;
+
+    if (gap >= 0) setDelta((prev) => Math.min(64, prev + gap));
+    else setDelta((prev) => Math.max(0, prev + gap));
   };
+
+  useLayoutEffect(() => {
+    setDelta(0);
+  }, [children]);
 
   useEffect(() => {
     setLastScrollPosition(window.scrollY);
@@ -30,15 +36,14 @@ export default function HeaderLayout({ children }: HeaderLayoutProps) {
     };
   }, [scrollPosition]);
 
-  useEffect(() => {
-    if (scrollDirection === 'up') setVisible(true);
-    else setVisible(false);
-  }, [scrollDirection]);
-
   return (
     <PageWrapper>
-      <GNB visible={visible} />
+      <GNB delta={fix ? 0 : delta} />
       {children}
     </PageWrapper>
   );
 }
+
+HeaderLayout.defaultProps = {
+  fix: false,
+};
