@@ -7,8 +7,8 @@ import curKnottedBookListState from '@atoms/curKnottedBookList';
 import editInfoState from '@atoms/editInfo';
 import scrapState from '@atoms/scrap';
 import Book from '@components/common/Book';
-import Modal from '@components/common/Modal';
 import FAB from '@components/shelf/FAB';
+import useModal from '@hooks/useModal';
 import { IBookScraps } from '@interfaces';
 
 import EditBookModal from '../EditBookModal';
@@ -35,12 +35,12 @@ export default function BookListTab({
   bookmarkedBookList,
   isUserMatched,
 }: BookListTabProps) {
+  const { openModal } = useModal();
+
   const [curKnottedBookList, setCurKnottedBookList] = useRecoilState(curKnottedBookListState);
   const [editInfo, setEditInfo] = useRecoilState(editInfoState);
   const setScraps = useSetRecoilState(scrapState);
 
-  const [isModalShown, setModalShown] = useState(false);
-  const [curEditBook, setCurEditBook] = useState<IBookScraps | null>(null);
   const [tabStatus, setTabStatus] = useState<'knotted' | 'bookmarked'>('knotted');
   const [isEditing, setIsEditing] = useState<boolean>(false);
 
@@ -48,14 +48,15 @@ export default function BookListTab({
     const curBook = knottedBookList?.find((v) => v.id === id);
     if (!curBook) return;
 
-    setModalShown(true);
-    setCurEditBook(curBook);
-    setScraps(curBook.scraps);
-  };
+    openModal({
+      modalType: 'Modal',
+      modalProps: {
+        title: '내 책 수정하기',
+        children: curBook && <EditBookModal book={curBook} />,
+      },
+    });
 
-  const handleModalClose = () => {
-    setModalShown(false);
-    setScraps([]);
+    setScraps(curBook.scraps);
   };
 
   const handleMinusBtnClick = (e: React.MouseEvent<HTMLButtonElement>, id: number) => {
@@ -137,12 +138,6 @@ export default function BookListTab({
 
       {isUserMatched && tabStatus === 'knotted' && (
         <FAB isEditing={isEditing} setIsEditing={setIsEditing} />
-      )}
-
-      {isModalShown && (
-        <Modal title="내 책 수정하기" handleModalClose={handleModalClose}>
-          {curEditBook && <EditBookModal book={curEditBook} handleModalClose={handleModalClose} />}
-        </Modal>
       )}
     </BookListTabWrapper>
   );

@@ -19,7 +19,7 @@ export const GNBContainer = styled.div<GNBContainerProps>`
   top: 0;
   box-shadow: rgb(0 0 0 / 16%) 0px 0px 8px;
   box-sizing: border-box;
-  z-index: 100;
+  z-index: 150;
   transform: translateY(${(props) => -props.delta}px);
 `;
 

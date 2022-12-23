@@ -9,6 +9,7 @@ import signInStatusState from '@atoms/signInStatus';
 import Button from '@components/common/Modal/ModalButton';
 import useFetch from '@hooks/useFetch';
 import useInput from '@hooks/useInput';
+import useModal from '@hooks/useModal';
 import { FlexSpaceBetween } from '@styles/layout';
 import { toastError, toastSuccess } from '@utils/toast';
 
@@ -25,11 +26,9 @@ import {
   BookContent,
 } from './styled';
 
-interface AddBookProps {
-  handleModalClose: () => void;
-}
+export default function AddBook() {
+  const { closeEveryModal } = useModal();
 
-export default function AddBook({ handleModalClose }: AddBookProps) {
   const [curKnottedBookList, setCurKnottedBookList] = useRecoilState(curKnottedBookListState);
   const user = useRecoilValue(signInStatusState);
   const title = useInput('');
@@ -38,7 +37,7 @@ export default function AddBook({ handleModalClose }: AddBookProps) {
   useEffect(() => {
     if (!addBookData) return;
     setCurKnottedBookList([...curKnottedBookList, addBookData]);
-    handleModalClose();
+    closeEveryModal();
     toastSuccess(`<${addBookData.title}>책이 생성되었습니다!`);
   }, [addBookData]);
 

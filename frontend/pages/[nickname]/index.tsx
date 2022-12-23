@@ -17,7 +17,7 @@ import StudyHead from '@components/shelf/StudyHead';
 import UserProfile from '@components/shelf/UserProfile';
 import useFetch from '@hooks/useFetch';
 import { IUser } from '@interfaces';
-import { PageInnerLarge, PageWrapper } from '@styles/layout';
+import { PageInnerLarge } from '@styles/layout';
 
 interface ShelfPageProps {
   userProfile: {
