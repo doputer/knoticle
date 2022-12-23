@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 
-import { Dispatch, RefObject, SetStateAction, useEffect, useRef } from 'react';
+import { RefObject, useEffect, useRef } from 'react';
 
 import { useRecoilValue } from 'recoil';
 
@@ -14,7 +14,6 @@ import Scrap from '@assets/ico_scrap.svg';
 import signInStatusState from '@atoms/signInStatus';
 import Content from '@components/common/Content';
 import useFetch from '@hooks/useFetch';
-import useScrollDetector from '@hooks/useScrollDetector';
 import { IArticleBook, IScrap } from '@interfaces';
 import encodeURL from '@utils/encode-url';
 import { toastSuccess } from '@utils/toast';
@@ -39,7 +38,6 @@ interface ArticleProps {
   bookAuthor: string;
   articleData: string;
   handleScrapBtnClick: () => void;
-  setIsScrollDown: Dispatch<SetStateAction<'true' | 'false'>>;
 }
 
 export default function Article({
@@ -49,7 +47,6 @@ export default function Article({
   bookAuthor,
   articleData,
   handleScrapBtnClick,
-  setIsScrollDown,
 }: ArticleProps) {
   const user = useRecoilValue(signInStatusState);
 
@@ -137,11 +134,6 @@ export default function Article({
   }, [updateScrapsData]);
 
   const scrollTarget = useRef() as RefObject<HTMLDivElement>;
-  const isScrollDown = useScrollDetector(scrollTarget, 5);
-
-  useEffect(() => {
-    setIsScrollDown(isScrollDown ? 'true' : 'false');
-  }, [isScrollDown]);
 
   useEffect(() => {
     if (scrollTarget.current) {

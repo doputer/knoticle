@@ -7,7 +7,7 @@ import { ReactElement, useEffect, useState } from 'react';
 import { getArticleApi } from '@apis/articleApi';
 import { getBookApi } from '@apis/bookApi';
 import Article from '@components/article/ArticleContent';
-import TOC from '@components/article/TOC';
+import Sidebar from '@components/article/Sidebar';
 import ViewerHead from '@components/article/ViewerHead';
 import HeaderLayout from '@components/layout/HeaderLayout';
 import useFetch from '@hooks/useFetch';
@@ -66,20 +66,17 @@ export default function ArticlePage({ article }: ArticlePageProps) {
     if (!checkArticleAuthority(book, article.id)) router.push('/404');
   }, [book]);
 
-  const [isScrollDown, setIsScrollDown] = useState<'true' | 'false'>('false');
-
   return (
     <>
       {article && <ViewerHead articleTitle={article.title} articleContent={article.content} />}
       {book && article && (
         <Flex>
-          <TOC
+          <Sidebar
             book={book}
             articleId={article.id}
             articleToc={parseHeadings(article.content)}
             isOpen={isSideBarOpen}
             handleSideBarToggle={handleSideBarToggle}
-            isscrolldown={isScrollDown}
           />
 
           {book.scraps.find((scrap) => scrap.article.id === article.id) && (
@@ -90,7 +87,6 @@ export default function ArticlePage({ article }: ArticlePageProps) {
               bookAuthor={book.user.nickname}
               articleData={article.content}
               handleScrapBtnClick={handleModalOpen}
-              setIsScrollDown={setIsScrollDown}
             />
           )}
         </Flex>
