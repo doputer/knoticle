@@ -2,7 +2,6 @@ import { ChangeEvent, ReactElement, RefObject, useEffect, useRef, useState } fro
 
 import { searchArticlesApi } from '@apis/articleApi';
 import { searchBooksApi } from '@apis/bookApi';
-import GNB from '@components/common/GNB';
 import HeaderLayout from '@components/layout/HeaderLayout';
 import ArticleList from '@components/search/ArticleList';
 import BookList from '@components/search/BookList';
