@@ -31,7 +31,7 @@ export default function GNB({ delta }: GNBProps) {
     setCurrentModalState('SignIn');
   };
   const handleGoToSignUpBtnClicked = () => setCurrentModalState('SignUp');
-  const handleBackwardBtnClicked = () => setCurrentModalState('SignIn');
+  const handleBackwardClick = () => setCurrentModalState('SignIn');
 
   return (
     <GNBContainer delta={delta}>
@@ -62,7 +62,7 @@ export default function GNB({ delta }: GNBProps) {
           <Modal
             title="Knoticle 함께하기"
             handleModalClose={handleModalClose}
-            handleBackwardBtnClicked={handleBackwardBtnClicked}
+            handleBackwardClick={handleBackwardClick}
             hasBackward
           >
             <SignUpModal handleModalClose={handleModalClose} />

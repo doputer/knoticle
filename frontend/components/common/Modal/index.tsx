@@ -2,9 +2,8 @@ import Image from 'next/image';
 
 import BackwardIcon from '@assets/ico_backward.svg';
 import CancelIcon from '@assets/ico_cancel.svg';
-import { TextLinkMedium } from '@styles/common';
 
-import { ButtonWrapper, Dimmed, ModalInner, ModalTitle, ModalWrapper } from './styled';
+import { ButtonWrapper, Dimmed, ModalContainer, ModalInner, ModalTitle } from './styled';
 
 interface ModalProps {
   title: string;
@@ -12,7 +11,7 @@ interface ModalProps {
   children: React.ReactNode;
 
   handleModalClose: () => void;
-  handleBackwardBtnClicked?: () => void;
+  handleBackwardClick?: () => void;
 }
 
 export default function Modal({
@@ -20,26 +19,24 @@ export default function Modal({
   hasBackward,
   children,
   handleModalClose,
-  handleBackwardBtnClicked,
+  handleBackwardClick,
 }: ModalProps) {
   return (
-    <ModalWrapper>
+    <ModalContainer>
       <Dimmed onClick={handleModalClose} />
       <ModalInner>
         <ButtonWrapper hasBackward={hasBackward}>
-          <Image src={BackwardIcon} alt="Backward Icon" onClick={handleBackwardBtnClicked} />
+          <Image src={BackwardIcon} alt="Backward Icon" onClick={handleBackwardClick} />
           <Image src={CancelIcon} alt="Cancel Icon" onClick={handleModalClose} />
         </ButtonWrapper>
-        <ModalTitle>
-          <TextLinkMedium>{title}</TextLinkMedium>
-        </ModalTitle>
+        <ModalTitle>{title}</ModalTitle>
         {children}
       </ModalInner>
-    </ModalWrapper>
+    </ModalContainer>
   );
 }
 
 Modal.defaultProps = {
   hasBackward: false,
-  handleBackwardBtnClicked: undefined,
+  handleBackwardClick: undefined,
 };
