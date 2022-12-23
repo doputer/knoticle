@@ -1,7 +1,5 @@
 import Image from 'next/image';
 
-import { useState } from 'react';
-
 import { useRecoilState } from 'recoil';
 
 import { deleteArticleApi } from '@apis/articleApi';
@@ -11,8 +9,8 @@ import Add from '@assets/ico_add.svg';
 import CheckWhite from '@assets/ico_check_white.svg';
 import EditWhite from '@assets/ico_edit_white.svg';
 import editInfoState from '@atoms/editInfo';
-import Modal from '@components/common/Modal';
 import useFetch from '@hooks/useFetch';
+import useModal from '@hooks/useModal';
 import { toastSuccess } from '@utils/toast';
 
 import AddBook from '../AddBook';
@@ -24,6 +22,8 @@ interface FabProps {
 }
 
 export default function FAB({ isEditing, setIsEditing }: FabProps) {
+  const { openModal } = useModal();
+
   const { execute: deleteBook } = useFetch(deleteBookApi);
   const { execute: editBook } = useFetch(editBookApi);
   const { execute: deleteArticle } = useFetch(deleteArticleApi);
@@ -36,13 +36,14 @@ export default function FAB({ isEditing, setIsEditing }: FabProps) {
 
   const [editInfo, setEditInfo] = useRecoilState(editInfoState);
 
-  const [isModalShown, setModalShown] = useState(false);
-
-  const handleModalOpen = () => {
-    setModalShown(true);
-  };
-  const handleModalClose = () => {
-    setModalShown(false);
+  const handleCreateBookModalOpen = () => {
+    openModal({
+      modalType: 'Modal',
+      modalProps: {
+        title: '책 추가하기',
+        children: <AddBook />,
+      },
+    });
   };
 
   const handleEditFinishBtnClick = () => {
@@ -124,7 +125,7 @@ export default function FAB({ isEditing, setIsEditing }: FabProps) {
 
   return (
     <FabWrapper>
-      <FabButton onClick={handleModalOpen}>
+      <FabButton onClick={handleCreateBookModalOpen}>
         <Image src={Add} alt="책 추가" />
       </FabButton>
 
@@ -140,11 +141,6 @@ export default function FAB({ isEditing, setIsEditing }: FabProps) {
         >
           <Image src={EditWhite} alt="책 수정" />
         </FabButton>
-      )}
-      {isModalShown && (
-        <Modal title="책 추가하기" handleModalClose={handleModalClose}>
-          <AddBook handleModalClose={handleModalClose} />
-        </Modal>
       )}
     </FabWrapper>
   );
