@@ -28,21 +28,23 @@ import {
   TocArticleTitle,
 } from './styled';
 
+interface Toc {
+  heading: string;
+  link: string;
+  padding: number;
+}
+
 interface SidebarProps {
-  articleId: number;
-  articleToc: {
-    heading: string;
-    link: string;
-    padding: number;
-  }[];
   book: IBookScraps;
+  articleId: number;
+  headings: Toc[];
   isOpen: boolean;
   handleSideBarToggle: () => void;
 }
 
 export default function Sidebar({
   articleId,
-  articleToc,
+  headings,
   book,
   isOpen,
   handleSideBarToggle,
@@ -87,13 +89,9 @@ export default function Sidebar({
                   {scrap.order}. {scrap.article.title}
                 </ArticleTitle>
                 {isTocVisible &&
-                  articleToc.map((article) => (
-                    <TocArticleTitle
-                      key={article.link}
-                      href={article.link}
-                      padding={article.padding}
-                    >
-                      {article.heading}
+                  headings.map(({ heading, link, padding }) => (
+                    <TocArticleTitle key={link} href={link} padding={padding}>
+                      {heading}
                     </TocArticleTitle>
                   ))}
               </CurrentArticle>

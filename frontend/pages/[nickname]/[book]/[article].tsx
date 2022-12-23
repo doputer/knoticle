@@ -74,7 +74,7 @@ export default function ArticlePage({ article }: ArticlePageProps) {
           <Sidebar
             book={book}
             articleId={article.id}
-            articleToc={parseHeadings(article.content)}
+            headings={parseHeadings(article.content)}
             isOpen={isSideBarOpen}
             handleSideBarToggle={handleSideBarToggle}
           />

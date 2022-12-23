@@ -1,6 +1,6 @@
 export const text2link = (text: string) => {
   return `#${text
-    .replace(/ /g, '-')
+    ?.replace(/ /g, '-')
     .replace(/[^\uAC00-\uD7A30-9a-zA-Z_-]/g, '')
     .toLowerCase()}`;
 };
