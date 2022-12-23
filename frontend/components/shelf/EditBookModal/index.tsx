@@ -13,6 +13,7 @@ import DragArticle from '@components/common/DragDrop';
 import Button from '@components/common/Modal/ModalButton';
 import useFetch from '@hooks/useFetch';
 import useInput from '@hooks/useInput';
+import useModal from '@hooks/useModal';
 import { IBookScraps } from '@interfaces';
 import { FlexSpaceBetween } from '@styles/layout';
 import { toastError } from '@utils/toast';
@@ -37,10 +38,11 @@ import {
 
 interface BookProps {
   book: IBookScraps;
-  handleModalClose: () => void;
 }
 
-export default function EditBookModal({ book, handleModalClose }: BookProps) {
+export default function EditBookModal({ book }: BookProps) {
+  const { closeEveryModal } = useModal();
+
   const { id, title, user } = book;
 
   const { data: imgFile, execute: createImage } = useFetch(createImageApi);
@@ -106,7 +108,7 @@ export default function EditBookModal({ book, handleModalClose }: BookProps) {
         },
       ],
     });
-    handleModalClose();
+    closeEveryModal();
   };
 
   const handleContentsOnClick = () => {
