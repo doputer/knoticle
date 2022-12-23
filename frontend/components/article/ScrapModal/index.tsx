@@ -10,17 +10,19 @@ import DragArticle from '@components/common/DragDrop';
 import Dropdown from '@components/common/Dropdown';
 import ModalButton from '@components/common/Modal/ModalButton';
 import useFetch from '@hooks/useFetch';
+import useModal from '@hooks/useModal';
 import { IBook, IArticle, IScrap, IBookScraps } from '@interfaces';
 import { toastSuccess } from '@utils/toast';
 
 import { ArticleWrapper, DragArticleText, Label, ScrapModalWrapper, WarningLabel } from './styled';
 
 interface ScrapModalProps {
-  handleModalClose: () => void;
   article: IArticle;
 }
 
-export default function ScrapModal({ handleModalClose, article }: ScrapModalProps) {
+export default function ScrapModal({ article }: ScrapModalProps) {
+  const { closeEveryModal } = useModal();
+
   const [selectedBookIndex, setSelectedBookIndex] = useState(-1);
   const [filteredScraps, setFilteredScraps] = useState<IScrap[]>([]);
   const { data: createScrapData, execute: createScrap } = useFetch(createScrapApi);
@@ -93,7 +95,7 @@ export default function ScrapModal({ handleModalClose, article }: ScrapModalProp
   useEffect(() => {
     if (createScrapData === undefined) return;
     toastSuccess(`${article.title}글이 스크랩되었습니다.`);
-    handleModalClose();
+    closeEveryModal();
   }, [createScrapData]);
 
   return (

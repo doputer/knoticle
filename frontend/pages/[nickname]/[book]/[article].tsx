@@ -11,6 +11,7 @@ import Sidebar from '@components/article/Sidebar';
 import ViewerHead from '@components/article/ViewerHead';
 import HeaderLayout from '@components/layout/HeaderLayout';
 import useFetch from '@hooks/useFetch';
+import useModal from '@hooks/useModal';
 import { IArticleBook, IBookScraps } from '@interfaces';
 import { Flex } from '@styles/layout';
 import { parseHeadings } from '@utils/toc';
@@ -20,18 +21,25 @@ interface ArticlePageProps {
 }
 
 export default function ArticlePage({ article }: ArticlePageProps) {
-  const Modal = dynamic(() => import('@components/common/Modal'));
   const ScrapModal = dynamic(() => import('@components/article/ScrapModal'));
 
   const router = useRouter();
 
+  const { openModal } = useModal();
+
   const { data: book, execute: getBook } = useFetch<IBookScraps>(getBookApi);
 
   const [isSideBarOpen, setSideBarOpen] = useState(false);
-  const [isModalShown, setModalShown] = useState(false);
 
-  const handleModalOpen = () => setModalShown(true);
-  const handleModalClose = () => setModalShown(false);
+  const handleModalOpen = () => {
+    openModal({
+      modalType: 'Modal',
+      modalProps: {
+        title: '글 스크랩하기',
+        children: <ScrapModal article={article} />,
+      },
+    });
+  };
 
   const handleSideBarToggle = () => {
     setSideBarOpen((prev) => !prev);
@@ -90,11 +98,6 @@ export default function ArticlePage({ article }: ArticlePageProps) {
             />
           )}
         </Flex>
-      )}
-      {isModalShown && book && (
-        <Modal title="글 스크랩하기" handleModalClose={handleModalClose}>
-          <ScrapModal handleModalClose={handleModalClose} article={article} />
-        </Modal>
       )}
     </>
   );
