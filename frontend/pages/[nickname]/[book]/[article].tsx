@@ -31,7 +31,7 @@ export default function ArticlePage({ article }: ArticlePageProps) {
 
   const [isSideBarOpen, setSideBarOpen] = useState(false);
 
-  const handleModalOpen = () => {
+  const handleScrapModalOpen = () => {
     openModal({
       modalType: 'Modal',
       modalProps: {
@@ -94,7 +94,7 @@ export default function ArticlePage({ article }: ArticlePageProps) {
               bookId={book.id}
               bookAuthor={book.user.nickname}
               articleData={article.content}
-              handleScrapBtnClick={handleModalOpen}
+              handleScrapModalOpen={handleScrapModalOpen}
             />
           )}
         </Flex>

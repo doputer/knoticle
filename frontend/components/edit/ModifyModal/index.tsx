@@ -19,7 +19,7 @@ import { ArticleWrapper, DragArticleText, Label, ModifyModalWrapper, WarningLabe
 
 interface ModifyModalProps {
   books: IBookScraps[];
-  originalArticle: IArticleBook;
+  originalArticle: IArticleBook | undefined;
 }
 
 export default function ModifyModal({ books, originalArticle }: ModifyModalProps) {
@@ -100,7 +100,10 @@ export default function ModifyModal({ books, originalArticle }: ModifyModalProps
     if (modifiedArticle) {
       const { title } = modifiedArticle.modifiedArticle;
       router.push(
-        `/@${originalArticle.book.user.nickname}/${encodeURL(originalArticle.book.title, title)}`
+        `/@${originalArticle?.book.user.nickname}/${encodeURL(
+          originalArticle?.book.title || '',
+          title
+        )}`
       );
       toastSuccess(`${title}글이 수정되었습니다.`);
     }

@@ -37,7 +37,7 @@ interface ArticleProps {
   bookId: number;
   bookAuthor: string;
   articleData: string;
-  handleScrapBtnClick: () => void;
+  handleScrapModalOpen: () => void;
 }
 
 export default function Article({
@@ -46,7 +46,7 @@ export default function Article({
   bookId,
   bookAuthor,
   articleData,
-  handleScrapBtnClick,
+  handleScrapModalOpen,
 }: ArticleProps) {
   const user = useRecoilValue(signInStatusState);
 
@@ -172,7 +172,7 @@ export default function Article({
                   <ArticleButton onClick={handleScrapDeleteBtnOnClick}>스크랩 삭제</ArticleButton>
                 )}
                 {user.id !== 0 && (
-                  <ArticleButton onClick={handleScrapBtnClick}>
+                  <ArticleButton onClick={handleScrapModalOpen}>
                     <Image src={Scrap} alt="Scrap Icon" width={20} height={15} />
                     스크랩
                   </ArticleButton>
