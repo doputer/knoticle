@@ -6,7 +6,7 @@ import { useState, useEffect } from 'react';
 import { localSignInApi } from '@apis/authApi';
 import GithubIcon from '@assets/ico_github.svg';
 import LabeledInput from '@components/common/LabeledInput';
-import Button from '@components/common/Modal/ModalButton';
+import Button from '@components/common/ModalButton';
 import useFetch from '@hooks/useFetch';
 
 import { SignInModalWrapper, SignUpContainer, SignUpButton } from './styled';

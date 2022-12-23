@@ -10,6 +10,7 @@ import ExitIcon from '@assets/ico_exit.svg';
 import articleState from '@atoms/article';
 import articleBuffer from '@atoms/articleBuffer';
 import useFetch from '@hooks/useFetch';
+import useModal from '@hooks/useModal';
 import { toastSuccess } from '@utils/toast';
 
 import { Bar, ButtonGroup, ExitButton, PublishButton, TemporaryButton } from './styled';
@@ -20,6 +21,8 @@ interface EditBarProps {
 }
 
 export default function EditBar({ handleModalOpen, isModifyMode }: EditBarProps) {
+  const { openModal } = useModal();
+
   const article = useRecoilValue(articleState);
   const setBuffer = useSetRecoilState(articleBuffer);
   const router = useRouter();
@@ -28,25 +31,37 @@ export default function EditBar({ handleModalOpen, isModifyMode }: EditBarProps)
   const { execute: createTemporaryArticle } = useFetch(createTemporaryArticleApi);
 
   const handleLoadButton = () => {
-    const confirm = window.confirm('현재 작성하신 글이 사라집니다.\n정말 불러오시겠습니까?');
-
-    if (confirm) getTemporaryArticle();
+    openModal({
+      modalType: 'Confirm',
+      modalProps: {
+        message: '현재 작성하신 글이 사라집니다.\n정말 불러오시겠습니까?',
+        handleConfirm: () => getTemporaryArticle(),
+      },
+    });
   };
 
   const handleSaveButton = () => {
-    const confirm = window.confirm('기존에 임시 저장한 글이 사라집니다.\n정말 저장하시겠습니까?');
+    openModal({
+      modalType: 'Confirm',
+      modalProps: {
+        message: '기존에 임시 저장한 글이 사라집니다.\n정말 저장하시겠습니까?',
+        handleConfirm: () => {
+          createTemporaryArticle({ title: article.title, content: article.content });
 
-    if (confirm) {
-      createTemporaryArticle({ title: article.title, content: article.content });
-
-      toastSuccess('글을 임시 저장했습니다.');
-    }
+          toastSuccess('글을 임시 저장했습니다.');
+        },
+      },
+    });
   };
 
   const handleExitButton = () => {
-    const confirm = window.confirm('정말 나가시겠습니까?');
-
-    if (confirm) router.push('/');
+    openModal({
+      modalType: 'Confirm',
+      modalProps: {
+        message: '정말 나가시겠습니까?',
+        handleConfirm: () => router.push('/'),
+      },
+    });
   };
 
   useEffect(() => {

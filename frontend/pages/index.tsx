@@ -6,7 +6,7 @@ import HomeHead from '@components/home/HomeHead';
 import Slider from '@components/home/Slider';
 import HeaderLayout from '@components/layout/HeaderLayout';
 import useFetch from '@hooks/useFetch';
-import { PageInnerLarge, PageWrapper } from '@styles/layout';
+import { PageInnerLarge } from '@styles/layout';
 
 export default function HomePage() {
   const {

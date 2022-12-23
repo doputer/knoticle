@@ -8,7 +8,7 @@ import scrapState from '@atoms/scrap';
 import signInStatusState from '@atoms/signInStatus';
 import DragArticle from '@components/common/DragDrop';
 import Dropdown from '@components/common/Dropdown';
-import ModalButton from '@components/common/Modal/ModalButton';
+import ModalButton from '@components/common/ModalButton';
 import useFetch from '@hooks/useFetch';
 import useModal from '@hooks/useModal';
 import { IBook, IArticle, IScrap, IBookScraps } from '@interfaces';
