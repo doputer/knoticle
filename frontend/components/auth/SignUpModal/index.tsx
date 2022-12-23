@@ -4,15 +4,14 @@ import { createUserApi } from '@apis/authApi';
 import LabeledInput from '@components/common/LabeledInput';
 import Button from '@components/common/Modal/ModalButton';
 import useFetch from '@hooks/useFetch';
+import useModal from '@hooks/useModal';
 import { toastSuccess } from '@utils/toast';
 
 import { SignUpModalWrapper, SignUpModalErrorMessage } from './styled';
 
-interface SignUpModalProps {
-  handleModalClose: () => void;
-}
+function SignUpModal() {
+  const { closeEveryModal } = useModal();
 
-function SignUpModal({ handleModalClose }: SignUpModalProps) {
   const [errorMessage, setErrorMessage] = useState('');
   const [isInputValid, setIsInputValid] = useState(false);
   const [info, setInfo] = useState({
@@ -24,8 +23,8 @@ function SignUpModal({ handleModalClose }: SignUpModalProps) {
 
   useEffect(() => {
     if (createUserData === undefined) return;
-    handleModalClose();
     toastSuccess('Knoticle 가입을 축하합니다!');
+    closeEveryModal();
   }, [createUserData]);
 
   const checkUsernameValid = (username: string) => {

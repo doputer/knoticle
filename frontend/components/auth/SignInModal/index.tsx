@@ -12,14 +12,10 @@ import useFetch from '@hooks/useFetch';
 import { SignInModalWrapper, SignUpContainer, SignUpButton } from './styled';
 
 interface SignInModalProps {
-  handleGoToSignUpBtnClicked: () => void;
-  handleModalClose: () => void;
+  handleSignUpModalOpen: () => void;
 }
 
-export default function SignInModal({
-  handleGoToSignUpBtnClicked,
-  handleModalClose,
-}: SignInModalProps) {
+export default function SignInModal({ handleSignUpModalOpen }: SignInModalProps) {
   const [info, setInfo] = useState({
     username: '',
     password: '',
@@ -50,7 +46,6 @@ export default function SignInModal({
   useEffect(() => {
     if (!user) return;
 
-    handleModalClose();
     router.reload();
   }, [user]);
 
@@ -75,11 +70,11 @@ export default function SignInModal({
       </Button>
       <Button theme="second" onClick={handleSignInGithubClick}>
         <Image src={GithubIcon} alt="Github Icon" />
-        Github으로 로그인하기
+        GitHub으로 로그인하기
       </Button>
       <SignUpContainer>
         <div>아직 계정이 없으신가요?</div>
-        <SignUpButton onClick={handleGoToSignUpBtnClicked}>회원가입하기</SignUpButton>
+        <SignUpButton onClick={handleSignUpModalOpen}>회원가입하기</SignUpButton>
       </SignUpContainer>
     </SignInModalWrapper>
   );
