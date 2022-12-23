@@ -99,29 +99,27 @@ export default function ShelfPage({ userProfile }: ShelfPageProps) {
         userImage={userProfile.profile_image}
       />
       {curUserProfile && (
-        <PageWrapper>
-          <PageInnerLarge>
-            {isEditing ? (
-              <EditUserProfile
-                handleEditFinishBtnClick={handleEditFinishBtnClick}
-                curUserProfile={curUserProfile}
-                setCurUserProfile={setCurUserProfile}
-              />
-            ) : (
-              <UserProfile
-                curUserProfile={curUserProfile}
-                handleEditBtnClick={() => {
-                  setIsEditing(true);
-                }}
-              />
-            )}
-            <BookListTab
-              knottedBookList={curKnottedBookList}
-              bookmarkedBookList={curBookmarkedBookList}
-              isUserMatched={signInStatus.id === curUserProfile.id}
+        <PageInnerLarge>
+          {isEditing ? (
+            <EditUserProfile
+              handleEditFinishBtnClick={handleEditFinishBtnClick}
+              curUserProfile={curUserProfile}
+              setCurUserProfile={setCurUserProfile}
             />
-          </PageInnerLarge>
-        </PageWrapper>
+          ) : (
+            <UserProfile
+              curUserProfile={curUserProfile}
+              handleEditBtnClick={() => {
+                setIsEditing(true);
+              }}
+            />
+          )}
+          <BookListTab
+            knottedBookList={curKnottedBookList}
+            bookmarkedBookList={curBookmarkedBookList}
+            isUserMatched={signInStatus.id === curUserProfile.id}
+          />
+        </PageInnerLarge>
       )}
     </>
   );
