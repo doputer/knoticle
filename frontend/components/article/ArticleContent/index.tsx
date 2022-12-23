@@ -14,6 +14,7 @@ import Scrap from '@assets/ico_scrap.svg';
 import signInStatusState from '@atoms/signInStatus';
 import Content from '@components/common/Content';
 import useFetch from '@hooks/useFetch';
+import useModal from '@hooks/useModal';
 import { IArticleBook, IScrap } from '@interfaces';
 import encodeURL from '@utils/encode-url';
 import { toastSuccess } from '@utils/toast';
@@ -48,6 +49,8 @@ export default function Article({
   articleData,
   handleScrapModalOpen,
 }: ArticleProps) {
+  const { openModal } = useModal();
+
   const user = useRecoilValue(signInStatusState);
 
   const { data: deleteArticleData, execute: deleteArticle } = useFetch(deleteArticleApi);
@@ -85,28 +88,40 @@ export default function Article({
   };
 
   const handleDeleteBtnOnClick = () => {
-    if (window.confirm('해당 글을 삭제하시겠습니까?')) {
-      const curScrap = scraps.find((scrap) => scrap.article.id === article.id);
-      if (!curScrap) return;
-      const newScraps = scraps
-        .filter((scrap) => scrap.id !== curScrap.id)
-        .map((v, i) => ({ ...v, order: i + 1 }));
-      updateScrapsOrder(newScraps);
-      deleteScrap(curScrap?.id);
-      deleteArticle(article.id);
-    }
+    openModal({
+      modalType: 'Confirm',
+      modalProps: {
+        message: '해당 글을 삭제하시겠습니까?',
+        handleConfirm: () => {
+          const curScrap = scraps.find((scrap) => scrap.article.id === article.id);
+          if (!curScrap) return;
+          const newScraps = scraps
+            .filter((scrap) => scrap.id !== curScrap.id)
+            .map((v, i) => ({ ...v, order: i + 1 }));
+          updateScrapsOrder(newScraps);
+          deleteScrap(curScrap?.id);
+          deleteArticle(article.id);
+        },
+      },
+    });
   };
 
   const handleScrapDeleteBtnOnClick = () => {
-    if (window.confirm('해당 글을 책에서 삭제하시겠습니까?')) {
-      const curScrap = scraps.find((scrap) => scrap.article.id === article.id);
-      if (!curScrap) return;
-      const newScraps = scraps
-        .filter((scrap) => scrap.id !== curScrap.id)
-        .map((v, i) => ({ ...v, order: i + 1 }));
-      updateScrapsOrder(newScraps);
-      deleteScrap(curScrap.id);
-    }
+    openModal({
+      modalType: 'Confirm',
+      modalProps: {
+        message: '해당 글을 책에서 삭제하시겠습니까?',
+        handleConfirm: () => {
+          const curScrap = scraps.find((scrap) => scrap.article.id === article.id);
+          if (!curScrap) return;
+          const newScraps = scraps
+            .filter((scrap) => scrap.id !== curScrap.id)
+            .map((v, i) => ({ ...v, order: i + 1 }));
+          updateScrapsOrder(newScraps);
+          deleteScrap(curScrap.id);
+        },
+      },
+    });
   };
 
   const handleModifyBtnOnClick = () => {

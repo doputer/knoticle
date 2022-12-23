@@ -6,6 +6,7 @@ import { useRecoilState } from 'recoil';
 import MinusWhite from '@assets/ico_minus_white.svg';
 import editInfoState from '@atoms/editInfo';
 import scrapState from '@atoms/scrap';
+import useModal from '@hooks/useModal';
 
 import { Article, Text, MinusButton, MinusIcon, OriginalBadge, TextWapper } from './styled';
 
@@ -41,6 +42,8 @@ export const ListItem = memo(function Scrap({
   isContentsShown,
   isDeleteBtnShown,
 }: ScrapProps) {
+  const { openModal } = useModal();
+
   const originalIndex = findScrap(id).index;
   const [scraps, setScraps] = useRecoilState(scrapState);
   const [editInfo, setEditInfo] = useRecoilState(editInfoState);
@@ -83,21 +86,37 @@ export const ListItem = memo(function Scrap({
 
   const handleMinusBtnClick = () => {
     if (isOriginal) {
-      if (window.confirm('이 글은 원본 글입니다. 정말로 삭제하시겠습니까?')) {
-        setEditInfo({
-          ...editInfo,
-          deletedArticle: [...editInfo.deletedArticle, id],
-          deletedScraps: [...editInfo.deletedScraps, scrapId],
-        });
-        setScraps(scraps.filter((v) => v.article.id !== id));
-      }
-    } else if (window.confirm('글을 책에서 삭제하시겠습니까?')) {
-      setEditInfo({
-        ...editInfo,
-        deletedScraps: [...editInfo.deletedScraps, scrapId],
+      openModal({
+        modalType: 'Confirm',
+        modalProps: {
+          message: '이 글은 원본 글입니다. 정말로 삭제하시겠습니까?',
+          handleConfirm: () => {
+            setEditInfo({
+              ...editInfo,
+              deletedArticle: [...editInfo.deletedArticle, id],
+              deletedScraps: [...editInfo.deletedScraps, scrapId],
+            });
+            setScraps(scraps.filter((v) => v.article.id !== id));
+          },
+        },
       });
-      setScraps(scraps.filter((v) => v.article.id !== id));
+
+      return;
     }
+
+    openModal({
+      modalType: 'Confirm',
+      modalProps: {
+        message: '글을 책에서 삭제하시겠습니까?',
+        handleConfirm: () => {
+          setEditInfo({
+            ...editInfo,
+            deletedScraps: [...editInfo.deletedScraps, scrapId],
+          });
+          setScraps(scraps.filter((v) => v.article.id !== id));
+        },
+      },
+    });
   };
 
   return (
