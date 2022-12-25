@@ -23,6 +23,7 @@
       "@utils/*": ["./utils/*"],
       "@apis/*": ["./apis/*"],
       "@atoms/*": ["./atoms/*"],
+      "@constants/*": ["./constants/*"],
       "@interfaces": ["./interfaces"]
     }
   },
