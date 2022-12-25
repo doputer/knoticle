@@ -5,8 +5,8 @@ import Footer from '@components/common/Footer';
 import HomeHead from '@components/home/HomeHead';
 import Slider from '@components/home/Slider';
 import HeaderLayout from '@components/layout/HeaderLayout';
+import PageLayout from '@components/layout/PageLayout';
 import useFetch from '@hooks/useFetch';
-import { PageInnerLarge } from '@styles/layout';
 
 export default function HomePage() {
   const {
@@ -36,6 +36,7 @@ export default function HomePage() {
 
   useEffect(() => {
     resizingHandler();
+
     window.addEventListener('resize', resizingHandler);
 
     return () => {
@@ -57,29 +58,31 @@ export default function HomePage() {
   return (
     <>
       <HomeHead />
-      <PageInnerLarge>
-        {numberPerPage !== 0 && (
-          <>
-            <Slider
-              bookList={popularBookList}
-              title="가장 인기 있는 책"
-              isLoading={isPopularBookListLoading}
-              numberPerPage={numberPerPage}
-            />
-            <Slider
-              bookList={newestBookList}
-              title="새로 엮은 책"
-              isLoading={isNewBookListLoading}
-              numberPerPage={numberPerPage}
-            />
-            <Footer />
-          </>
-        )}
-      </PageInnerLarge>
+      {numberPerPage !== 0 && (
+        <>
+          <Slider
+            bookList={popularBookList}
+            title="가장 인기 있는 책"
+            isLoading={isPopularBookListLoading}
+            numberPerPage={numberPerPage}
+          />
+          <Slider
+            bookList={newestBookList}
+            title="새로 엮은 책"
+            isLoading={isNewBookListLoading}
+            numberPerPage={numberPerPage}
+          />
+          <Footer />
+        </>
+      )}
     </>
   );
 }
 
 HomePage.getLayout = function getLayout(page: ReactElement) {
-  return <HeaderLayout>{page}</HeaderLayout>;
+  return (
+    <HeaderLayout>
+      <PageLayout>{page}</PageLayout>
+    </HeaderLayout>
+  );
 };
