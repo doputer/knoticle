@@ -1,118 +1,71 @@
 import Image from 'next/image';
-import Link from 'next/link';
 
 import styled from 'styled-components';
 
-import { TextXSmall } from '@styles/common';
-import { FlexColumn } from '@styles/layout';
+import { TextLarge, TextLinkSmall } from '@styles/common';
+import { FlexColumn, FlexColumnCenter, FlexSpaceBetween } from '@styles/layout';
 
-export const BookWrapper = styled(FlexColumn)`
+export const BookContainer = styled(FlexColumn)`
+  min-width: 280px;
   width: 280px;
-  height: 480px;
-  margin: 0 10px;
-  box-sizing: border-box;
-
-  background: #ffffff;
+  background-color: #ffffff;
   border: 1px solid var(--primary-color);
-  border-radius: 10px;
+  border-radius: 8px;
   overflow: hidden;
-
-  color: var(--grey-01-color);
-  // aspect-ratio: 280/480;
-  // @media ${(props) => props.theme.tablet} {
-  //   width: 100%;
-  //   height: auto;
-  //   overflow: none;
-  // }
+  box-sizing: border-box;
 `;
 
 export const BookThumbnail = styled(Image)`
-  width: 280px;
-  min-height: 200px;
+  width: 100%;
+  aspect-ratio: 16 / 9;
   object-fit: cover;
-  // aspect-ratio: 280/200;
-
-  // @media ${(props) => props.theme.tablet} {
-  //   width: 100%;
-  //   min-height: auto;
-  // }
 `;
 
-export const BookInfoContainer = styled(FlexColumn)`
-  padding: 15px 24px;
-  gap: 18px;
+export const BookBody = styled(FlexColumn)`
+  padding: 16px 24px 32px 24px;
+  box-sizing: border-box;
+  gap: 16px;
 `;
 
-export const BookTitle = styled.div`
-  div:nth-child(1) {
-    font-weight: 700;
-  }
-
-  b {
-    color: var(--primary-color);
-    font-weight: 700;
-  }
-`;
-
-export const Bookmark = styled(FlexColumn)`
+export const BookInformation = styled(FlexSpaceBetween)`
   align-items: center;
-  gap: 4px;
+  gap: 8px;
 `;
 
-export const BookmarkIcon = styled(Image)`
-  cursor: pointer;
+export const BookDescription = styled(FlexColumn)`
+  flex: 1;
+  overflow: hidden;
 `;
 
-export const BookContentsInfo = styled(FlexColumn)`
+export const BookTitle = styled(TextLarge)`
+  font-weight: 700;
+`;
+
+export const BookAuthor = styled(TextLinkSmall)`
+  color: var(--grey-01-color);
+  font-size: 14px;
+  line-height: 28px;
+`;
+
+export const Bookmark = styled(FlexColumnCenter)``;
+
+export const BookScrapList = styled(FlexColumn)`
   gap: 8px;
 
-  div:nth-child(1) {
+  > div:first-child {
     box-sizing: border-box;
-    padding-bottom: 10px;
+    padding-bottom: 8px;
     border-bottom: 1px solid var(--primary-color);
   }
 `;
 
-export const BookContents = styled(TextXSmall)`
-  display: flex;
-  flex-direction: column;
+export const BookScrap = styled(FlexColumn)`
+  color: var(--grey-01-color);
+
   a {
+    font-size: 14px;
+    line-height: 28px;
+    padding: 2px 0;
     border-bottom: 1px solid var(--grey-02-color);
-    height: 28px;
-    display: flex;
-    align-items: center;
   }
-`;
-
-export const ArticleLink = styled(Link)`
-  font-size: 14px;
-  text-decoration: none;
-  color: inherit;
-  display: flex;
-  align-items: center;
-
-  border-bottom: 1px solid var(--grey-02-color);
-  height: 28px;
-
-  span {
-    line-height: 30px;
-    display: block;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-`;
-
-export const AuthorLink = styled(Link)`
-  font-size: 14px;
-  line-height: 28px;
-  text-decoration: none;
-  color: inherit;
-  display: block;
-  margin-top: 2px;
-`;
-
-export const BookLink = styled(Link)<{ isarticleexists: string }>`
-  text-decoration: none;
-  ${(props) => (props.isarticleexists === 'true' ? '' : 'pointer-events: none;')}
 `;

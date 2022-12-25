@@ -36,6 +36,12 @@ export const FullPageWrapper = styled.div`
   height: 100vh;
 `;
 
+export const Ellipsis = styled.div`
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
+
 export const PageInnerSmall = styled(FlexColumnAlignCenter)`
   margin: 0 auto;
   max-width: 900px;
