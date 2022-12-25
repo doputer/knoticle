@@ -12,18 +12,24 @@ import { IBookScraps } from '@interfaces';
 import { Flex } from '@styles/layout';
 
 import {
-  SliderContent,
-  SliderInfo,
-  SliderTitle,
-  SliderWrapper,
-  SliderIndicatorContainer,
-  SliderIndicator,
   SliderBookContainer,
-  SliderInfoContainer,
-  SliderIcon,
-  SliderTrack,
   SliderBookWrapper,
+  SliderContent,
+  SliderIcon,
+  SliderIndicator,
+  SliderIndicatorContainer,
+  SliderInfo,
+  SliderInfoContainer,
+  SliderTitle,
+  SliderTrack,
+  SliderWrapper,
 } from './styled';
+
+const setNumBetween = (val: number, min: number, max: number) => {
+  if (val < min) return min;
+  if (val > max) return max;
+  return val;
+};
 
 interface SliderProps {
   bookList: IBookScraps[];
@@ -32,13 +38,7 @@ interface SliderProps {
   numberPerPage: number;
 }
 
-const setNumBetween = (val: number, min: number, max: number) => {
-  if (val < min) return min;
-  if (val > max) return max;
-  return val;
-};
-
-function Slider({ bookList, title, isLoading, numberPerPage }: SliderProps) {
+export default function BookSlider({ bookList, title, isLoading, numberPerPage }: SliderProps) {
   const {
     value: curBookIndex,
     isValueSet: isCurBookIndexSet,
@@ -156,5 +156,3 @@ function Slider({ bookList, title, isLoading, numberPerPage }: SliderProps) {
     </SliderWrapper>
   );
 }
-
-export default Slider;

@@ -2,7 +2,7 @@ import React from 'react';
 
 import { useRecoilValue } from 'recoil';
 
-import { modalState, MODAL_TYPES } from '@atoms/modalState';
+import { MODAL_TYPES, modalState } from '@atoms/modalState';
 import ConfirmModal from '@components/common/ConfirmModal';
 import Modal from '@components/common/Modal';
 

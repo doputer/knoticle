@@ -19,21 +19,21 @@ import { FlexSpaceBetween } from '@styles/layout';
 import { toastError } from '@utils/toast';
 
 import {
-  BookWrapper,
-  BookInfoContainer,
-  BookTitle,
-  BookContentsInfo,
-  BookThumbnail,
   Author,
-  Input,
   BookContent,
-  EditBookWapper,
-  EditBookThumbnailWrapper,
-  EditBookThumbnailIcon,
-  EditArticle,
-  DragArticleWrapper,
+  BookContentsInfo,
+  BookInfoContainer,
+  BookThumbnail,
+  BookTitle,
+  BookWrapper,
   ContentsWrapper,
   DragArticleText,
+  DragArticleWrapper,
+  EditArticle,
+  EditBookThumbnailIcon,
+  EditBookThumbnailWrapper,
+  EditBookWapper,
+  Input,
 } from './styled';
 
 interface BookProps {

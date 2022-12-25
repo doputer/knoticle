@@ -3,22 +3,22 @@ import ActiveBookmarkIcon from '@assets/ico_bookmark_grey_filled.svg';
 import sampleImage from '@assets/img_sample_thumbnail.jpg';
 import useBookmark from '@hooks/useBookmark';
 import { IBookScraps } from '@interfaces';
-import { TextLarge, TextXSmall, TextSmall } from '@styles/common';
+import { TextLarge, TextSmall, TextXSmall } from '@styles/common';
 import { FlexSpaceBetween } from '@styles/layout';
 import encodeURL from '@utils/encode-url';
 
 import {
-  BookWrapper,
-  BookInfoContainer,
-  BookTitle,
-  Bookmark,
-  BookContentsInfo,
-  BookContents,
-  BookThumbnail,
   ArticleLink,
   AuthorLink,
-  BookmarkIcon,
+  BookContents,
+  BookContentsInfo,
+  BookInfoContainer,
   BookLink,
+  Bookmark,
+  BookmarkIcon,
+  BookThumbnail,
+  BookTitle,
+  BookWrapper,
 } from './styled';
 
 interface BookProps {

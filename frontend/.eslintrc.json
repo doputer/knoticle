@@ -26,25 +26,35 @@
     "import/order": [
       "error",
       {
-        "groups": ["builtin", "external", "internal"],
+        "groups": ["builtin", "external", "internal", ["parent", "sibling"], "index"],
         "pathGroups": [
           {
-            "pattern": "{react*,react*/**}",
-            "group": "builtin",
+            "pattern": "{next*,next*/**}",
+            "group": "external",
             "position": "before"
           },
           {
-            "pattern": "{next*,next*/**}",
-            "group": "builtin",
+            "pattern": "{react*,react*/**}",
+            "group": "external",
             "position": "before"
           }
         ],
-        "pathGroupsExcludedImportTypes": ["react", "next"],
+        "pathGroupsExcludedImportTypes": ["next", "react"],
         "newlines-between": "always",
         "alphabetize": {
           "order": "asc",
           "caseInsensitive": true
         }
+      }
+    ],
+    "sort-imports": [
+      "error",
+      {
+        "allowSeparatedGroups": true,
+        "ignoreCase": true,
+        "ignoreDeclarationSort": true,
+        "ignoreMemberSort": false,
+        "memberSyntaxSortOrder": ["none", "all", "multiple", "single"]
       }
     ],
     "jsx-a11y/label-has-associated-control": [

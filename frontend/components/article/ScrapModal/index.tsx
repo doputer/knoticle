@@ -11,7 +11,7 @@ import Dropdown from '@components/common/Dropdown';
 import ModalButton from '@components/common/ModalButton';
 import useFetch from '@hooks/useFetch';
 import useModal from '@hooks/useModal';
-import { IBook, IArticle, IScrap, IBookScraps } from '@interfaces';
+import { IArticle, IBook, IBookScraps, IScrap } from '@interfaces';
 import { toastSuccess } from '@utils/toast';
 
 import { ArticleWrapper, DragArticleText, Label, ScrapModalWrapper, WarningLabel } from './styled';

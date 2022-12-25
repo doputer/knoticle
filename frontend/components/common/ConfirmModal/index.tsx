@@ -4,7 +4,7 @@ import CancelIcon from '@assets/ico_cancel.svg';
 import ModalButton from '@components/common/ModalButton';
 import useModal from '@hooks/useModal';
 
-import { ModalHeader, Dimmed, ModalContainer, ModalInner, ModalBody, ModalFooter } from './styled';
+import { Dimmed, ModalBody, ModalContainer, ModalFooter, ModalHeader, ModalInner } from './styled';
 
 export interface ConfirmModalProps {
   message: string;

@@ -1,14 +1,14 @@
 import { FlexColumn, FlexSpaceBetween } from '@styles/layout';
 
 import {
-  BookWrapper,
-  BookInfoContainer,
-  BookTitle,
-  BookContentsInfo,
-  BookContents,
-  BookThumbnail,
   BookAuthor,
+  BookContents,
+  BookContentsInfo,
+  BookInfoContainer,
   Bookmark,
+  BookThumbnail,
+  BookTitle,
+  BookWrapper,
 } from './styled';
 
 export default function SkeletonBook() {

@@ -8,7 +8,7 @@ import editInfoState from '@atoms/editInfo';
 import scrapState from '@atoms/scrap';
 import useModal from '@hooks/useModal';
 
-import { Article, Text, MinusButton, MinusIcon, OriginalBadge, TextWapper } from './styled';
+import { Article, MinusButton, MinusIcon, OriginalBadge, Text, TextWapper } from './styled';
 
 const ItemTypes = {
   Scrap: 'scrap',

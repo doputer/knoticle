@@ -22,13 +22,13 @@ import { toastSuccess } from '@utils/toast';
 import ArticleButton from './Button';
 import {
   ArticleContainer,
+  ArticleContentsWrapper,
   ArticleLeftBtn,
   ArticleMain,
+  ArticleMoveBtnContainer,
   ArticleRightBtn,
   ArticleTitle,
   ArticleTitleBtnBox,
-  ArticleContentsWrapper,
-  ArticleMoveBtnContainer,
   ArticleTitleWrapper,
 } from './styled';
 

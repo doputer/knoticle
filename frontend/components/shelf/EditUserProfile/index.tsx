@@ -11,16 +11,16 @@ import { TextLinkMedium } from '@styles/common';
 
 import {
   ButtonGroup,
+  EditThumbnailIcon,
+  EditUserDescription,
   EditUsername,
   ProfileEditButton,
-  EditUserDescription,
+  RedNotice,
   UserDetailGroup,
+  UsernameGroup,
   UserProfileWrapper,
   UserThumbnail,
-  EditThumbnailIcon,
   UserThumbnailGroup,
-  RedNotice,
-  UsernameGroup,
 } from './styled';
 
 interface EditUserProfileProps {
