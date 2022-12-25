@@ -30,42 +30,39 @@ const setNumBetween = (val: number, min: number, max: number) => {
 };
 
 interface SliderProps {
-  bookList: IBookScraps[];
   title: string;
+  books: IBookScraps[];
+  bookCountPerPage: number;
   isLoading: boolean;
-  bookCount: number;
 }
 
-export default function BookSlider({ bookList, title, isLoading, bookCount }: SliderProps) {
+export default function Slider({ title, books, bookCountPerPage, isLoading }: SliderProps) {
   const {
     value: currentBookIndex,
     setValue: setCurrentBookIndex,
-    isValueSet: isCurBookIndexSet,
-  } = useSessionStorage(`${title}_curBookIndex`, 0);
+    isValueSet: isCurrentBookIndexSet,
+  } = useSessionStorage(`${title}_CURRENT_BOOK_INDEX`, 0);
 
   const {
     value: currentPage,
     setValue: setCurrentPage,
-    isValueSet: isSliderNumberSet,
-  } = useSessionStorage(`${title}_sliderNumber`, 1);
+    isValueSet: isCurrentPageSet,
+  } = useSessionStorage(`${title}_CURRENT_PAGE`, 1);
 
   const [touchPosition, setTouchPosition] = useState({ x: 0, y: 0 });
 
-  const skeletonList = Array.from({ length: bookCount }, (_, i) => i + 1);
-
-  const sliderIndicatorCount = Math.ceil((bookList?.length || 0) / bookCount);
-
+  const sliderIndicatorCount = Math.ceil((books?.length || 0) / bookCountPerPage);
   const sliderPageList = Array.from({ length: sliderIndicatorCount }, (_, index) => {
     return { key: index, isActive: currentPage === index + 1 };
   });
 
   const handleLeftArrowClick = () => {
-    setCurrentBookIndex(currentBookIndex - bookCount);
+    setCurrentBookIndex(currentBookIndex - bookCountPerPage);
     setCurrentPage(currentPage - 1);
   };
 
   const handleRightArrowClick = () => {
-    setCurrentBookIndex(currentBookIndex + bookCount);
+    setCurrentBookIndex(currentBookIndex + bookCountPerPage);
     setCurrentPage(currentPage + 1);
   };
 
@@ -89,17 +86,17 @@ export default function BookSlider({ bookList, title, isLoading, bookCount }: Sl
   };
 
   useEffect(() => {
-    if (!bookList) return;
+    if (!books) return;
 
     const newSliderNum = setNumBetween(
-      Math.round(currentBookIndex / bookCount) + 1,
+      Math.round(currentBookIndex / bookCountPerPage) + 1,
       1,
       sliderIndicatorCount
     );
 
     setCurrentPage(newSliderNum);
-    setCurrentBookIndex((newSliderNum - 1) * bookCount);
-  }, [bookCount]);
+    setCurrentBookIndex((newSliderNum - 1) * bookCountPerPage);
+  }, [bookCountPerPage]);
 
   return (
     <SliderContainer>
@@ -110,13 +107,13 @@ export default function BookSlider({ bookList, title, isLoading, bookCount }: Sl
         visible={currentPage !== 1}
       />
 
-      <SliderInner bookCount={bookCount}>
+      <SliderInner bookCountPerPage={bookCountPerPage}>
         <SliderHeader>
           <SliderTitle>
             <Image src={ListIcon} alt="List Icon" />
             {title}
           </SliderTitle>
-          {bookCount !== 1 && (
+          {bookCountPerPage !== 1 && (
             <SliderIndicatorWrapper>
               {sliderPageList.map(({ key, isActive }) => (
                 <SliderIndicator key={key} isActive={isActive} />
@@ -126,19 +123,19 @@ export default function BookSlider({ bookList, title, isLoading, bookCount }: Sl
         </SliderHeader>
 
         <SliderBody>
-          {!isLoading && isCurBookIndexSet && isSliderNumberSet ? (
+          {!isLoading && isCurrentBookIndexSet && isCurrentPageSet ? (
             <SliderTrack
               currentBookIndex={currentBookIndex}
               onTouchStart={handleSliderTrackTouchStart}
               onTouchEnd={handleSliderTrackTouchEnd}
             >
-              {bookList.map((book) => (
+              {books.map((book) => (
                 <Book key={book.id} book={book} />
               ))}
             </SliderTrack>
           ) : (
             <Flex style={{ gap: 8 }}>
-              {skeletonList.map((key) => (
+              {[1, 2, 3, 4].map((key) => (
                 <SkeletonBook key={key} />
               ))}
             </Flex>
