@@ -20,17 +20,17 @@ const GlobalStyle = createGlobalStyle`
     color: var(--title-active-color);
     font-family: 'Noto Sans KR';
     font-weight: 500;
-    
   }
     
   button {
-    border: none;
+    padding: 0;
     background: transparent;
+    border: none;
     cursor: pointer;
   }
 
   a {
-    color: var(--title-active-color);
+    color: inherit;
     text-decoration: none;
     outline: none
   }
@@ -40,7 +40,6 @@ const GlobalStyle = createGlobalStyle`
     text-decoration: none;
     background-color: transparent;
   }
-
 `;
 
 export default GlobalStyle;

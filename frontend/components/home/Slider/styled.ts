@@ -1,87 +1,48 @@
-import Image from 'next/image';
-
 import styled from 'styled-components';
 
-import { FlexCenter, FlexColumn, FlexSpaceBetween } from '@styles/layout';
+import { Flex, FlexCenter, FlexColumn, FlexSpaceBetween } from '@styles/layout';
 
-export const SliderWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 10px;
+export const SliderContainer = styled(FlexSpaceBetween)`
+  margin-top: 32px;
+  gap: 8px;
 
   @media ${(props) => props.theme.mobile} {
     gap: 0;
   }
 `;
 
-export const SliderContent = styled(FlexColumn)<{ numberPerPage: number }>`
-  max-width: 1200px;
+export const SliderInner = styled(FlexColumn)<{ bookCount: number }>`
+  max-width: ${(props) => `${props.bookCount * 288 - 8}px`};
   overflow: hidden;
-  gap: 10px;
-  margin-top: 30px;
-
-  max-width: ${(props) => {
-    if (props.numberPerPage === 1) return '300px';
-    if (props.numberPerPage === 2) return '600px';
-    if (props.numberPerPage === 3) return '900px';
-    return '1200px';
-  }};
-`;
-
-export const SliderInfoContainer = styled(FlexSpaceBetween)`
-  padding: 0px 10px;
-`;
-
-export const SliderInfo = styled.div`
-  display: flex;
-  align-items: center;
   gap: 8px;
 `;
 
-export const SliderTitle = styled.div`
+export const SliderHeader = styled(FlexSpaceBetween)``;
+
+export const SliderTitle = styled(FlexCenter)`
+  gap: 8px;
   font-size: 18px;
   font-weight: 700;
 `;
 
-export const SliderBookContainer = styled.div`
-  position: relative;
-`;
-
-export const SliderTrack = styled.div<{ curBookIndex: number }>`
-  display: flex;
-  ${(props) => `transform: translateX(-${300 * props.curBookIndex}px);`}
-  transition: transform 500ms ease 0ms;
-`;
-
-export const SliderIndicatorContainer = styled.div`
-  display: flex;
-  align-items: end;
+export const SliderIndicatorWrapper = styled(FlexCenter)`
   gap: 4px;
 `;
 
-export const SliderBookWrapper = styled(FlexCenter)<{ numberPerPage: number }>`
-  min-width: 300px;
-
-  ${(props) => {
-    if (props.numberPerPage === 1) return 'min-width: 280px; margin: 0 10px;';
-    if (props.numberPerPage === 2) return 'min-width: 280px; margin: 0 10px;';
-    return 'min-width: 300px;';
-  }};
-`;
-
 export const SliderIndicator = styled.div<{ isActive: boolean }>`
-  width: 40px;
+  background-color: ${(props) =>
+    props.isActive ? 'var(--primary-color)' : 'var(--grey-02-color)'};
+  width: 32px;
   height: 8px;
-  border-radius: 10px;
-
-  ${(props) =>
-    props.isActive
-      ? 'background-color: var(--primary-color)'
-      : 'background-color: var(--grey-02-color)'};
+  border-radius: 8px;
 `;
 
-export const SliderIcon = styled(Image)<{ isvisible: string }>`
-  cursor: pointer;
-  ${(props) => (props.isvisible === 'true' ? '' : 'visibility : hidden')}
+export const SliderBody = styled.div`
+  position: relative;
+`;
+
+export const SliderTrack = styled(Flex)<{ currentBookIndex: number }>`
+  gap: 8px;
+  transform: ${(props) => `translateX(-${300 * props.currentBookIndex}px)`};
+  transition: transform 0.5s ease;
 `;

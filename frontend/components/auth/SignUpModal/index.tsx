@@ -7,7 +7,7 @@ import useFetch from '@hooks/useFetch';
 import useModal from '@hooks/useModal';
 import { toastSuccess } from '@utils/toast';
 
-import { SignUpModalWrapper, SignUpModalErrorMessage } from './styled';
+import { SignUpModalErrorMessage, SignUpModalWrapper } from './styled';
 
 function SignUpModal() {
   const { closeEveryModal } = useModal();

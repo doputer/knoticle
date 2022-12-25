@@ -1,7 +1,8 @@
-import { useEffect, useLayoutEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import GNB from '@components/common/GNB';
-import { PageWrapper } from '@styles/layout';
+
+import { PageContainer } from './styled';
 
 interface HeaderLayoutProps {
   fix?: boolean;
@@ -22,7 +23,7 @@ export default function HeaderLayout({ fix, children }: HeaderLayoutProps) {
     else setDelta((prev) => Math.max(0, prev + gap));
   };
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     setDelta(0);
   }, [children]);
 
@@ -37,10 +38,10 @@ export default function HeaderLayout({ fix, children }: HeaderLayoutProps) {
   }, [scrollPosition]);
 
   return (
-    <PageWrapper>
+    <PageContainer>
       <GNB delta={fix ? 0 : delta} />
       {children}
-    </PageWrapper>
+    </PageContainer>
   );
 }
 

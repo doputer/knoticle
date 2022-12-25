@@ -22,14 +22,14 @@ import useInput from '@hooks/useInput';
 import { IArticle } from '@interfaces';
 
 import {
-  EditorButtonWrapper,
   CodeMirrorWrapper,
+  EditorButton,
+  EditorButtonSplit,
+  EditorButtonWrapper,
+  EditorImageInput,
   EditorInner,
   EditorWrapper,
   TitleInput,
-  EditorButton,
-  EditorButtonSplit,
-  EditorImageInput,
 } from './styled';
 
 interface EditorProps {

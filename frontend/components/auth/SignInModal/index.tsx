@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import { localSignInApi } from '@apis/authApi';
 import GithubIcon from '@assets/ico_github.svg';
@@ -9,7 +9,7 @@ import LabeledInput from '@components/common/LabeledInput';
 import Button from '@components/common/ModalButton';
 import useFetch from '@hooks/useFetch';
 
-import { SignInModalWrapper, SignUpContainer, SignUpButton } from './styled';
+import { SignInModalWrapper, SignUpButton, SignUpContainer } from './styled';
 
 interface SignInModalProps {
   handleSignUpModalOpen: () => void;

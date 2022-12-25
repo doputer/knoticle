@@ -2,7 +2,7 @@ import Image from 'next/image';
 
 import styled from 'styled-components';
 
-import { TextXSmall, TextSmall } from '@styles/common';
+import { TextSmall, TextXSmall } from '@styles/common';
 import { FlexColumn } from '@styles/layout';
 
 export const BookWrapper = styled(FlexColumn)`

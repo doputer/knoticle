@@ -4,7 +4,7 @@ import { indentWithTab } from '@codemirror/commands';
 import { markdown, markdownLanguage } from '@codemirror/lang-markdown';
 import { languages } from '@codemirror/language-data';
 import { EditorState } from '@codemirror/state';
-import { placeholder, keymap } from '@codemirror/view';
+import { keymap, placeholder } from '@codemirror/view';
 import { EditorView } from 'codemirror';
 
 import { createImageApi } from '@apis/imageApi';

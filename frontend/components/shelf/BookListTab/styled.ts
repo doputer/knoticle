@@ -25,7 +25,7 @@ export const BookGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   box-sizing: border-box;
-  gap: 20px 0;
+  gap: 8px;
   padding: 20px;
 
   @media ${(props) => props.theme.desktop} {
