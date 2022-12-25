@@ -137,7 +137,7 @@ export default function BookSlider({ bookList, title, isLoading, bookCount }: Sl
               ))}
             </SliderTrack>
           ) : (
-            <Flex>
+            <Flex style={{ gap: 8 }}>
               {skeletonList.map((key) => (
                 <SkeletonBook key={key} />
               ))}

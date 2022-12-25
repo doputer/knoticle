@@ -1,12 +1,8 @@
-import Image from 'next/image';
-
 import styled from 'styled-components';
 
-import { FlexColumn } from '@styles/layout';
+import { FlexColumn, FlexSpaceBetween } from '@styles/layout';
 
 const SkeletonItem = styled.div`
-  width: 100%;
-  height: 30px;
   background-color: #f2f2f2;
   position: relative;
   overflow: hidden;
@@ -35,39 +31,41 @@ const SkeletonItem = styled.div`
   }
 `;
 
-export const BookWrapper = styled(FlexColumn)`
+export const BookContainer = styled(FlexColumn)`
   min-width: 280px;
-  max-width: 280px;
-  height: 480px;
-  margin: 0 10px;
-  box-sizing: border-box;
-
+  width: 280px;
+  height: 445.5px;
   background-color: var(--white-color);
   border: 1px solid var(--primary-color);
-  border-radius: 10px;
+  border-radius: 8px;
   overflow: hidden;
+  box-sizing: border-box;
 `;
 
 export const BookThumbnail = styled(SkeletonItem)`
-  width: 280px;
-  height: 200px;
-  min-height: 200px;
+  width: 100%;
+  aspect-ratio: 16 / 9;
 `;
 
-export const BookInfoContainer = styled(FlexColumn)`
-  padding: 15px 24px;
-  gap: 18px;
+export const BookBody = styled(FlexColumn)`
+  padding: 16px 24px 32px 24px;
+  box-sizing: border-box;
+  gap: 16px;
 `;
+
+export const BookInformation = styled(FlexSpaceBetween)``;
+
+export const BookDescription = styled(FlexColumn)``;
 
 export const BookTitle = styled(SkeletonItem)`
+  width: 128px;
   height: 30px;
-  width: 140px;
 `;
 
 export const BookAuthor = styled(SkeletonItem)`
+  width: 64px;
   height: 20px;
-  width: 60px;
-  margin-top: 10px;
+  margin-top: 4px;
 `;
 
 export const Bookmark = styled(SkeletonItem)`
@@ -75,16 +73,12 @@ export const Bookmark = styled(SkeletonItem)`
   width: 30px;
 `;
 
-export const BookmarkIcon = styled(Image)`
-  cursor: pointer;
-`;
-
-export const BookContentsInfo = styled(FlexColumn)`
+export const BookScrapList = styled(FlexColumn)`
   gap: 8px;
-  margin-top: 30px;
+  margin-top: 46px;
 `;
 
-export const BookContents = styled(SkeletonItem)`
-  height: 20px;
+export const BookScrap = styled(SkeletonItem)`
+  height: 24px;
   width: 100%;
 `;

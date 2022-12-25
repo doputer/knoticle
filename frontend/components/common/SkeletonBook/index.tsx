@@ -1,38 +1,37 @@
-import { FlexColumn, FlexSpaceBetween } from '@styles/layout';
-
 import {
   BookAuthor,
-  BookContents,
-  BookContentsInfo,
-  BookInfoContainer,
+  BookBody,
+  BookContainer,
+  BookDescription,
+  BookInformation,
   Bookmark,
+  BookScrap,
+  BookScrapList,
   BookThumbnail,
   BookTitle,
-  BookWrapper,
 } from './styled';
 
 export default function SkeletonBook() {
-  const bookContentsList = Array.from({ length: 4 }, (_, i) => i + 1);
+  const scrapList = Array.from({ length: 4 }, (_, i) => i + 1);
 
   return (
-    <BookWrapper>
+    <BookContainer>
       <BookThumbnail />
 
-      <BookInfoContainer>
-        <FlexSpaceBetween>
-          <FlexColumn>
+      <BookBody>
+        <BookInformation>
+          <BookDescription>
             <BookTitle />
             <BookAuthor />
-          </FlexColumn>
+          </BookDescription>
           <Bookmark />
-        </FlexSpaceBetween>
-
-        <BookContentsInfo>
-          {bookContentsList.map((key) => (
-            <BookContents key={key} />
+        </BookInformation>
+        <BookScrapList>
+          {scrapList.map((key) => (
+            <BookScrap key={key} />
           ))}
-        </BookContentsInfo>
-      </BookInfoContainer>
-    </BookWrapper>
+        </BookScrapList>
+      </BookBody>
+    </BookContainer>
   );
 }
