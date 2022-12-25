@@ -6,23 +6,21 @@ import LeftArrowIcon from '@assets/ico_arrow_left.svg';
 import RightArrowIcon from '@assets/ico_arrow_right.svg';
 import ListIcon from '@assets/ico_flower.svg';
 import Book from '@components/common/Book';
+import IconButton from '@components/common/IconButton';
 import SkeletonBook from '@components/common/SkeletonBook';
 import useSessionStorage from '@hooks/useSessionStorage';
 import { IBookScraps } from '@interfaces';
 import { Flex } from '@styles/layout';
 
 import {
-  SliderBookContainer,
-  SliderBookWrapper,
-  SliderContent,
-  SliderIcon,
+  SliderBody,
+  SliderContainer,
+  SliderHeader,
   SliderIndicator,
-  SliderIndicatorContainer,
-  SliderInfo,
-  SliderInfoContainer,
+  SliderIndicatorWrapper,
+  SliderInner,
   SliderTitle,
   SliderTrack,
-  SliderWrapper,
 } from './styled';
 
 const setNumBetween = (val: number, min: number, max: number) => {
@@ -35,37 +33,40 @@ interface SliderProps {
   bookList: IBookScraps[];
   title: string;
   isLoading: boolean;
-  numberPerPage: number;
+  bookCount: number;
 }
 
-export default function BookSlider({ bookList, title, isLoading, numberPerPage }: SliderProps) {
+export default function BookSlider({ bookList, title, isLoading, bookCount }: SliderProps) {
   const {
-    value: curBookIndex,
+    value: currentBookIndex,
+    setValue: setCurrentBookIndex,
     isValueSet: isCurBookIndexSet,
-    setValue: setCurBookIndex,
   } = useSessionStorage(`${title}_curBookIndex`, 0);
 
   const {
-    value: sliderNumber,
+    value: currentPage,
+    setValue: setCurrentPage,
     isValueSet: isSliderNumberSet,
-    setValue: setSliderNumber,
   } = useSessionStorage(`${title}_sliderNumber`, 1);
 
   const [touchPosition, setTouchPosition] = useState({ x: 0, y: 0 });
 
-  const SkeletonList = Array.from({ length: numberPerPage }, (_, i) => i + 1);
+  const skeletonList = Array.from({ length: bookCount }, (_, i) => i + 1);
 
-  const sliderIndicatorCount = bookList ? Math.ceil(bookList.length / numberPerPage) : 0;
-  const sliderIndicatorNumbersList = Array.from({ length: sliderIndicatorCount }, (_, i) => i + 1);
+  const sliderIndicatorCount = Math.ceil((bookList?.length || 0) / bookCount);
+
+  const sliderPageList = Array.from({ length: sliderIndicatorCount }, (_, index) => {
+    return { key: index, isActive: currentPage === index + 1 };
+  });
 
   const handleLeftArrowClick = () => {
-    setCurBookIndex(curBookIndex - numberPerPage);
-    setSliderNumber(sliderNumber - 1);
+    setCurrentBookIndex(currentBookIndex - bookCount);
+    setCurrentPage(currentPage - 1);
   };
 
   const handleRightArrowClick = () => {
-    setCurBookIndex(curBookIndex + numberPerPage);
-    setSliderNumber(sliderNumber + 1);
+    setCurrentBookIndex(currentBookIndex + bookCount);
+    setCurrentPage(currentPage + 1);
   };
 
   const handleSliderTrackTouchStart = (e: React.TouchEvent) => {
@@ -79,10 +80,10 @@ export default function BookSlider({ bookList, title, isLoading, numberPerPage }
     const distanceX = touchPosition.x - e.changedTouches[0].pageX;
     const distanceY = Math.abs(touchPosition.y - e.changedTouches[0].pageY);
 
-    if (distanceX > 40 && distanceY < 10 && sliderNumber !== sliderIndicatorCount) {
+    if (distanceX > 40 && distanceY < 10 && currentPage !== sliderIndicatorCount) {
       handleRightArrowClick();
     }
-    if (distanceX < -40 && distanceY < 10 && sliderNumber !== 1) {
+    if (distanceX < -40 && distanceY < 10 && currentPage !== 1) {
       handleLeftArrowClick();
     }
   };
@@ -91,68 +92,66 @@ export default function BookSlider({ bookList, title, isLoading, numberPerPage }
     if (!bookList) return;
 
     const newSliderNum = setNumBetween(
-      Math.round(curBookIndex / numberPerPage) + 1,
+      Math.round(currentBookIndex / bookCount) + 1,
       1,
       sliderIndicatorCount
     );
 
-    setSliderNumber(newSliderNum);
-    setCurBookIndex((newSliderNum - 1) * numberPerPage);
-  }, [numberPerPage]);
+    setCurrentPage(newSliderNum);
+    setCurrentBookIndex((newSliderNum - 1) * bookCount);
+  }, [bookCount]);
 
   return (
-    <SliderWrapper>
-      <SliderIcon
+    <SliderContainer>
+      <IconButton
         src={LeftArrowIcon}
         alt="Left Arrow Icon"
         onClick={handleLeftArrowClick}
-        isvisible={(sliderNumber !== 1).toString()}
+        visible={currentPage !== 1}
       />
 
-      <SliderContent numberPerPage={numberPerPage}>
-        <SliderInfoContainer>
-          <SliderInfo>
+      <SliderInner bookCount={bookCount}>
+        <SliderHeader>
+          <SliderTitle>
             <Image src={ListIcon} alt="List Icon" />
-            <SliderTitle>{title}</SliderTitle>
-          </SliderInfo>
-          {numberPerPage !== 1 && (
-            <SliderIndicatorContainer>
-              {sliderIndicatorNumbersList.map((number) => {
-                return <SliderIndicator key={number} isActive={number === sliderNumber} />;
-              })}
-            </SliderIndicatorContainer>
+            {title}
+          </SliderTitle>
+          {bookCount !== 1 && (
+            <SliderIndicatorWrapper>
+              {sliderPageList.map(({ key, isActive }) => (
+                <SliderIndicator key={key} isActive={isActive} />
+              ))}
+            </SliderIndicatorWrapper>
           )}
-        </SliderInfoContainer>
+        </SliderHeader>
 
-        <SliderBookContainer>
+        <SliderBody>
           {!isLoading && isCurBookIndexSet && isSliderNumberSet ? (
             <SliderTrack
-              curBookIndex={curBookIndex}
+              currentBookIndex={currentBookIndex}
               onTouchStart={handleSliderTrackTouchStart}
               onTouchEnd={handleSliderTrackTouchEnd}
             >
               {bookList.map((book) => (
-                <SliderBookWrapper key={book.id} numberPerPage={numberPerPage}>
-                  <Book book={book} />
-                </SliderBookWrapper>
+                <Book key={book.id} book={book} />
               ))}
             </SliderTrack>
           ) : (
             <Flex>
-              {SkeletonList.map((key) => (
+              {skeletonList.map((key) => (
                 <SkeletonBook key={key} />
               ))}
             </Flex>
           )}
-        </SliderBookContainer>
-      </SliderContent>
+        </SliderBody>
+      </SliderInner>
 
-      <SliderIcon
+      <IconButton
         src={RightArrowIcon}
         alt="Right Arrow Icon"
         onClick={handleRightArrowClick}
-        isvisible={(sliderNumber !== sliderIndicatorCount).toString()}
+        visible={currentPage !== sliderIndicatorCount}
       />
-    </SliderWrapper>
+    </SliderContainer>
   );
 }

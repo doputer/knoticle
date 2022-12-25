@@ -10,71 +10,57 @@ import useFetch from '@hooks/useFetch';
 
 export default function HomePage() {
   const {
-    data: newestBookList,
-    isLoading: isNewBookListLoading,
-    execute: getNewestBookList,
-  } = useFetch(getOrderedBookListApi);
-
-  const [numberPerPage, setNumberPerPage] = useState(0);
-
-  const resizingHandler = () => {
-    switch (true) {
-      case window.innerWidth > 1300:
-        setNumberPerPage(4);
-        break;
-      case window.innerWidth > 1000:
-        setNumberPerPage(3);
-        break;
-      case window.innerWidth > 700:
-        setNumberPerPage(2);
-        break;
-      default:
-        setNumberPerPage(1);
-        break;
-    }
-  };
-
-  useEffect(() => {
-    resizingHandler();
-
-    window.addEventListener('resize', resizingHandler);
-
-    return () => {
-      window.removeEventListener('resize', resizingHandler);
-    };
-  }, []);
-
-  const {
     data: popularBookList,
     isLoading: isPopularBookListLoading,
     execute: getPopularBookList,
   } = useFetch(getOrderedBookListApi);
 
+  const {
+    data: newestBookList,
+    isLoading: isNewBookListLoading,
+    execute: getNewestBookList,
+  } = useFetch(getOrderedBookListApi);
+
+  const [bookCount, setBookCountPerPage] = useState(0);
+
+  const handleResizeWindow = () => {
+    if (window.innerWidth > 1300) setBookCountPerPage(4);
+    else if (window.innerWidth > 1000) setBookCountPerPage(3);
+    else if (window.innerWidth > 700) setBookCountPerPage(2);
+    else setBookCountPerPage(1);
+  };
+
   useEffect(() => {
-    getNewestBookList('newest');
+    handleResizeWindow();
+
+    window.addEventListener('resize', handleResizeWindow);
+
+    return () => {
+      window.removeEventListener('resize', handleResizeWindow);
+    };
+  }, []);
+
+  useEffect(() => {
     getPopularBookList('bookmark');
+    getNewestBookList('newest');
   }, []);
 
   return (
     <>
       <HomeHead />
-      {numberPerPage !== 0 && (
-        <>
-          <Slider
-            bookList={popularBookList}
-            title="가장 인기 있는 책"
-            isLoading={isPopularBookListLoading}
-            numberPerPage={numberPerPage}
-          />
-          <Slider
-            bookList={newestBookList}
-            title="새로 엮은 책"
-            isLoading={isNewBookListLoading}
-            numberPerPage={numberPerPage}
-          />
-          <Footer />
-        </>
-      )}
+      <Slider
+        title="가장 인기 있는 책"
+        bookList={popularBookList}
+        bookCount={bookCount}
+        isLoading={isPopularBookListLoading}
+      />
+      <Slider
+        title="새로 엮은 책"
+        bookList={newestBookList}
+        bookCount={bookCount}
+        isLoading={isNewBookListLoading}
+      />
+      <Footer />
     </>
   );
 }
