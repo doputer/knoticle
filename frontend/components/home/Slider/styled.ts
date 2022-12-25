@@ -11,8 +11,8 @@ export const SliderContainer = styled(FlexSpaceBetween)`
   }
 `;
 
-export const SliderInner = styled(FlexColumn)<{ bookCount: number }>`
-  max-width: ${(props) => `${props.bookCount * 288 - 8}px`};
+export const SliderInner = styled(FlexColumn)<{ bookCountPerPage: number }>`
+  max-width: ${(props) => `${props.bookCountPerPage * 288 - 8}px`};
   overflow: hidden;
   gap: 8px;
 `;
@@ -43,6 +43,6 @@ export const SliderBody = styled.div`
 
 export const SliderTrack = styled(Flex)<{ currentBookIndex: number }>`
   gap: 8px;
-  transform: ${(props) => `translateX(-${300 * props.currentBookIndex}px)`};
+  transform: ${(props) => `translateX(-${props.currentBookIndex * 288}px)`};
   transition: transform 0.5s ease;
 `;
