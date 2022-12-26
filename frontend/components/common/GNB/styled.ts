@@ -29,7 +29,7 @@ export const LogoWrapper = styled.div`
   left: 50%;
   transform: translate(-50%, -50%);
 
-  @media ${(props) => props.theme.mobile} {
+  @media ${({ theme }) => theme.devices.mobile} {
     left: 0;
     transform: translate(0, -50%);
     margin-left: 32px;

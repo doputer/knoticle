@@ -32,7 +32,7 @@ export const ModalInner = styled.div`
   transform: translate(-50%, -50%);
   box-sizing: border-box;
 
-  @media ${(props) => props.theme.mobile} {
+  @media ${({ theme }) => theme.devices.mobile} {
     width: 100%;
     height: 100%;
     border-radius: 0;

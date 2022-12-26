@@ -18,7 +18,7 @@ export const Input = styled.input`
     font-size: 14px;
   }
 
-  @media ${(props) => props.theme.mobile} {
+  @media ${({ theme }) => theme.devices.mobile} {
     ::placeholder {
       font-size: 12px;
     }

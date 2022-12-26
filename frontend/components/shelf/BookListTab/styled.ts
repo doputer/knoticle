@@ -28,16 +28,16 @@ export const BookGrid = styled.div`
   gap: 8px;
   padding: 20px;
 
-  @media ${(props) => props.theme.desktop} {
+  @media ${({ theme }) => theme.devices.desktop} {
     grid-template-columns: repeat(3, 1fr);
   }
 
-  @media ${(props) => props.theme.tablet} {
+  @media ${({ theme }) => theme.devices.tablet} {
     grid-template-columns: repeat(2, 1fr);
     gap: 20px;
   }
 
-  @media ${(props) => props.theme.mobile} {
+  @media ${({ theme }) => theme.devices.mobile} {
     grid-template-columns: repeat(1, 1fr);
   }
 `;

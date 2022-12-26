@@ -9,7 +9,7 @@ export const EditBookWapper = styled(FlexColumnAlignCenter)`
   width: 320px;
   margin: auto;
 
-  @media ${(props) => props.theme.mobile} {
+  @media ${({ theme }) => theme.devices.mobile} {
     width: 300px;
   }
 `;

@@ -6,7 +6,7 @@ export const SliderContainer = styled(FlexSpaceBetween)`
   margin-top: 32px;
   gap: 8px;
 
-  @media ${(props) => props.theme.mobile} {
+  @media ${({ theme }) => theme.devices.mobile} {
     gap: 0;
   }
 `;
