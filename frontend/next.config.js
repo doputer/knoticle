@@ -7,7 +7,6 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: 'kr.object.ncloudstorage.com',
-        port: '',
         pathname: '/j027/**',
       },
     ],
