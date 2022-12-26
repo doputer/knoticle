@@ -1,12 +1,13 @@
 import Image from 'next/image';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import Bookmark from '@assets/ico_bookmark.svg';
 import BookmarkFilled from '@assets/ico_bookmark_white_filled.svg';
 import HideIcon from '@assets/ico_hide.svg';
 import OpenIcon from '@assets/ico_open.svg';
 import useBookmark from '@hooks/useBookmark';
+import useScroll from '@hooks/useScroll';
 import { IBookScraps } from '@interfaces';
 import { TextMedium, TextSmall } from '@styles/common';
 import encodeURL from '@utils/encode-url';
@@ -49,6 +50,12 @@ export default function Sidebar({
   isOpen,
   handleSideBarToggle,
 }: SidebarProps) {
+  const { delta, clearDelta } = useScroll();
+
+  useEffect(() => {
+    clearDelta();
+  }, []);
+
   const { title, user, scraps } = book;
   const { handleBookmarkClick, curBookmarkCnt, curBookmarkId } = useBookmark(book);
   const [isTocVisible, setTocVisible] = useState(true);
@@ -104,13 +111,13 @@ export default function Sidebar({
             <TextSmall>Knotted by</TextSmall>
             <TextMedium>{user.nickname}</TextMedium>
           </ProfileLabel>
-          <ProfileImage src={user.profile_image} width={70} height={70} alt="Viewer Icon" />
+          <ProfileImage src={user.profile_image} width={70} height={70} alt="Profile Image" />
         </SidebarFooter>
       </SidebarContainer>
 
       {!isOpen && (
-        <SidebarOpenButton onClick={handleSideBarToggle}>
-          <Image src={OpenIcon} alt="Open Sidebar Icon" />
+        <SidebarOpenButton onClick={handleSideBarToggle} delta={delta}>
+          <Image src={OpenIcon} alt="Open Icon" />
         </SidebarOpenButton>
       )}
     </>

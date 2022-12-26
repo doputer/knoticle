@@ -9,13 +9,14 @@ import { Flex, FlexColumn, FlexSpaceBetween } from '@styles/layout';
 export const SidebarContainer = styled(FlexColumn)`
   padding: 24px;
   width: 320px;
-  height: calc(100vh - 64px);
+  height: 100vh;
   color: var(--white-color);
   background-color: var(--primary-color);
   gap: 16px;
-  position: sticky;
-  top: 64px;
-  z-index: 100;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 200;
   transition: all 0.3s ease;
   box-sizing: border-box;
 
@@ -29,7 +30,6 @@ export const SidebarContainer = styled(FlexColumn)`
 
   @media ${({ theme }) => theme.devices.mobile} {
     width: 100%;
-    height: calc(100vh - 64px);
     position: fixed;
 
     &.hide {
@@ -131,8 +131,10 @@ export const ProfileImage = styled(Image)`
   box-sizing: border-box;
 `;
 
-export const SidebarOpenButton = styled.button`
+export const SidebarOpenButton = styled.button<{ delta: number }>`
+  margin: 24px;
   position: fixed;
-  margin-top: 24px;
-  z-index: 0;
+  top: ${(props) => -props.delta + 64}px;
+  left: 0;
+  z-index: 200;
 `;
