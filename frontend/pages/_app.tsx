@@ -13,7 +13,7 @@ import GlobalModal from '@components/common/GlobalModal';
 import GlobalStyle from '@styles/GlobalStyle';
 import theme from '@styles/theme';
 
-import 'react-toastify/dist/ReactToastify.css';
+import 'react-toastify/dist/ReactToastify.min.css';
 
 export type NextPageWithLayout<P = unknown, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode;
