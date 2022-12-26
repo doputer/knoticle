@@ -14,7 +14,7 @@ export const ArticleLeftBtn = styled.div<{ visibility: string }>`
   visibility: ${(props) => props.visibility};
   cursor: pointer;
 
-  @media ${(props) => props.theme.mobile} {
+  @media ${({ theme }) => theme.devices.mobile} {
     transform: translateX(0px);
     position: static;
   }
@@ -27,7 +27,7 @@ export const ArticleRightBtn = styled.div<{ visibility: string }>`
   cursor: pointer;
   visibility: ${(props) => props.visibility};
 
-  @media ${(props) => props.theme.mobile} {
+  @media ${({ theme }) => theme.devices.mobile} {
     position: static;
   }
 `;
@@ -46,7 +46,7 @@ export const ArticleMain = styled(Flex)`
     border-radius: 10px;
   }
 
-  @media ${(props) => props.theme.mobile} {
+  @media ${({ theme }) => theme.devices.mobile} {
     padding: 112px 16px 32px 16px;
   }
 `;
@@ -63,7 +63,8 @@ export const ArticleTitleBtnBox = styled(Flex)`
   margin-top: 16px;
   padding-top: 10px;
   margin-bottom: 30px;
-  @media ${(props) => props.theme.tablet} {
+
+  @media ${({ theme }) => theme.devices.tablet} {
     margin-top: 0px;
     padding-top: 0px;
     margin-bottom: 10px;
@@ -81,7 +82,8 @@ export const ArticleMoveBtnContainer = styled(FlexSpaceBetween)``;
 
 export const ArticleTitleWrapper = styled(FlexSpaceBetween)`
   border-bottom: 1px solid black;
-  @media ${(props) => props.theme.tablet} {
+
+  @media ${({ theme }) => theme.devices.tablet} {
     flex-direction: column;
   }
 `;

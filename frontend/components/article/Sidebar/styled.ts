@@ -27,7 +27,7 @@ export const SidebarContainer = styled(FlexColumn)`
     margin-left: -320px;
   }
 
-  @media ${(props) => props.theme.mobile} {
+  @media ${({ theme }) => theme.devices.mobile} {
     width: 100%;
     height: calc(100vh - 64px);
     position: fixed;

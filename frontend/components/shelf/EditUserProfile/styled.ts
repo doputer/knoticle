@@ -9,7 +9,8 @@ export const UserProfileWrapper = styled.div`
   margin: 40px 0 20px 0;
   width: 78%;
   display: flex;
-  @media ${(props) => props.theme.mobile} {
+
+  @media ${({ theme }) => theme.devices.mobile} {
     flex-direction: column;
     justify-content: center;
     align-items: center;
@@ -31,7 +32,8 @@ export const UserDetailGroup = styled.div`
   display: flex;
   flex-direction: column;
   margin-left: 30px;
-  @media ${(props) => props.theme.mobile} {
+
+  @media ${({ theme }) => theme.devices.mobile} {
     margin-top: 20px;
   }
 `;
@@ -64,7 +66,8 @@ export const EditUserDescription = styled(Input)`
   font-size: 14px;
   line-height: 20px;
   width: 400px;
-  @media ${(props) => props.theme.tablet} {
+
+  @media ${({ theme }) => theme.devices.tablet} {
     width: 250px;
   }
 `;

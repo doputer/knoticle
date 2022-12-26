@@ -11,9 +11,9 @@ import { ThemeProvider } from 'styled-components';
 import CheckSignInStatus from '@components/auth/CheckSignInStatus';
 import GlobalModal from '@components/common/GlobalModal';
 import GlobalStyle from '@styles/GlobalStyle';
-import responsive from '@styles/responsive';
-import 'react-toastify/dist/ReactToastify.css';
-import '@styles/font.css';
+import theme from '@styles/theme';
+
+import 'react-toastify/dist/ReactToastify.min.css';
 
 export type NextPageWithLayout<P = unknown, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode;
@@ -32,7 +32,7 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
       <RecoilRoot>
         <CheckSignInStatus>
           <GlobalStyle />
-          <ThemeProvider theme={responsive}>
+          <ThemeProvider theme={theme}>
             {getLayout(<Component {...pageProps} />)}
             <ToastContainer limit={3} />
             <GlobalModal />

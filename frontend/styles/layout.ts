@@ -65,7 +65,7 @@ export const PageNoScrollWrapper = styled.div`
 `;
 
 export const PageGNBHide = styled.div<{ isscrolldown: 'true' | 'false' }>`
-  @media ${(props) => props.theme.mobile} {
+  @media ${({ theme }) => theme.devices.mobile} {
     position: absolute;
     top: ${(props) => (props.isscrolldown === 'true' ? '-67px' : '0px')};
     transition: top 0.2s ease-in-out;

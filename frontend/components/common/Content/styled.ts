@@ -59,7 +59,7 @@ export const ContentBody = styled.div`
     img {
       max-width: 480px;
 
-      @media ${(props) => props.theme.desktop} {
+      @media ${({ theme }) => theme.devices.desktop} {
         width: 100%;
       }
     }

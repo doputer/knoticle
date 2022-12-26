@@ -18,7 +18,7 @@ export const EditorInner = styled.div`
   padding: 32px;
   position: relative;
 
-  @media ${(props) => props.theme.tablet} {
+  @media ${({ theme }) => theme.devices.tablet} {
     &:nth-child(2) {
       display: none;
     }
