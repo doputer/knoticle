@@ -1,13 +1,12 @@
 import Image from 'next/image';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import Bookmark from '@assets/ico_bookmark.svg';
 import BookmarkFilled from '@assets/ico_bookmark_white_filled.svg';
 import HideIcon from '@assets/ico_hide.svg';
 import OpenIcon from '@assets/ico_open.svg';
 import useBookmark from '@hooks/useBookmark';
-import useScroll from '@hooks/useScroll';
 import { IBookScraps } from '@interfaces';
 import { TextMedium, TextSmall } from '@styles/common';
 import encodeURL from '@utils/encode-url';
@@ -50,12 +49,6 @@ export default function Sidebar({
   isOpen,
   handleSideBarToggle,
 }: SidebarProps) {
-  const { delta, clearDelta } = useScroll();
-
-  useEffect(() => {
-    clearDelta();
-  }, []);
-
   const { title, user, scraps } = book;
   const { handleBookmarkClick, curBookmarkCnt, curBookmarkId } = useBookmark(book);
   const [isTocVisible, setTocVisible] = useState(true);
@@ -116,7 +109,7 @@ export default function Sidebar({
       </SidebarContainer>
 
       {!isOpen && (
-        <SidebarOpenButton onClick={handleSideBarToggle} delta={delta}>
+        <SidebarOpenButton onClick={handleSideBarToggle}>
           <Image src={OpenIcon} alt="Open Icon" />
         </SidebarOpenButton>
       )}

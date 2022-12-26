@@ -9,12 +9,12 @@ import { Flex, FlexColumn, FlexSpaceBetween } from '@styles/layout';
 export const SidebarContainer = styled(FlexColumn)`
   padding: 24px;
   width: 320px;
-  height: 100vh;
+  height: calc(100vh - 64px);
   color: var(--white-color);
   background-color: var(--primary-color);
   gap: 16px;
   position: fixed;
-  top: 0;
+  top: 64px;
   left: 0;
   z-index: 200;
   transition: all 0.3s ease;
@@ -131,10 +131,10 @@ export const ProfileImage = styled(Image)`
   box-sizing: border-box;
 `;
 
-export const SidebarOpenButton = styled.button<{ delta: number }>`
+export const SidebarOpenButton = styled.button`
   margin: 24px;
   position: fixed;
-  top: ${(props) => -props.delta + 64}px;
+  top: 64px;
   left: 0;
   z-index: 200;
 `;

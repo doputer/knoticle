@@ -11,11 +11,7 @@ import useModal from '@hooks/useModal';
 
 import { GNBContainer, Icon, IconWrapper, Logo, LogoWrapper } from './styled';
 
-interface GNBProps {
-  delta: number;
-}
-
-export default function GNB({ delta }: GNBProps) {
+export default function GNB() {
   const SignInModal = dynamic(() => import('@components/auth/SignInModal'));
   const SignUpModal = dynamic(() => import('@components/auth/SignUpModal'));
 
@@ -45,7 +41,7 @@ export default function GNB({ delta }: GNBProps) {
   };
 
   return (
-    <GNBContainer delta={delta}>
+    <GNBContainer>
       <LogoWrapper>
         <Logo href="/">knoticle</Logo>
       </LogoWrapper>
