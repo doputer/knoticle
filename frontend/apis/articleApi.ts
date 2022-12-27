@@ -22,8 +22,9 @@ export const searchArticlesApi = async (data: SearchArticlesApi) => {
 };
 
 interface GetArticleApi {
-  id?: string;
-  title?: string;
+  articleTitle: string;
+  bookTitle: string;
+  owner: string;
 }
 
 export const getArticleApi = async (data: GetArticleApi) => {

@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 
-import { SearchArticles } from '@apis/articles/articles.interface';
+import { GetArticle, SearchArticles } from '@apis/articles/articles.interface';
 import articlesService from '@apis/articles/articles.service';
 import { IScrap } from '@apis/scraps/scraps.interface';
 import scrapsService from '@apis/scraps/scraps.service';
@@ -25,12 +25,13 @@ const searchArticles = async (req: Request, res: Response) => {
 };
 
 const getArticle = async (req: Request, res: Response) => {
-  const { id, title } = req.query as unknown as {
-    id: string;
-    title: string;
-  };
+  const { articleTitle, bookTitle, owner } = req.query as unknown as GetArticle;
 
-  const article = await articlesService.getArticle({ id: +id, title });
+  const article = await articlesService.getArticle({
+    articleTitle,
+    bookTitle,
+    owner,
+  });
 
   return res.status(200).send(article);
 };

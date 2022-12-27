@@ -7,8 +7,9 @@ export interface SearchArticles {
 }
 
 export interface GetArticle {
-  id?: number;
-  title?: string;
+  articleTitle: string;
+  bookTitle: string;
+  owner: string;
 }
 
 export interface CreateArticle {

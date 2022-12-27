@@ -33,6 +33,7 @@ router.delete('/articles/:articleId', guard, catchAsync(articlesController.delet
 router.post('/image', guard, multer().single('image'), catchAsync(imagesController.createImage));
 
 router.get('/books/search', decoder, catchAsync(booksController.searchBooks));
+router.get('/books/owner', catchAsync(booksController.getOwnerBook));
 router.get('/books/:bookId', decoder, catchAsync(booksController.getBook));
 router.get('/books', decoder, catchAsync(booksController.getBooks));
 router.post('/books', guard, catchAsync(booksController.createBook));

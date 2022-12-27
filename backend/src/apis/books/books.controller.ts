@@ -18,6 +18,17 @@ const getBook = async (req: Request, res: Response) => {
   return res.status(200).send(book);
 };
 
+const getOwnerBook = async (req: Request, res: Response) => {
+  const { title, owner } = req.query as unknown as {
+    title: string;
+    owner: string;
+  };
+
+  const book = await booksService.getOwnerBook({ title, owner });
+
+  return res.status(200).send(book);
+};
+
 const getBooks = async (req: Request, res: Response) => {
   const { order, take, editor, type } = req.query as unknown as FindBooks;
 
@@ -92,6 +103,7 @@ const deleteBook = async (req: Request, res: Response) => {
 
 export default {
   getBook,
+  getOwnerBook,
   getBooks,
   searchBooks,
   createBook,

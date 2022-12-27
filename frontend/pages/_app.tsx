@@ -1,8 +1,8 @@
 import type { NextPage } from 'next';
 import type { AppProps } from 'next/app';
 
-import type { ReactElement, ReactNode } from 'react';
-import { QueryClient, QueryClientProvider } from 'react-query';
+import { ReactElement, ReactNode, useState } from 'react';
+import { Hydrate, QueryClient, QueryClientProvider } from 'react-query';
 import { ToastContainer } from 'react-toastify';
 
 import { RecoilRoot } from 'recoil';
@@ -24,21 +24,23 @@ type AppPropsWithLayout = AppProps & {
 };
 
 export default function App({ Component, pageProps }: AppPropsWithLayout) {
-  const queryClient = new QueryClient();
+  const [queryClient] = useState(() => new QueryClient());
   const getLayout = Component.getLayout ?? ((page) => page);
 
   return (
     <QueryClientProvider client={queryClient}>
-      <RecoilRoot>
-        <CheckSignInStatus>
-          <GlobalStyle />
-          <ThemeProvider theme={theme}>
-            {getLayout(<Component {...pageProps} />)}
-            <ToastContainer limit={3} />
-            <GlobalModal />
-          </ThemeProvider>
-        </CheckSignInStatus>
-      </RecoilRoot>
+      <Hydrate state={pageProps.dehydratedState}>
+        <RecoilRoot>
+          <CheckSignInStatus>
+            <GlobalStyle />
+            <ThemeProvider theme={theme}>
+              {getLayout(<Component {...pageProps} />)}
+              <ToastContainer limit={3} />
+              <GlobalModal />
+            </ThemeProvider>
+          </CheckSignInStatus>
+        </RecoilRoot>
+      </Hydrate>
     </QueryClientProvider>
   );
 }

@@ -68,21 +68,9 @@ const searchArticles = async (searchArticles: SearchArticles) => {
   };
 };
 
-const getArticle = async ({ id, title }: GetArticle) => {
+const getArticle = async ({ articleTitle, bookTitle, owner }: GetArticle) => {
   const article = await prisma.article.findFirst({
-    where: {
-      OR: {
-        id: id ? id : undefined,
-        title,
-      },
-    },
-    select: {
-      id: true,
-      title: true,
-      content: true,
-      created_at: true,
-      deleted_at: true,
-      book_id: true,
+    include: {
       book: {
         select: {
           title: true,
@@ -90,6 +78,19 @@ const getArticle = async ({ id, title }: GetArticle) => {
             select: {
               id: true,
               nickname: true,
+            },
+          },
+        },
+      },
+    },
+    where: {
+      title: articleTitle,
+      scraps: {
+        some: {
+          book: {
+            title: bookTitle,
+            user: {
+              nickname: owner,
             },
           },
         },
