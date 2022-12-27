@@ -1,5 +1,19 @@
 import api from '@utils/api';
 
+interface GetArticleApi {
+  articleTitle: string;
+  bookTitle: string;
+  owner: string;
+}
+
+export const getArticleApi = async (data: GetArticleApi) => {
+  const url = `/api/articles`;
+
+  const response = await api({ url, method: 'GET', params: data });
+
+  return response.data;
+};
+
 interface SearchArticlesApi {
   query: string;
   isUsers: boolean;
@@ -17,20 +31,6 @@ export const searchArticlesApi = async (data: SearchArticlesApi) => {
   };
 
   const response = await api({ url, method: 'GET', params });
-
-  return response.data;
-};
-
-interface GetArticleApi {
-  articleTitle: string;
-  bookTitle: string;
-  owner: string;
-}
-
-export const getArticleApi = async (data: GetArticleApi) => {
-  const url = `/api/articles`;
-
-  const response = await api({ url, method: 'GET', params: data });
 
   return response.data;
 };
@@ -58,8 +58,13 @@ export const modifyArticleApi = async (articleId: number, data: CreateArticleApi
   return response.data;
 };
 
-export const deleteArticleApi = async (articleId: number) => {
-  const url = `/api/articles/${articleId}`;
+interface DeleteArticleApi {
+  articleId: number;
+  scrapId: number;
+}
+
+export const deleteArticleApi = async (data: DeleteArticleApi) => {
+  const url = `/api/articles/${data.articleId}/scraps/${data.scrapId}`;
 
   const response = await api({ url, method: 'DELETE' });
 

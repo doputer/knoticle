@@ -6,6 +6,18 @@ import { IScrap } from '@apis/scraps/scraps.interface';
 import scrapsService from '@apis/scraps/scraps.service';
 import { Forbidden, Message } from '@errors';
 
+const getArticle = async (req: Request, res: Response) => {
+  const { articleTitle, bookTitle, owner } = req.query as unknown as GetArticle;
+
+  const article = await articlesService.getArticle({
+    articleTitle,
+    bookTitle,
+    owner,
+  });
+
+  return res.status(200).send(article);
+};
+
 const searchArticles = async (req: Request, res: Response) => {
   const { query, page, take, isUsers } = req.query as unknown as SearchArticles;
 
@@ -22,18 +34,6 @@ const searchArticles = async (req: Request, res: Response) => {
   });
 
   return res.status(200).send(searchResult);
-};
-
-const getArticle = async (req: Request, res: Response) => {
-  const { articleTitle, bookTitle, owner } = req.query as unknown as GetArticle;
-
-  const article = await articlesService.getArticle({
-    articleTitle,
-    bookTitle,
-    owner,
-  });
-
-  return res.status(200).send(article);
 };
 
 const createArticle = async (req: Request, res: Response) => {
@@ -92,10 +92,12 @@ const updateArticle = async (req: Request, res: Response) => {
 
 const deleteArticle = async (req: Request, res: Response) => {
   const articleId = Number(req.params.articleId);
+  const scrapId = Number(req.params.scrapId);
 
-  const article = await articlesService.deleteArticle(articleId);
+  await articlesService.deleteArticle(articleId);
+  await scrapsService.deleteScrap(scrapId);
 
-  return res.status(200).send(article);
+  return res.status(200).send();
 };
 
 const getTemporaryArticle = async (req: Request, res: Response) => {
@@ -119,12 +121,11 @@ const createTemporaryArticle = async (req: Request, res: Response) => {
   });
 
   return res.status(201).send(temporaryArticle);
-  res.status(201).send(temporaryArticle);
 };
 
 export default {
-  searchArticles,
   getArticle,
+  searchArticles,
   createArticle,
   updateArticle,
   deleteArticle,
