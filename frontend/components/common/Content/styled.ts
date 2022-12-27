@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 export const ContentWrapper = styled.div`
   width: 100%;
+  z-index: 50;
 `;
 
 export const ContentTitle = styled.h1`
@@ -27,19 +28,22 @@ export const ContentBody = styled.div`
     font-weight: 700;
   }
 
+  h1,
+  h2,
+  h3 {
+    margin: 16px 0 8px 0;
+  }
+
   h1 {
     font-size: 24px;
-    margin: 16px 0 8px 0;
   }
 
   h2 {
     font-size: 20px;
-    margin: 16px 0 8px 0;
   }
 
   h3 {
     font-size: 18px;
-    margin: 16px 0 8px 0;
   }
 
   ol,
@@ -57,7 +61,7 @@ export const ContentBody = styled.div`
 
   p {
     img {
-      max-width: 480px;
+      width: 100%;
 
       @media ${({ theme }) => theme.devices.desktop} {
         width: 100%;
@@ -79,19 +83,20 @@ export const ContentBody = styled.div`
   }
 
   blockquote {
-    margin: 24px 0;
-    padding: 24px 16px;
+    margin: 16px 0;
+    padding: 8px 16px;
     border-left: 8px solid var(--light-orange-color);
   }
 
   code {
-    padding: 2px 4px;
+    padding: 0px 4px;
     background-color: var(--light-orange-color);
     border-radius: 4px;
   }
 
   pre {
-    padding: 24px 16px;
+    margin: 16px 0;
+    padding: 16px;
     background-color: var(--light-orange-color);
     border-radius: 4px;
     font-family: 'consolas';
