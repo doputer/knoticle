@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 
 import { useEffect } from 'react';
+import { useMutation } from 'react-query';
 
 import { useRecoilValue } from 'recoil';
 
@@ -36,28 +37,35 @@ interface ArticleProps {
   article: IArticleBook;
 }
 
-export default function Article({ book, article }: ArticleProps) {
-  const ScrapModal = dynamic(() => import('@components/article/ScrapModal'));
-
-  const {
+export default function Article({
+  book: {
     id: bookId,
     user: { nickname: owner },
     scraps,
-  } = book;
-
-  const { title: articleTitle, content } = article;
+  },
+  article,
+}: ArticleProps) {
+  const ScrapModal = dynamic(() => import('@components/article/ScrapModal'));
 
   const router = useRouter();
   const { openModal } = useModal();
 
   const user = useRecoilValue(signInStatusState);
 
-  const { data: deleteArticleData, execute: deleteArticle } = useFetch(deleteArticleApi);
-  const { execute: deleteScrap } = useFetch(deleteScrapApi);
+  const { mutate: deleteArticle } = useMutation(deleteArticleApi, {
+    onSuccess: () => {
+      toastSuccess(`<${article.title}> 글이 삭제되었습니다`);
+
+      router.push('/');
+    },
+  });
+
+  const { mutate: deleteScrap } = useMutation(deleteScrapApi);
+
   const { data: updateScrapsData, execute: updateScrapsOrder } = useFetch(updateScrapsOrderApi);
 
   const handleOriginalArticleButtonClick = () => {
-    router.push(`/@${article.book.user.nickname}/${encodeURL(article.book.title, articleTitle)}`);
+    router.push(`/@${article.book.user.nickname}/${encodeURL(article.book.title, article.title)}`);
   };
 
   const handlePrevArticleButtonClick = () => {
@@ -108,7 +116,7 @@ export default function Article({ book, article }: ArticleProps) {
       modalType: 'Modal',
       modalProps: {
         title: '글 스크랩하기',
-        children: article && <ScrapModal article={article} />,
+        children: <ScrapModal article={article} />,
       },
     });
   };
@@ -119,13 +127,11 @@ export default function Article({ book, article }: ArticleProps) {
       modalProps: {
         message: '해당 글을 책에서 삭제하시겠습니까?',
         handleConfirm: () => {
-          const curScrap = scraps.find((scrap) => scrap.article.id === article.id);
-          if (!curScrap) return;
-          const newScraps = scraps
-            .filter((scrap) => scrap.id !== curScrap.id)
-            .map((v, i) => ({ ...v, order: i + 1 }));
-          updateScrapsOrder(newScraps);
-          deleteScrap(curScrap.id);
+          const targetScrap = scraps.find((scrap) => scrap.article.id === article.id);
+
+          if (!targetScrap) return;
+
+          deleteScrap(targetScrap.id);
         },
       },
     });
@@ -134,10 +140,6 @@ export default function Article({ book, article }: ArticleProps) {
   const handleUpdateArticleButtonClick = () => {
     router.push(`/write?id=${article.id}`);
   };
-
-  useEffect(() => {
-    if (deleteArticleData !== undefined) router.push('/');
-  }, [deleteArticleData]);
 
   useEffect(() => {
     if (updateScrapsData === undefined) return;
@@ -154,13 +156,6 @@ export default function Article({ book, article }: ArticleProps) {
     }
     router.push('/');
   }, [updateScrapsData]);
-
-  useEffect(() => {
-    if (!deleteArticleData) return;
-
-    toastSuccess(`<${article.title}> 글이 삭제되었습니다`);
-    router.push('/');
-  }, [deleteArticleData]);
 
   if (article.deleted_at) return <div>삭제된 글입니다.</div>;
 
@@ -212,7 +207,7 @@ export default function Article({ book, article }: ArticleProps) {
         />
       </ArticleNavigatorWrapper>
 
-      <Content content={content} />
+      <Content content={article.content} />
     </ArticleContainer>
   );
 }
