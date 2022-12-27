@@ -13,9 +13,8 @@ export const SidebarContainer = styled(FlexColumn)`
   color: var(--white-color);
   background-color: var(--primary-color);
   gap: 16px;
-  position: fixed;
+  position: sticky;
   top: 64px;
-  left: 0;
   z-index: 200;
   transition: all 0.3s ease;
   box-sizing: border-box;
@@ -35,6 +34,10 @@ export const SidebarContainer = styled(FlexColumn)`
     &.hide {
       margin-left: -100%;
     }
+  }
+
+  @media ${({ theme }) => theme.devices.tablet} {
+    position: fixed;
   }
 `;
 
@@ -136,5 +139,5 @@ export const SidebarOpenButton = styled.button`
   position: fixed;
   top: 64px;
   left: 0;
-  z-index: 200;
+  z-index: 150;
 `;

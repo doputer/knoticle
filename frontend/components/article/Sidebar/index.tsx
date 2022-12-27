@@ -6,6 +6,7 @@ import Bookmark from '@assets/ico_bookmark.svg';
 import BookmarkFilled from '@assets/ico_bookmark_white_filled.svg';
 import HideIcon from '@assets/ico_hide.svg';
 import OpenIcon from '@assets/ico_open.svg';
+import IconButton from '@components/common/IconButton';
 import useBookmark from '@hooks/useBookmark';
 import { IBookScraps } from '@interfaces';
 import { TextMedium, TextSmall } from '@styles/common';
@@ -65,7 +66,7 @@ export default function Sidebar({
             <Image src={curBookmarkId ? BookmarkFilled : Bookmark} alt="Bookmark Icon" />
             <TextSmall>{curBookmarkCnt}</TextSmall>
           </BookmarkButton>
-          <Image src={HideIcon} alt="Closed Sidebar Icon" onClick={handleSideBarToggle} />
+          <IconButton src={HideIcon} alt="Closed Sidebar Icon" onClick={handleSideBarToggle} />
         </SidebarHeader>
 
         <SidebarTitle>{title}</SidebarTitle>
