@@ -6,6 +6,11 @@ export interface SearchBooks {
   isUsers?: string;
 }
 
+export interface GetOwnerBook {
+  title: string;
+  owner: string;
+}
+
 export interface FindBooks {
   order: 'newest' | 'bookmark';
   take: number;
