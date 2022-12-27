@@ -76,10 +76,7 @@ export default function Sidebar({
           {scraps.map((scrap) => {
             return scrap.article.id !== articleId ? (
               <ArticleLink
-                href={`/@${user.nickname}/${encodeURL(
-                  scrap.article.book?.title || '',
-                  scrap.article.title
-                )}`}
+                href={`/@${user.nickname}/${encodeURL(book.title, scrap.article.title)}`}
                 key={scrap.id}
               >
                 {scrap.order}. {scrap.article.title}
