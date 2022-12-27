@@ -12,6 +12,7 @@ export const Dimmed = styled.div`
   width: 100vw;
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.3);
+  z-index: 200;
 `;
 
 export const ModalInner = styled(FlexColumn)`
@@ -27,6 +28,7 @@ export const ModalInner = styled(FlexColumn)`
   box-sizing: border-box;
   white-space: pre-wrap;
   animation: openAnimation 0.3s ease;
+  z-index: 250;
 
   @keyframes openAnimation {
     0% {
