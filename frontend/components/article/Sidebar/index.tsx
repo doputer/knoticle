@@ -8,9 +8,10 @@ import HideIcon from '@assets/ico_hide.svg';
 import OpenIcon from '@assets/ico_open.svg';
 import IconButton from '@components/common/IconButton';
 import useBookmark from '@hooks/useBookmark';
-import { IBookScraps } from '@interfaces';
+import { IArticleBook, IBookScraps } from '@interfaces';
 import { TextMedium, TextSmall } from '@styles/common';
 import encodeURL from '@utils/encode-url';
+import { parseHeadings } from '@utils/toc';
 
 import {
   ArticleLink,
@@ -29,28 +30,17 @@ import {
   TocArticleTitle,
 } from './styled';
 
-interface Toc {
-  heading: string;
-  link: string;
-  padding: number;
-}
-
 interface SidebarProps {
   book: IBookScraps;
-  articleId: number;
-  headings: Toc[];
+  article: IArticleBook;
   isOpen: boolean;
   handleSideBarToggle: () => void;
 }
 
-export default function Sidebar({
-  articleId,
-  headings,
-  book,
-  isOpen,
-  handleSideBarToggle,
-}: SidebarProps) {
+export default function Sidebar({ book, article, isOpen, handleSideBarToggle }: SidebarProps) {
   const { title, user, scraps } = book;
+  const { id: articleId, content } = article;
+
   const { handleBookmarkClick, curBookmarkCnt, curBookmarkId } = useBookmark(book);
   const [isTocVisible, setTocVisible] = useState(true);
 
@@ -87,7 +77,7 @@ export default function Sidebar({
                   {scrap.order}. {scrap.article.title}
                 </ArticleTitle>
                 {isTocVisible &&
-                  headings.map(({ heading, link, padding }) => (
+                  parseHeadings(content).map(({ heading, link, padding }) => (
                     <TocArticleTitle key={link} href={link} padding={padding}>
                       {heading}
                     </TocArticleTitle>

@@ -1,3 +1,4 @@
+import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 
@@ -16,7 +17,7 @@ import Content from '@components/common/Content';
 import IconButton from '@components/common/IconButton';
 import useFetch from '@hooks/useFetch';
 import useModal from '@hooks/useModal';
-import { IArticleBook, IScrap } from '@interfaces';
+import { IArticleBook, IBookScraps } from '@interfaces';
 import { TextSmall } from '@styles/common';
 import encodeURL from '@utils/encode-url';
 import { toastSuccess } from '@utils/toast';
@@ -31,22 +32,22 @@ import {
 } from './styled';
 
 interface ArticleProps {
+  book: IBookScraps;
   article: IArticleBook;
-  scraps: IScrap[];
-  bookId: number;
-  bookAuthor: string;
-  articleData: string;
-  handleScrapModalOpen: () => void;
 }
 
-export default function Article({
-  article,
-  scraps,
-  bookId,
-  bookAuthor,
-  articleData,
-  handleScrapModalOpen,
-}: ArticleProps) {
+export default function Article({ book, article }: ArticleProps) {
+  const ScrapModal = dynamic(() => import('@components/article/ScrapModal'));
+
+  const {
+    id: bookId,
+    user: { nickname: owner },
+    scraps,
+  } = book;
+
+  const { title: articleTitle, content } = article;
+
+  const router = useRouter();
   const { openModal } = useModal();
 
   const user = useRecoilValue(signInStatusState);
@@ -55,10 +56,8 @@ export default function Article({
   const { execute: deleteScrap } = useFetch(deleteScrapApi);
   const { data: updateScrapsData, execute: updateScrapsOrder } = useFetch(updateScrapsOrderApi);
 
-  const router = useRouter();
-
   const handleOriginalArticleButtonClick = () => {
-    router.push(`/@${article.book.user.nickname}/${encodeURL(article.book.title, article.title)}`);
+    router.push(`/@${article.book.user.nickname}/${encodeURL(article.book.title, articleTitle)}`);
   };
 
   const handlePrevArticleButtonClick = () => {
@@ -100,6 +99,16 @@ export default function Article({
           deleteScrap(curScrap?.id);
           deleteArticle(article.id);
         },
+      },
+    });
+  };
+
+  const handleScrapModalOpen = () => {
+    openModal({
+      modalType: 'Modal',
+      modalProps: {
+        title: '글 스크랩하기',
+        children: article && <ScrapModal article={article} />,
       },
     });
   };
@@ -176,7 +185,7 @@ export default function Article({
               </ArticleButton>
             </>
           )}
-          {article.book_id !== bookId && bookAuthor === user.nickname && (
+          {article.book_id !== bookId && owner === user.nickname && (
             <ArticleButton onClick={handleDeleteScrapButtonClick}>스크랩 삭제</ArticleButton>
           )}
           {user.id !== 0 && (
@@ -203,7 +212,7 @@ export default function Article({
         />
       </ArticleNavigatorWrapper>
 
-      <Content content={articleData} />
+      <Content content={content} />
     </ArticleContainer>
   );
 }
