@@ -10,6 +10,7 @@ import Article from '@components/article/ArticleContent';
 import Sidebar from '@components/article/Sidebar';
 import ViewerHead from '@components/article/ViewerHead';
 import HeaderLayout from '@components/layout/HeaderLayout';
+import PageLayout from '@components/layout/PageLayout';
 import useFetch from '@hooks/useFetch';
 import useModal from '@hooks/useModal';
 import { IArticleBook, IBookScraps } from '@interfaces';
@@ -76,8 +77,8 @@ export default function ArticlePage({ article }: ArticlePageProps) {
 
   return (
     <>
-      {article && <ViewerHead articleTitle={article.title} articleContent={article.content} />}
-      {book && article && (
+      <ViewerHead articleTitle={article.title} articleContent={article.content} />
+      {book && (
         <Flex>
           <Sidebar
             book={book}
@@ -86,7 +87,6 @@ export default function ArticlePage({ article }: ArticlePageProps) {
             isOpen={isSideBarOpen}
             handleSideBarToggle={handleSideBarToggle}
           />
-
           {book.scraps.find((scrap) => scrap.article.id === article.id) && (
             <Article
               article={article}
@@ -112,5 +112,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 };
 
 ArticlePage.getLayout = function getLayout(page: ReactElement) {
-  return <HeaderLayout fix>{page}</HeaderLayout>;
+  return (
+    <HeaderLayout>
+      <PageLayout>{page}</PageLayout>
+    </HeaderLayout>
+  );
 };

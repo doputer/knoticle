@@ -6,6 +6,7 @@ import Bookmark from '@assets/ico_bookmark.svg';
 import BookmarkFilled from '@assets/ico_bookmark_white_filled.svg';
 import HideIcon from '@assets/ico_hide.svg';
 import OpenIcon from '@assets/ico_open.svg';
+import IconButton from '@components/common/IconButton';
 import useBookmark from '@hooks/useBookmark';
 import { IBookScraps } from '@interfaces';
 import { TextMedium, TextSmall } from '@styles/common';
@@ -65,7 +66,7 @@ export default function Sidebar({
             <Image src={curBookmarkId ? BookmarkFilled : Bookmark} alt="Bookmark Icon" />
             <TextSmall>{curBookmarkCnt}</TextSmall>
           </BookmarkButton>
-          <Image src={HideIcon} alt="Closed Sidebar Icon" onClick={handleSideBarToggle} />
+          <IconButton src={HideIcon} alt="Closed Sidebar Icon" onClick={handleSideBarToggle} />
         </SidebarHeader>
 
         <SidebarTitle>{title}</SidebarTitle>
@@ -75,10 +76,7 @@ export default function Sidebar({
           {scraps.map((scrap) => {
             return scrap.article.id !== articleId ? (
               <ArticleLink
-                href={`/@${user.nickname}/${encodeURL(
-                  scrap.article.book?.title || '',
-                  scrap.article.title
-                )}`}
+                href={`/@${user.nickname}/${encodeURL(book.title, scrap.article.title)}`}
                 key={scrap.id}
               >
                 {scrap.order}. {scrap.article.title}
@@ -104,13 +102,13 @@ export default function Sidebar({
             <TextSmall>Knotted by</TextSmall>
             <TextMedium>{user.nickname}</TextMedium>
           </ProfileLabel>
-          <ProfileImage src={user.profile_image} width={70} height={70} alt="Viewer Icon" />
+          <ProfileImage src={user.profile_image} width={70} height={70} alt="Profile Image" />
         </SidebarFooter>
       </SidebarContainer>
 
       {!isOpen && (
         <SidebarOpenButton onClick={handleSideBarToggle}>
-          <Image src={OpenIcon} alt="Open Sidebar Icon" />
+          <Image src={OpenIcon} alt="Open Icon" />
         </SidebarOpenButton>
       )}
     </>

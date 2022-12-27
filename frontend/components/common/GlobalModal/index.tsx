@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 
 import { useRecoilValue } from 'recoil';
 
@@ -14,9 +14,26 @@ const MODAL_COMPONENTS: any = {
 export default function GlobalModal() {
   const { modalType, modalProps } = useRecoilValue(modalState).at(-1) || {};
 
-  if (!modalType) return null;
+  const lockScroll = useCallback(() => {
+    if (typeof window !== 'object') return;
+
+    document.body.style.overflow = 'hidden';
+  }, []);
+
+  const unlockScroll = useCallback(() => {
+    if (typeof window !== 'object') return;
+
+    document.body.style.removeProperty('overflow');
+  }, []);
+
+  if (!modalType) {
+    unlockScroll();
+    return null;
+  }
 
   const renderModal = () => {
+    lockScroll();
+
     const ModalComponent = MODAL_COMPONENTS[modalType];
 
     return <ModalComponent {...modalProps} />;

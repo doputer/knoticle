@@ -1,35 +1,33 @@
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 
-import { RefObject, useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 
 import { useRecoilValue } from 'recoil';
 
 import { deleteArticleApi } from '@apis/articleApi';
 import { deleteScrapApi, updateScrapsOrderApi } from '@apis/scrapApi';
-import LeftBtnIcon from '@assets/ico_leftBtn.svg';
+import LeftArrowIcon from '@assets/ico_leftBtn.svg';
 import Original from '@assets/ico_original.svg';
-import RightBtnIcon from '@assets/ico_rightBtn.svg';
+import RightArrowIcon from '@assets/ico_rightBtn.svg';
 import Scrap from '@assets/ico_scrap.svg';
 import signInStatusState from '@atoms/signInStatus';
 import Content from '@components/common/Content';
+import IconButton from '@components/common/IconButton';
 import useFetch from '@hooks/useFetch';
 import useModal from '@hooks/useModal';
 import { IArticleBook, IScrap } from '@interfaces';
+import { TextSmall } from '@styles/common';
 import encodeURL from '@utils/encode-url';
 import { toastSuccess } from '@utils/toast';
 
-import ArticleButton from './Button';
 import {
+  ArticleButton,
+  ArticleButtonWrapper,
   ArticleContainer,
-  ArticleContentsWrapper,
-  ArticleLeftBtn,
-  ArticleMain,
-  ArticleMoveBtnContainer,
-  ArticleRightBtn,
+  ArticleHeader,
+  ArticleNavigatorWrapper,
   ArticleTitle,
-  ArticleTitleBtnBox,
-  ArticleTitleWrapper,
 } from './styled';
 
 interface ArticleProps {
@@ -59,11 +57,11 @@ export default function Article({
 
   const router = useRouter();
 
-  const handleOriginalBtnOnClick = () => {
+  const handleOriginalArticleButtonClick = () => {
     router.push(`/@${article.book.user.nickname}/${encodeURL(article.book.title, article.title)}`);
   };
 
-  const handleLeftBtnOnClick = () => {
+  const handlePrevArticleButtonClick = () => {
     const prevOrder = scraps.filter((scrap) => scrap.article.id === article.id)[0].order - 1;
     const prevArticle = scraps.filter((scrap) => scrap.order === prevOrder)[0].article;
 
@@ -75,7 +73,7 @@ export default function Article({
     );
   };
 
-  const handleRightBtnOnClick = () => {
+  const handleNextArticleButtonClick = () => {
     const nextOrder = scraps.filter((scrap) => scrap.article.id === article.id)[0].order + 1;
     const nextArticle = scraps.filter((scrap) => scrap.order === nextOrder)[0].article;
 
@@ -87,7 +85,7 @@ export default function Article({
     );
   };
 
-  const handleDeleteBtnOnClick = () => {
+  const handleDeleteArticleButtonClick = () => {
     openModal({
       modalType: 'Confirm',
       modalProps: {
@@ -106,7 +104,7 @@ export default function Article({
     });
   };
 
-  const handleScrapDeleteBtnOnClick = () => {
+  const handleDeleteScrapButtonClick = () => {
     openModal({
       modalType: 'Confirm',
       modalProps: {
@@ -124,7 +122,7 @@ export default function Article({
     });
   };
 
-  const handleModifyBtnOnClick = () => {
+  const handleUpdateArticleButtonClick = () => {
     router.push(`/write?id=${article.id}`);
   };
 
@@ -148,14 +146,6 @@ export default function Article({
     router.push('/');
   }, [updateScrapsData]);
 
-  const scrollTarget = useRef() as RefObject<HTMLDivElement>;
-
-  useEffect(() => {
-    if (scrollTarget.current) {
-      scrollTarget.current.scrollTop = 0;
-    }
-  }, [router.query.data]);
-
   useEffect(() => {
     if (!deleteArticleData) return;
 
@@ -163,58 +153,57 @@ export default function Article({
     router.push('/');
   }, [deleteArticleData]);
 
+  if (article.deleted_at) return <div>삭제된 글입니다.</div>;
+
   return (
     <ArticleContainer>
-      <ArticleMain ref={scrollTarget}>
-        {!article.deleted_at ? (
-          <ArticleContentsWrapper>
-            <ArticleTitleWrapper>
-              <ArticleTitle>{article.title}</ArticleTitle>
-              <ArticleTitleBtnBox>
-                {article.book_id !== bookId && (
-                  <ArticleButton onClick={handleOriginalBtnOnClick}>
-                    <Image src={Original} alt="Original Icon" width={20} height={15} />
-                    원본 글 보기
-                  </ArticleButton>
-                )}
-                {article.book_id === bookId && article.book.user.nickname === user.nickname && (
-                  <>
-                    <ArticleButton onClick={handleDeleteBtnOnClick}>글 삭제</ArticleButton>
-                    <ArticleButton onClick={handleModifyBtnOnClick}>글 수정</ArticleButton>
-                  </>
-                )}
-                {article.book_id !== bookId && bookAuthor === user.nickname && (
-                  <ArticleButton onClick={handleScrapDeleteBtnOnClick}>스크랩 삭제</ArticleButton>
-                )}
-                {user.id !== 0 && (
-                  <ArticleButton onClick={handleScrapModalOpen}>
-                    <Image src={Scrap} alt="Scrap Icon" width={20} height={15} />
-                    스크랩
-                  </ArticleButton>
-                )}
-              </ArticleTitleBtnBox>
-            </ArticleTitleWrapper>
-            <Content content={articleData} />
-          </ArticleContentsWrapper>
-        ) : (
-          <div>삭제된 글입니다.</div>
-        )}
+      <ArticleHeader>
+        <ArticleTitle>{article.title}</ArticleTitle>
+        <ArticleButtonWrapper>
+          {article.book_id !== bookId && (
+            <ArticleButton onClick={handleOriginalArticleButtonClick}>
+              <Image src={Original} alt="Original Icon" width={16} height={16} />
+              <TextSmall>원본 글 보기</TextSmall>
+            </ArticleButton>
+          )}
+          {article.book_id === bookId && article.book.user.nickname === user.nickname && (
+            <>
+              <ArticleButton onClick={handleDeleteArticleButtonClick}>
+                <TextSmall>글 삭제</TextSmall>
+              </ArticleButton>
+              <ArticleButton onClick={handleUpdateArticleButtonClick}>
+                <TextSmall>글 수정</TextSmall>
+              </ArticleButton>
+            </>
+          )}
+          {article.book_id !== bookId && bookAuthor === user.nickname && (
+            <ArticleButton onClick={handleDeleteScrapButtonClick}>스크랩 삭제</ArticleButton>
+          )}
+          {user.id !== 0 && (
+            <ArticleButton onClick={handleScrapModalOpen}>
+              <Image src={Scrap} alt="Scrap Icon" width={16} height={16} />
+              <TextSmall>스크랩</TextSmall>
+            </ArticleButton>
+          )}
+        </ArticleButtonWrapper>
+      </ArticleHeader>
 
-        <ArticleMoveBtnContainer>
-          <ArticleLeftBtn
-            onClick={handleLeftBtnOnClick}
-            visibility={article.id === scraps.at(0)?.article.id ? 'hidden' : 'visible'}
-          >
-            <Image src={LeftBtnIcon} width={24} height={24} alt="Left Arrow Icon" />
-          </ArticleLeftBtn>
-          <ArticleRightBtn
-            onClick={handleRightBtnOnClick}
-            visibility={article.id === scraps.at(-1)?.article.id ? 'hidden' : 'visible'}
-          >
-            <Image src={RightBtnIcon} width={24} height={24} alt="Right Arrow Icon" />
-          </ArticleRightBtn>
-        </ArticleMoveBtnContainer>
-      </ArticleMain>
+      <ArticleNavigatorWrapper>
+        <IconButton
+          src={LeftArrowIcon}
+          alt="Left Arrow Icon"
+          onClick={handlePrevArticleButtonClick}
+          visible={article.id !== scraps.at(0)?.article.id}
+        />
+        <IconButton
+          src={RightArrowIcon}
+          alt="Right Arrow Icon"
+          onClick={handleNextArticleButtonClick}
+          visible={article.id !== scraps.at(-1)?.article.id}
+        />
+      </ArticleNavigatorWrapper>
+
+      <Content content={articleData} />
     </ArticleContainer>
   );
 }

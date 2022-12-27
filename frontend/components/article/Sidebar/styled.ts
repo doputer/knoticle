@@ -15,7 +15,7 @@ export const SidebarContainer = styled(FlexColumn)`
   gap: 16px;
   position: sticky;
   top: 64px;
-  z-index: 100;
+  z-index: 200;
   transition: all 0.3s ease;
   box-sizing: border-box;
 
@@ -29,12 +29,15 @@ export const SidebarContainer = styled(FlexColumn)`
 
   @media ${({ theme }) => theme.devices.mobile} {
     width: 100%;
-    height: calc(100vh - 64px);
     position: fixed;
 
     &.hide {
       margin-left: -100%;
     }
+  }
+
+  @media ${({ theme }) => theme.devices.tablet} {
+    position: fixed;
   }
 `;
 
@@ -132,7 +135,9 @@ export const ProfileImage = styled(Image)`
 `;
 
 export const SidebarOpenButton = styled.button`
+  margin: 24px;
   position: fixed;
-  margin-top: 24px;
-  z-index: 0;
+  top: 64px;
+  left: 0;
+  z-index: 150;
 `;

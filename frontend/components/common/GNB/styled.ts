@@ -3,12 +3,8 @@ import Link from 'next/link';
 
 import styled from 'styled-components';
 
-interface GNBContainerProps {
-  delta: number;
-}
-
-export const GNBContainer = styled.div<GNBContainerProps>`
-  width: 100%;
+export const GNBContainer = styled.div`
+  width: 100vw;
   height: 64px;
   background-color: var(--light-yellow-color);
   padding: 16px 32px;
@@ -20,7 +16,6 @@ export const GNBContainer = styled.div<GNBContainerProps>`
   box-shadow: rgb(0 0 0 / 16%) 0px 0px 8px;
   box-sizing: border-box;
   z-index: 150;
-  transform: translateY(${(props) => -props.delta}px);
 `;
 
 export const LogoWrapper = styled.div`
