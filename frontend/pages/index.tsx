@@ -1,7 +1,7 @@
 import { ReactElement, useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 
-import { getOrderedBookListApi } from '@apis/bookApi';
+import { getBooksApi } from '@apis/bookApi';
 import Footer from '@components/common/Footer';
 import HomeHead from '@components/home/HomeHead';
 import Slider from '@components/home/Slider';
@@ -12,16 +12,16 @@ import { DISABLE_REFETCH_OPTIONS } from '@constants/react-query';
 export default function HomePage() {
   const { isLoading: isPopularBooksLoading, data: popularBooks } = useQuery(
     'getPopularBooks',
-    () => getOrderedBookListApi('bookmark'),
+    () => getBooksApi({ order: 'bookmark', take: 12 }),
     DISABLE_REFETCH_OPTIONS
   );
   const { isLoading: isNewestBooksLoading, data: newestBooks } = useQuery(
     'getNewestBooks',
-    () => getOrderedBookListApi('newest'),
+    () => getBooksApi({ order: 'newest', take: 12 }),
     DISABLE_REFETCH_OPTIONS
   );
 
-  const [bookCountPerPage, setBookCountPerPage] = useState(0);
+  const [bookCountPerPage, setBookCountPerPage] = useState(1);
 
   const handleResizeWindow = () => {
     if (window.innerWidth > 1300) setBookCountPerPage(4);
