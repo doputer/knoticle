@@ -28,7 +28,11 @@ router.get('/articles/search', decoder, catchAsync(articlesController.searchArti
 router.get('/articles', catchAsync(articlesController.getArticle));
 router.post('/articles', guard, catchAsync(articlesController.createArticle));
 router.patch('/articles/:articleId', guard, catchAsync(articlesController.updateArticle));
-router.delete('/articles/:articleId', guard, catchAsync(articlesController.deleteArticle));
+router.delete(
+  '/articles/:articleId/scraps/:scrapId',
+  guard,
+  catchAsync(articlesController.deleteArticle)
+);
 
 router.post('/image', guard, multer().single('image'), catchAsync(imagesController.createImage));
 

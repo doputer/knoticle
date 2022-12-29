@@ -6,6 +6,39 @@ import {
 } from '@apis/articles/articles.interface';
 import { prisma } from '@config/orm.config';
 
+const getArticle = async ({ articleTitle, bookTitle, owner }: GetArticle) => {
+  const article = await prisma.article.findFirst({
+    include: {
+      book: {
+        select: {
+          title: true,
+          user: {
+            select: {
+              id: true,
+              nickname: true,
+            },
+          },
+        },
+      },
+    },
+    where: {
+      title: articleTitle,
+      scraps: {
+        some: {
+          book: {
+            title: bookTitle,
+            user: {
+              nickname: owner,
+            },
+          },
+        },
+      },
+    },
+  });
+
+  return article;
+};
+
 const searchArticles = async (searchArticles: SearchArticles) => {
   const { query, page, take, userId, isUsers } = searchArticles;
 
@@ -68,31 +101,16 @@ const searchArticles = async (searchArticles: SearchArticles) => {
   };
 };
 
-const getArticle = async ({ articleTitle, bookTitle, owner }: GetArticle) => {
-  const article = await prisma.article.findFirst({
-    include: {
+const createArticle = async (dto: CreateArticle) => {
+  const { title, content, book_id } = dto;
+
+  const article = await prisma.article.create({
+    data: {
+      title,
+      content,
       book: {
-        select: {
-          title: true,
-          user: {
-            select: {
-              id: true,
-              nickname: true,
-            },
-          },
-        },
-      },
-    },
-    where: {
-      title: articleTitle,
-      scraps: {
-        some: {
-          book: {
-            title: bookTitle,
-            user: {
-              nickname: owner,
-            },
-          },
+        connect: {
+          id: book_id,
         },
       },
     },
@@ -101,9 +119,13 @@ const getArticle = async ({ articleTitle, bookTitle, owner }: GetArticle) => {
   return article;
 };
 
-const createArticle = async (dto: CreateArticle) => {
+const updateArticle = async (articleId: number, dto: CreateArticle) => {
   const { title, content, book_id } = dto;
-  const article = await prisma.article.create({
+
+  const article = await prisma.article.update({
+    where: {
+      id: articleId,
+    },
     data: {
       title,
       content,
@@ -166,30 +188,9 @@ const createTemporaryArticle = async (dto: CreateTemporaryArticle) => {
   return temporaryArticle;
 };
 
-const updateArticle = async (articleId: number, dto: CreateArticle) => {
-  const { title, content, book_id } = dto;
-
-  const article = await prisma.article.update({
-    where: {
-      id: articleId,
-    },
-    data: {
-      title,
-      content,
-      book: {
-        connect: {
-          id: book_id,
-        },
-      },
-    },
-  });
-
-  return article;
-};
-
 export default {
-  searchArticles,
   getArticle,
+  searchArticles,
   createArticle,
   updateArticle,
   deleteArticle,

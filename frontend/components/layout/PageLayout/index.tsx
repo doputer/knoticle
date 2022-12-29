@@ -1,9 +1,9 @@
-import { PageInnerLarge } from './styled';
+import { PageLarge } from './styled';
 
 interface PageLayoutProps {
   children: React.ReactNode;
 }
 
 export default function PageLayout({ children }: PageLayoutProps) {
-  return <PageInnerLarge>{children}</PageInnerLarge>;
+  return <PageLarge>{children}</PageLarge>;
 }

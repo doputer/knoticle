@@ -27,8 +27,8 @@ export default function ArticlePage() {
     nickname: string;
   };
 
-  const { data: book } = useQuery<IBookScraps>(
-    ['getOwnerBook'],
+  const { data: book, refetch: getOwnerBook } = useQuery<IBookScraps>(
+    ['getOwnerBook', { bookTitle, owner }],
     () => getOwnerBookApi({ title: bookTitle, owner: owner.slice(1) }),
     {
       refetchOnWindowFocus: false,
@@ -50,6 +50,10 @@ export default function ArticlePage() {
     if (window.innerWidth < 576) setSideBarOpen(false);
   }, []);
 
+  useEffect(() => {
+    if (book?.scraps.length === 0) router.push('/');
+  }, [book?.scraps]);
+
   if (!book || !article) return null;
 
   return (
@@ -62,7 +66,7 @@ export default function ArticlePage() {
           isOpen={isSideBarOpen}
           handleSideBarToggle={handleSideBarToggle}
         />
-        <Article book={book} article={article} />
+        <Article book={book} article={article} getOwnerBook={getOwnerBook} />
       </Flex>
     </>
   );

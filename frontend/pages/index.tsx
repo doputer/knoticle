@@ -7,21 +7,20 @@ import HomeHead from '@components/home/HomeHead';
 import Slider from '@components/home/Slider';
 import HeaderLayout from '@components/layout/HeaderLayout';
 import PageLayout from '@components/layout/PageLayout';
-import { DISABLE_REFETCH_OPTIONS } from '@constants/react-query';
 
 export default function HomePage() {
   const { isLoading: isPopularBooksLoading, data: popularBooks } = useQuery(
     'getPopularBooks',
     () => getBooksApi({ order: 'bookmark', take: 12 }),
-    DISABLE_REFETCH_OPTIONS
+    { refetchOnWindowFocus: false }
   );
   const { isLoading: isNewestBooksLoading, data: newestBooks } = useQuery(
     'getNewestBooks',
     () => getBooksApi({ order: 'newest', take: 12 }),
-    DISABLE_REFETCH_OPTIONS
+    { refetchOnWindowFocus: false }
   );
 
-  const [bookCountPerPage, setBookCountPerPage] = useState(1);
+  const [bookCountPerPage, setBookCountPerPage] = useState(0);
 
   const handleResizeWindow = () => {
     if (window.innerWidth > 1300) setBookCountPerPage(4);
@@ -43,19 +42,23 @@ export default function HomePage() {
   return (
     <>
       <HomeHead />
-      <Slider
-        title="가장 인기 있는 책"
-        books={popularBooks}
-        bookCountPerPage={bookCountPerPage}
-        isLoading={isPopularBooksLoading}
-      />
-      <Slider
-        title="새로 엮은 책"
-        books={newestBooks}
-        bookCountPerPage={bookCountPerPage}
-        isLoading={isNewestBooksLoading}
-      />
-      <Footer />
+      {bookCountPerPage !== 0 && (
+        <>
+          <Slider
+            title="가장 인기 있는 책"
+            books={popularBooks}
+            bookCountPerPage={bookCountPerPage}
+            isLoading={isPopularBooksLoading}
+          />
+          <Slider
+            title="새로 엮은 책"
+            books={newestBooks}
+            bookCountPerPage={bookCountPerPage}
+            isLoading={isNewestBooksLoading}
+          />
+          <Footer />
+        </>
+      )}
     </>
   );
 }

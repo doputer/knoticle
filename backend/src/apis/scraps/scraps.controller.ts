@@ -4,6 +4,12 @@ import { IScrap } from '@apis/scraps/scraps.interface';
 
 import scrapsService from './scraps.service';
 
+const getScraps = async (req: Request, res: Response) => {
+  const scraps = await scrapsService.getScraps();
+
+  return res.status(200).send(scraps);
+};
+
 const createScrap = async (req: Request, res: Response) => {
   const { book_id, article_id, scraps } = req.body;
 
@@ -23,20 +29,6 @@ const createScrap = async (req: Request, res: Response) => {
   return res.status(201).send({ book_id, article_id });
 };
 
-const deleteScrap = async (req: Request, res: Response) => {
-  const scrapId = Number(req.params.scrapId);
-
-  const scrap = await scrapsService.deleteScrap(scrapId);
-
-  return res.status(200).send(scrap);
-};
-
-const getScraps = async (req: Request, res: Response) => {
-  const scraps = await scrapsService.getScraps();
-
-  return res.status(200).send(scraps);
-};
-
 const updateScrapsOrder = async (req: Request, res: Response) => {
   const scraps = req.body;
 
@@ -47,9 +39,17 @@ const updateScrapsOrder = async (req: Request, res: Response) => {
   res.status(200).send(scraps);
 };
 
+const deleteScrap = async (req: Request, res: Response) => {
+  const scrapId = Number(req.params.scrapId);
+
+  const scrap = await scrapsService.deleteScrap(scrapId);
+
+  return res.status(200).send(scrap);
+};
+
 export default {
-  createScrap,
-  deleteScrap,
   getScraps,
+  createScrap,
   updateScrapsOrder,
+  deleteScrap,
 };

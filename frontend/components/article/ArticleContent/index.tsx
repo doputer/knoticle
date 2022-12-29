@@ -2,20 +2,21 @@ import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 
-import { useEffect } from 'react';
+import { useMutation } from 'react-query';
 
 import { useRecoilValue } from 'recoil';
 
 import { deleteArticleApi } from '@apis/articleApi';
-import { deleteScrapApi, updateScrapsOrderApi } from '@apis/scrapApi';
+import { deleteScrapApi } from '@apis/scrapApi';
+import EditIcon from '@assets/ico_edit.svg';
 import LeftArrowIcon from '@assets/ico_leftBtn.svg';
-import Original from '@assets/ico_original.svg';
+import OriginIcon from '@assets/ico_origin.svg';
 import RightArrowIcon from '@assets/ico_rightBtn.svg';
-import Scrap from '@assets/ico_scrap.svg';
+import StarIcon from '@assets/ico_star.svg';
+import TrashIcon from '@assets/ico_trash.svg';
 import signInStatusState from '@atoms/signInStatus';
 import Content from '@components/common/Content';
 import IconButton from '@components/common/IconButton';
-import useFetch from '@hooks/useFetch';
 import useModal from '@hooks/useModal';
 import { IArticleBook, IBookScraps } from '@interfaces';
 import { TextSmall } from '@styles/common';
@@ -34,54 +35,85 @@ import {
 interface ArticleProps {
   book: IBookScraps;
   article: IArticleBook;
+  getOwnerBook: () => void;
 }
 
-export default function Article({ book, article }: ArticleProps) {
-  const ScrapModal = dynamic(() => import('@components/article/ScrapModal'));
-
-  const {
+export default function Article({
+  book: {
     id: bookId,
+    title: bookTitle,
     user: { nickname: owner },
     scraps,
-  } = book;
-
-  const { title: articleTitle, content } = article;
+  },
+  article,
+  getOwnerBook,
+}: ArticleProps) {
+  const ScrapModal = dynamic(() => import('@components/article/ScrapModal'));
 
   const router = useRouter();
   const { openModal } = useModal();
-
   const user = useRecoilValue(signInStatusState);
 
-  const { data: deleteArticleData, execute: deleteArticle } = useFetch(deleteArticleApi);
-  const { execute: deleteScrap } = useFetch(deleteScrapApi);
-  const { data: updateScrapsData, execute: updateScrapsOrder } = useFetch(updateScrapsOrderApi);
+  const navigateArticle = (diff: -1 | 1) => {
+    const currentScrapIndex = scraps.findIndex((scrap) => scrap.article.id === article.id);
+
+    const targetScrap = scraps.at(currentScrapIndex + diff);
+
+    router.push(`/@${owner}/${encodeURL(bookTitle, targetScrap?.article.title || '')}`);
+  };
+
+  const adjustArticle = () => {
+    const currentScrapIndex = scraps.findIndex((scrap) => scrap.article.id === article.id);
+
+    if (scraps.length === 1) {
+      router.push('/');
+      return;
+    }
+
+    if (currentScrapIndex === 0) navigateArticle(1);
+    else navigateArticle(-1);
+  };
+
+  const { mutate: deleteArticle } = useMutation(deleteArticleApi, {
+    onMutate: () => {
+      adjustArticle();
+    },
+    onSuccess: () => {
+      toastSuccess(`<${article.title}> 글이 삭제되었습니다`);
+      getOwnerBook();
+    },
+  });
+
+  const { mutate: deleteScrap } = useMutation(deleteScrapApi, {
+    onMutate: () => {
+      adjustArticle();
+    },
+    onSuccess: () => {
+      toastSuccess(`<${article.title}> 스크랩이 삭제되었습니다`);
+      getOwnerBook();
+    },
+  });
 
   const handleOriginalArticleButtonClick = () => {
-    router.push(`/@${article.book.user.nickname}/${encodeURL(article.book.title, articleTitle)}`);
+    router.push(`/@${article.book.user.nickname}/${encodeURL(article.book.title, article.title)}`);
   };
 
   const handlePrevArticleButtonClick = () => {
-    const prevOrder = scraps.filter((scrap) => scrap.article.id === article.id)[0].order - 1;
-    const prevArticle = scraps.filter((scrap) => scrap.order === prevOrder)[0].article;
-
-    router.push(
-      `/@${prevArticle.book?.user.nickname}/${encodeURL(
-        prevArticle.book?.title || '',
-        prevArticle.title
-      )}`
-    );
+    navigateArticle(-1);
   };
 
   const handleNextArticleButtonClick = () => {
-    const nextOrder = scraps.filter((scrap) => scrap.article.id === article.id)[0].order + 1;
-    const nextArticle = scraps.filter((scrap) => scrap.order === nextOrder)[0].article;
+    navigateArticle(1);
+  };
 
-    router.push(
-      `/@${nextArticle.book?.user.nickname}/${encodeURL(
-        nextArticle.book?.title || '',
-        nextArticle.title
-      )}`
-    );
+  const handleScrapModalOpen = () => {
+    openModal({
+      modalType: 'Modal',
+      modalProps: {
+        title: '글 스크랩하기',
+        children: <ScrapModal article={article} />,
+      },
+    });
   };
 
   const handleDeleteArticleButtonClick = () => {
@@ -90,25 +122,12 @@ export default function Article({ book, article }: ArticleProps) {
       modalProps: {
         message: '해당 글을 삭제하시겠습니까?',
         handleConfirm: () => {
-          const curScrap = scraps.find((scrap) => scrap.article.id === article.id);
-          if (!curScrap) return;
-          const newScraps = scraps
-            .filter((scrap) => scrap.id !== curScrap.id)
-            .map((v, i) => ({ ...v, order: i + 1 }));
-          updateScrapsOrder(newScraps);
-          deleteScrap(curScrap?.id);
-          deleteArticle(article.id);
-        },
-      },
-    });
-  };
+          const targetScrap = scraps.find((scrap) => scrap.article.id === article.id);
 
-  const handleScrapModalOpen = () => {
-    openModal({
-      modalType: 'Modal',
-      modalProps: {
-        title: '글 스크랩하기',
-        children: article && <ScrapModal article={article} />,
+          if (!targetScrap) return;
+
+          deleteArticle({ articleId: article.id, scrapId: targetScrap.id });
+        },
       },
     });
   };
@@ -117,15 +136,13 @@ export default function Article({ book, article }: ArticleProps) {
     openModal({
       modalType: 'Confirm',
       modalProps: {
-        message: '해당 글을 책에서 삭제하시겠습니까?',
+        message: '해당 스크랩을 삭제하시겠습니까?',
         handleConfirm: () => {
-          const curScrap = scraps.find((scrap) => scrap.article.id === article.id);
-          if (!curScrap) return;
-          const newScraps = scraps
-            .filter((scrap) => scrap.id !== curScrap.id)
-            .map((v, i) => ({ ...v, order: i + 1 }));
-          updateScrapsOrder(newScraps);
-          deleteScrap(curScrap.id);
+          const targetScrap = scraps.find((scrap) => scrap.article.id === article.id);
+
+          if (!targetScrap) return;
+
+          deleteScrap(targetScrap.id);
         },
       },
     });
@@ -135,33 +152,6 @@ export default function Article({ book, article }: ArticleProps) {
     router.push(`/write?id=${article.id}`);
   };
 
-  useEffect(() => {
-    if (deleteArticleData !== undefined) router.push('/');
-  }, [deleteArticleData]);
-
-  useEffect(() => {
-    if (updateScrapsData === undefined) return;
-
-    if (updateScrapsData.length !== 0) {
-      router.push(
-        `/@${updateScrapsData[0].article.book.user.nickname}/${encodeURL(
-          updateScrapsData[0].article.book.title,
-          updateScrapsData[0].article.title
-        )}`
-      );
-
-      return;
-    }
-    router.push('/');
-  }, [updateScrapsData]);
-
-  useEffect(() => {
-    if (!deleteArticleData) return;
-
-    toastSuccess(`<${article.title}> 글이 삭제되었습니다`);
-    router.push('/');
-  }, [deleteArticleData]);
-
   if (article.deleted_at) return <div>삭제된 글입니다.</div>;
 
   return (
@@ -169,29 +159,34 @@ export default function Article({ book, article }: ArticleProps) {
       <ArticleHeader>
         <ArticleTitle>{article.title}</ArticleTitle>
         <ArticleButtonWrapper>
-          {article.book_id !== bookId && (
-            <ArticleButton onClick={handleOriginalArticleButtonClick}>
-              <Image src={Original} alt="Original Icon" width={16} height={16} />
-              <TextSmall>원본 글 보기</TextSmall>
-            </ArticleButton>
-          )}
           {article.book_id === bookId && article.book.user.nickname === user.nickname && (
             <>
-              <ArticleButton onClick={handleDeleteArticleButtonClick}>
-                <TextSmall>글 삭제</TextSmall>
-              </ArticleButton>
               <ArticleButton onClick={handleUpdateArticleButtonClick}>
+                <Image src={EditIcon} alt="Edit Icon" width={20} height={20} />
                 <TextSmall>글 수정</TextSmall>
+              </ArticleButton>
+              <ArticleButton onClick={handleDeleteArticleButtonClick}>
+                <Image src={TrashIcon} alt="Trash Icon" width={20} height={20} />
+                <TextSmall>글 삭제</TextSmall>
               </ArticleButton>
             </>
           )}
-          {article.book_id !== bookId && owner === user.nickname && (
-            <ArticleButton onClick={handleDeleteScrapButtonClick}>스크랩 삭제</ArticleButton>
-          )}
           {user.id !== 0 && (
             <ArticleButton onClick={handleScrapModalOpen}>
-              <Image src={Scrap} alt="Scrap Icon" width={16} height={16} />
+              <Image src={StarIcon} alt="Star Icon" width={20} height={20} />
               <TextSmall>스크랩</TextSmall>
+            </ArticleButton>
+          )}
+          {article.book_id !== bookId && owner === user.nickname && (
+            <ArticleButton onClick={handleDeleteScrapButtonClick}>
+              <Image src={TrashIcon} alt="Trash Icon" width={20} height={20} />
+              <TextSmall>스크랩 삭제</TextSmall>
+            </ArticleButton>
+          )}
+          {article.book_id !== bookId && (
+            <ArticleButton onClick={handleOriginalArticleButtonClick}>
+              <Image src={OriginIcon} alt="Origin Icon" width={20} height={20} />
+              <TextSmall>원본 글 보기</TextSmall>
             </ArticleButton>
           )}
         </ArticleButtonWrapper>
@@ -212,7 +207,7 @@ export default function Article({ book, article }: ArticleProps) {
         />
       </ArticleNavigatorWrapper>
 
-      <Content content={content} />
+      <Content content={article.content} />
     </ArticleContainer>
   );
 }
