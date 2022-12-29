@@ -8,10 +8,12 @@ import { useRecoilValue } from 'recoil';
 
 import { deleteArticleApi } from '@apis/articleApi';
 import { deleteScrapApi } from '@apis/scrapApi';
+import EditIcon from '@assets/ico_edit.svg';
 import LeftArrowIcon from '@assets/ico_leftBtn.svg';
-import Original from '@assets/ico_original.svg';
+import OriginIcon from '@assets/ico_origin.svg';
 import RightArrowIcon from '@assets/ico_rightBtn.svg';
-import Scrap from '@assets/ico_scrap.svg';
+import StarIcon from '@assets/ico_star.svg';
+import TrashIcon from '@assets/ico_trash.svg';
 import signInStatusState from '@atoms/signInStatus';
 import Content from '@components/common/Content';
 import IconButton from '@components/common/IconButton';
@@ -157,29 +159,34 @@ export default function Article({
       <ArticleHeader>
         <ArticleTitle>{article.title}</ArticleTitle>
         <ArticleButtonWrapper>
-          {article.book_id !== bookId && (
-            <ArticleButton onClick={handleOriginalArticleButtonClick}>
-              <Image src={Original} alt="Original Icon" width={16} height={16} />
-              <TextSmall>원본 글 보기</TextSmall>
-            </ArticleButton>
-          )}
           {article.book_id === bookId && article.book.user.nickname === user.nickname && (
             <>
-              <ArticleButton onClick={handleDeleteArticleButtonClick}>
-                <TextSmall>글 삭제</TextSmall>
-              </ArticleButton>
               <ArticleButton onClick={handleUpdateArticleButtonClick}>
+                <Image src={EditIcon} alt="Edit Icon" width={20} height={20} />
                 <TextSmall>글 수정</TextSmall>
+              </ArticleButton>
+              <ArticleButton onClick={handleDeleteArticleButtonClick}>
+                <Image src={TrashIcon} alt="Trash Icon" width={20} height={20} />
+                <TextSmall>글 삭제</TextSmall>
               </ArticleButton>
             </>
           )}
-          {article.book_id !== bookId && owner === user.nickname && (
-            <ArticleButton onClick={handleDeleteScrapButtonClick}>스크랩 삭제</ArticleButton>
-          )}
           {user.id !== 0 && (
             <ArticleButton onClick={handleScrapModalOpen}>
-              <Image src={Scrap} alt="Scrap Icon" width={16} height={16} />
+              <Image src={StarIcon} alt="Star Icon" width={20} height={20} />
               <TextSmall>스크랩</TextSmall>
+            </ArticleButton>
+          )}
+          {article.book_id !== bookId && owner === user.nickname && (
+            <ArticleButton onClick={handleDeleteScrapButtonClick}>
+              <Image src={TrashIcon} alt="Trash Icon" width={20} height={20} />
+              <TextSmall>스크랩 삭제</TextSmall>
+            </ArticleButton>
+          )}
+          {article.book_id !== bookId && (
+            <ArticleButton onClick={handleOriginalArticleButtonClick}>
+              <Image src={OriginIcon} alt="Origin Icon" width={20} height={20} />
+              <TextSmall>원본 글 보기</TextSmall>
             </ArticleButton>
           )}
         </ArticleButtonWrapper>

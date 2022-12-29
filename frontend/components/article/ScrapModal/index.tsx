@@ -94,7 +94,7 @@ export default function ScrapModal({ article }: ScrapModalProps) {
 
   useEffect(() => {
     if (createScrapData === undefined) return;
-    toastSuccess(`${article.title}글이 스크랩되었습니다.`);
+    toastSuccess(`<${article.title}> 글이 스크랩되었습니다.`);
     closeEveryModal();
   }, [createScrapData]);
 

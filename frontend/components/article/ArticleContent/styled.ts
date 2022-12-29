@@ -12,17 +12,14 @@ export const ArticleContainer = styled(FlexColumn)`
   }
 `;
 
-export const ArticleHeader = styled(FlexSpaceBetween)`
-  border-bottom: 1px solid var(--grey-01-color);
-  align-items: center;
-  flex-wrap: wrap;
-`;
+export const ArticleHeader = styled(FlexColumn)``;
 
 export const ArticleTitle = styled.h1`
   padding: 24px 0;
   text-align: left;
   font-size: 32px;
   font-weight: 700;
+  border-bottom: 1px solid var(--grey-01-color);
 
   @media ${({ theme }) => theme.devices.tablet} {
     width: 100%;
@@ -30,10 +27,12 @@ export const ArticleTitle = styled.h1`
 `;
 
 export const ArticleButtonWrapper = styled(Flex)`
+  padding-top: 16px;
+  justify-content: flex-end;
   gap: 8px;
 
-  @media ${({ theme }) => theme.devices.tablet} {
-    margin-bottom: 16px;
+  @media ${({ theme }) => theme.devices.mobile} {
+    justify-content: flex-start;
   }
 `;
 
@@ -43,12 +42,13 @@ export const ArticleButton = styled.button`
   background-color: var(--light-orange-color);
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 4px;
   border: 1px solid var(--grey-02-color);
   border-radius: 16px;
 `;
 
 export const ArticleNavigatorWrapper = styled(FlexSpaceBetween)`
+  height: 0;
   position: sticky;
   top: 50%;
   z-index: 0;
