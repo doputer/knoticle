@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 import styled from 'styled-components';
 
-import { TextMedium, TextSmall } from '@styles/common';
+import { TextLinkSmall, TextMedium } from '@styles/common';
 import { Flex, FlexColumn, FlexSpaceBetween } from '@styles/layout';
 
 export const SidebarContainer = styled(FlexColumn)`
@@ -56,13 +56,13 @@ export const SidebarTitle = styled.div`
   border-bottom: 1px solid var(--white-color);
 `;
 
-export const ArticleList = styled.div`
+export const ArticleNavigation = styled.div`
   flex: 1 1 0;
   padding: 24px;
   color: var(--grey-01-color);
   background-color: var(--white-color);
   border-radius: 16px;
-  overflow-y: scroll;
+  overflow: auto;
 
   ::-webkit-scrollbar {
     width: 10px;
@@ -74,41 +74,15 @@ export const ArticleList = styled.div`
   }
 `;
 
-export const ArticleLink = styled(Link)`
-  margin: 4px 0;
-  display: block;
-  font-size: 14px;
-  line-height: 20px;
-  text-decoration: none;
-`;
-
-export const ArticleListTitle = styled(TextMedium)`
+export const NavigationTitle = styled(TextMedium)`
+  margin-bottom: 8px;
   font-weight: 700;
 `;
 
-export const CurrentArticle = styled.div`
+export const NavigationItem = styled(TextLinkSmall)<{ current: boolean }>`
+  padding: 4px 0;
+  color: ${({ current }) => (current ? 'var(--primary-color)' : 'inherit')};
   cursor: pointer;
-
-  div,
-  a {
-    margin: 4px 0;
-    font-size: 14px;
-    line-height: 20px;
-    text-decoration: none;
-  }
-`;
-
-export const ArticleTitle = styled(TextSmall)`
-  color: var(--primary-color);
-`;
-
-export const TocArticleTitle = styled(Link)<{ padding: number }>`
-  display: block;
-  padding-left: ${(props) => `${props.padding}px`};
-
-  &:hover {
-    color: var(--primary-color);
-  }
 `;
 
 export const SidebarFooter = styled(Link)`
