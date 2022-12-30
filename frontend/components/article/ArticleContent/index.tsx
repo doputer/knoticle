@@ -15,9 +15,11 @@ import RightArrowIcon from '@assets/ico_rightBtn.svg';
 import StarIcon from '@assets/ico_star.svg';
 import TrashIcon from '@assets/ico_trash.svg';
 import signInStatusState from '@atoms/signInStatus';
+import TOC from '@components/article/TOC';
 import Content from '@components/common/Content';
 import IconButton from '@components/common/IconButton';
 import useModal from '@hooks/useModal';
+import useTableOfContent from '@hooks/useToc';
 import { IArticleBook, IBookScraps } from '@interfaces';
 import { TextSmall } from '@styles/common';
 import encodeURL from '@utils/encode-url';
@@ -30,6 +32,8 @@ import {
   ArticleHeader,
   ArticleNavigatorWrapper,
   ArticleTitle,
+  TocInner,
+  TocWrapper,
 } from './styled';
 
 interface ArticleProps {
@@ -52,6 +56,7 @@ export default function Article({
 
   const router = useRouter();
   const { openModal } = useModal();
+  const { tocRef } = useTableOfContent();
   const user = useRecoilValue(signInStatusState);
 
   const navigateArticle = (diff: -1 | 1) => {
@@ -156,6 +161,12 @@ export default function Article({
 
   return (
     <ArticleContainer>
+      <TocWrapper>
+        <TocInner>
+          <TOC />
+        </TocInner>
+      </TocWrapper>
+
       <ArticleHeader>
         <ArticleTitle>{article.title}</ArticleTitle>
         <ArticleButtonWrapper>
@@ -207,7 +218,7 @@ export default function Article({
         />
       </ArticleNavigatorWrapper>
 
-      <Content content={article.content} />
+      <Content content={article.content} ref={tocRef} />
     </ArticleContainer>
   );
 }

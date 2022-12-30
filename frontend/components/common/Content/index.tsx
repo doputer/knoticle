@@ -1,3 +1,5 @@
+import { forwardRef, Ref } from 'react';
+
 import { markdown2html } from '@utils/parser';
 
 import { ContentBody, ContentTitle, ContentWrapper } from './styled';
@@ -9,7 +11,7 @@ interface ContentProps {
   content: string;
 }
 
-export default function Content({ title, content }: ContentProps) {
+function Content({ title = '', content }: ContentProps, ref?: Ref<HTMLDivElement>) {
   return (
     <ContentWrapper>
       {title && <ContentTitle>{title}</ContentTitle>}
@@ -17,11 +19,10 @@ export default function Content({ title, content }: ContentProps) {
         dangerouslySetInnerHTML={{
           __html: markdown2html(content),
         }}
+        ref={ref}
       />
     </ContentWrapper>
   );
 }
 
-Content.defaultProps = {
-  title: '',
-};
+export default forwardRef(Content);

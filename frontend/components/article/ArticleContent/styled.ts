@@ -65,3 +65,16 @@ export const ArticleNavigatorWrapper = styled(FlexSpaceBetween)`
     display: none;
   }
 `;
+
+export const TocWrapper = styled.div`
+  height: 0;
+  position: sticky;
+  top: 20%;
+`;
+
+export const TocInner = styled.div`
+  position: absolute;
+  top: 0;
+  right: -48px;
+  transform: translate(100%, 0);
+`;
