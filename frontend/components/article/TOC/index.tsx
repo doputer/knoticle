@@ -1,5 +1,3 @@
-import Link from 'next/link';
-
 import { useRecoilValue } from 'recoil';
 
 import { activeTocState, tocState } from '@atoms/tocState';
@@ -20,12 +18,10 @@ export default function TOC() {
 
   return (
     <TocContainer>
-      {toc.map(({ index, id, text, offsetTop }) => (
-        <Link key={index} href={`#${id}`} onClick={() => handleTocClick(offsetTop)} scroll={false}>
-          <TocItem active={activeToc === id}>
-            <TextSmall>{text}</TextSmall>
-          </TocItem>
-        </Link>
+      {toc.map(({ id, text, offsetTop }) => (
+        <TocItem key={id} active={activeToc === id} onClick={() => handleTocClick(offsetTop)}>
+          <TextSmall>{text}</TextSmall>
+        </TocItem>
       ))}
     </TocContainer>
   );
