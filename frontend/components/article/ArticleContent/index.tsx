@@ -19,7 +19,6 @@ import TOC from '@components/article/TOC';
 import Content from '@components/common/Content';
 import IconButton from '@components/common/IconButton';
 import useModal from '@hooks/useModal';
-import useTableOfContent from '@hooks/useToc';
 import { IArticleBook, IBookScraps } from '@interfaces';
 import { TextSmall } from '@styles/common';
 import encodeURL from '@utils/encode-url';
@@ -56,7 +55,6 @@ export default function Article({
 
   const router = useRouter();
   const { openModal } = useModal();
-  const { tocRef } = useTableOfContent();
   const user = useRecoilValue(signInStatusState);
 
   const navigateArticle = (diff: -1 | 1) => {
@@ -218,7 +216,7 @@ export default function Article({
         />
       </ArticleNavigatorWrapper>
 
-      <Content content={article.content} ref={tocRef} />
+      <Content content={article.content} />
     </ArticleContainer>
   );
 }

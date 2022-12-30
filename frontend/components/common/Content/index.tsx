@@ -1,5 +1,4 @@
-import { forwardRef, Ref } from 'react';
-
+import useToc from '@hooks/useToc';
 import { markdown2html } from '@utils/parser';
 
 import { ContentBody, ContentTitle, ContentWrapper } from './styled';
@@ -11,7 +10,9 @@ interface ContentProps {
   content: string;
 }
 
-function Content({ title = '', content }: ContentProps, ref?: Ref<HTMLDivElement>) {
+export default function Content({ title = '', content }: ContentProps) {
+  useToc(content);
+
   return (
     <ContentWrapper>
       {title && <ContentTitle>{title}</ContentTitle>}
@@ -19,10 +20,7 @@ function Content({ title = '', content }: ContentProps, ref?: Ref<HTMLDivElement
         dangerouslySetInnerHTML={{
           __html: markdown2html(content),
         }}
-        ref={ref}
       />
     </ContentWrapper>
   );
 }
-
-export default forwardRef(Content);

@@ -1,7 +1,6 @@
 import { atom } from 'recoil';
 
 export interface TOC {
-  index: number;
   id: string;
   text: string;
   offsetTop: number;

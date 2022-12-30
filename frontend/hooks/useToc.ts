@@ -1,93 +1,48 @@
-import { useRouter } from 'next/router';
-
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 
 import { useSetRecoilState } from 'recoil';
 
-import { activeTocState, TOC, tocState } from '@atoms/tocState';
+import { activeTocState, type TOC, tocState } from '@atoms/tocState';
 
-const useTOC = () => {
-  const router = useRouter();
-  const tocRef = useRef<HTMLDivElement>(null);
+const useTOC = (deps: string) => {
   const setToc = useSetRecoilState<TOC[]>(tocState);
   const setActiveToc = useSetRecoilState(activeTocState);
 
-  const lastScrollPosition = useRef(0);
-  const scrollDirection = useRef('');
+  const visibleElements = new Map<number, string>();
 
-  const setScrollDirection = () => {
-    if (window.scrollY === 0 && lastScrollPosition.current === 0) return;
+  const callback: IntersectionObserverCallback = (entries) => {
+    entries.forEach(({ target, isIntersecting }) => {
+      if (isIntersecting) visibleElements.set((target as HTMLDivElement).offsetTop, target.id);
+      else visibleElements.delete((target as HTMLDivElement).offsetTop);
+    });
 
-    if (window.scrollY > lastScrollPosition.current) scrollDirection.current = 'down';
-    else scrollDirection.current = 'up';
-
-    lastScrollPosition.current = window.scrollY;
+    if (visibleElements.size > 0)
+      setActiveToc(Array.from(visibleElements).sort((a, b) => a[0] - b[0])[0][1]);
   };
 
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach(({ target, isIntersecting }) => {
-        setScrollDirection();
+  const options: IntersectionObserverInit = { rootMargin: '-64px 0px 0px 0px' };
 
-        if (
-          (scrollDirection.current === 'down' && !isIntersecting) ||
-          (scrollDirection.current === 'up' && isIntersecting)
-        ) {
-          setActiveToc(target.id);
-        }
-      });
-    },
-    { threshold: 1, rootMargin: '-64px 0px 0px 0px' }
-  );
-
-  const handleToc = () => {
-    setActiveToc('');
-    scrollDirection.current = '';
-    lastScrollPosition.current = 0;
-
-    const content = tocRef.current;
-
-    if (!content) return null;
+  useEffect(() => {
+    const observer = new IntersectionObserver(callback, options);
 
     const headers = <HTMLDivElement[]>[];
 
-    content.querySelectorAll<HTMLDivElement>('h1, h2, h3').forEach((header) => {
-      if (header.textContent) headers.push(header);
-    });
+    document
+      .querySelectorAll<HTMLDivElement>('h1, h2, h3')
+      .forEach((header) => header.textContent && headers.push(header));
 
-    const toc = headers
-      .filter((header) => header.textContent)
-      .map<TOC>((header, index) => ({
-        index,
-        id: header.id,
-        text: header.textContent || '',
-        offsetTop: header.offsetTop,
-      }));
+    const toc = headers.map<TOC>((header) => ({
+      id: header.id,
+      text: header.textContent || '',
+      offsetTop: header.offsetTop,
+    }));
 
     setToc(toc);
 
-    headers.forEach((header) => {
-      if (header.textContent) {
-        observer.observe(header);
-      }
-    });
+    headers.forEach((header) => observer.observe(header));
 
-    return () => {
-      observer.disconnect();
-    };
-  };
-
-  useEffect(() => {
-    handleToc();
-
-    router.events.on('routeChangeComplete', handleToc);
-
-    return () => {
-      router.events.off('routeChangeComplete', handleToc);
-    };
-  }, []);
-
-  return { tocRef };
+    return () => observer.disconnect();
+  }, [deps]);
 };
 
 export default useTOC;
