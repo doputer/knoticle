@@ -1,22 +1,21 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 import { createUserApi } from '@apis/authApi';
 import LabeledInput from '@components/common/LabeledInput';
-import Button from '@components/common/ModalButton';
+import ModalButton from '@components/common/ModalButton';
 import useFetch from '@hooks/useFetch';
+import useForm from '@hooks/useForm';
 import useModal from '@hooks/useModal';
 import { toastSuccess } from '@utils/toast';
 
-import { SignUpModalErrorMessage, SignUpModalWrapper } from './styled';
+import { SignUpModalContainer } from './styled';
 
 function SignUpModal() {
   const { closeEveryModal } = useModal();
-
-  const [errorMessage, setErrorMessage] = useState('');
-  const [isInputValid, setIsInputValid] = useState(false);
-  const [info, setInfo] = useState({
+  const { form, handleInputChange } = useForm({
     username: '',
     password: '',
+    repassword: '',
     nickname: '',
   });
   const { data: createUserData, execute: createUser } = useFetch(createUserApi);
@@ -27,41 +26,17 @@ function SignUpModal() {
     closeEveryModal();
   }, [createUserData]);
 
-  const checkUsernameValid = (username: string) => {
-    if (/[^a-zA-Z0-9]/.test(username) || username.length > 10) {
-      setErrorMessage('아이디가 형식에 맞지 않습니다.');
-      return false;
-    }
-    setErrorMessage('');
-    return true;
-  };
-
-  const checkInputsValid = () => {
-    if (checkUsernameValid(info.username) && info.password && info.nickname) {
-      setIsInputValid(true);
-    } else setIsInputValid(false);
-  };
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInfo({
-      ...info,
-      [e.target.name]: e.target.value,
-    });
-    checkInputsValid();
-  };
-
-  const handleSignUpBtnClick = () => {
-    createUser(info);
+  const handleSignUpButtonClick = () => {
+    createUser(form);
   };
 
   return (
-    <SignUpModalWrapper>
-      <SignUpModalErrorMessage>{errorMessage}</SignUpModalErrorMessage>
+    <SignUpModalContainer>
       <LabeledInput
         label="아이디"
         type="text"
         name="username"
-        placeholder="아이디를 입력해주세요(영문, 숫자 조합 10자 이내)"
+        placeholder="아이디를 입력해주세요 (영문, 숫자 조합 10자 이내)"
         onChange={handleInputChange}
       />
       <LabeledInput
@@ -72,16 +47,23 @@ function SignUpModal() {
         onChange={handleInputChange}
       />
       <LabeledInput
+        label="비밀번호"
+        type="password"
+        name="repassword"
+        placeholder="비밀번호를 다시 입력해주세요"
+        onChange={handleInputChange}
+      />
+      <LabeledInput
         label="닉네임"
         type="text"
         name="nickname"
         placeholder="닉네임을 입력해주세요"
         onChange={handleInputChange}
       />
-      <Button theme="primary" onClick={handleSignUpBtnClick} disabled={!isInputValid}>
+      <ModalButton theme="primary" onClick={handleSignUpButtonClick}>
         회원가입하기
-      </Button>
-    </SignUpModalWrapper>
+      </ModalButton>
+    </SignUpModalContainer>
   );
 }
 

@@ -1,15 +1,8 @@
 import styled from 'styled-components';
 
-import { TextSmall } from '@styles/common';
+import { FlexColumn } from '@styles/layout';
 
-export const SignUpModalWrapper = styled.div`
-  margin-top: 32px;
-  display: flex;
-  flex-direction: column;
+// eslint-disable-next-line import/prefer-default-export
+export const SignUpModalContainer = styled(FlexColumn)`
   gap: 24px;
-  box-sizing: border-box;
-`;
-
-export const SignUpModalErrorMessage = styled(TextSmall)`
-  color: var(--red-color);
 `;
