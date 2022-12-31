@@ -1,5 +1,5 @@
+import useParser from '@hooks/useParser';
 import useToc from '@hooks/useToc';
-import { markdown2html } from '@utils/parser';
 
 import { ContentBody, ContentTitle, ContentWrapper } from './styled';
 
@@ -11,16 +11,14 @@ interface ContentProps {
 }
 
 export default function Content({ title = '', content }: ContentProps) {
-  useToc(content);
+  const element = useParser(content);
+
+  useToc(element);
 
   return (
     <ContentWrapper>
       {title && <ContentTitle>{title}</ContentTitle>}
-      <ContentBody
-        dangerouslySetInnerHTML={{
-          __html: markdown2html(content),
-        }}
-      />
+      <ContentBody>{element}</ContentBody>
     </ContentWrapper>
   );
 }

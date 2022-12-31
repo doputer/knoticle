@@ -1,10 +1,10 @@
-import { useEffect } from 'react';
+import { ReactNode, useEffect } from 'react';
 
 import { useSetRecoilState } from 'recoil';
 
 import { activeTocState, type TOC, tocState } from '@atoms/tocState';
 
-const useTOC = (deps: string) => {
+const useTOC = (deps: ReactNode) => {
   const setToc = useSetRecoilState<TOC[]>(tocState);
   const setActiveToc = useSetRecoilState(activeTocState);
 
@@ -34,7 +34,6 @@ const useTOC = (deps: string) => {
     const toc = headers.map<TOC>((header) => ({
       id: header.id,
       text: header.textContent || '',
-      offsetTop: header.offsetTop,
     }));
 
     setToc(toc);
