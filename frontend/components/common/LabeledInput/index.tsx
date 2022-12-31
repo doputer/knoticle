@@ -1,6 +1,6 @@
 import { TextSmall } from '@styles/common';
 
-import { Input, LabeledInputWrapper } from './styled';
+import { Input, LabeledInputContainer } from './styled';
 
 interface LabeledInputProps {
   label: string;
@@ -12,10 +12,10 @@ interface LabeledInputProps {
 
 function LabeledInput({ label, type, name, placeholder = '', onChange }: LabeledInputProps) {
   return (
-    <LabeledInputWrapper>
+    <LabeledInputContainer>
       <TextSmall>{label}</TextSmall>
       <Input type={type} name={name} placeholder={placeholder} onChange={onChange} />
-    </LabeledInputWrapper>
+    </LabeledInputContainer>
   );
 }
 
