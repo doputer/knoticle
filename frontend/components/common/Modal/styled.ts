@@ -45,4 +45,5 @@ export const ModalButtonWrapper = styled(FlexSpaceBetween)`
 
 export const ModalTitle = styled(TextLinkMedium)`
   text-align: center;
+  margin-bottom: 32px;
 `;

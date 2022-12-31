@@ -4,12 +4,13 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
 import { localSignInApi } from '@apis/authApi';
-import GithubIcon from '@assets/ico_github.svg';
+import GitHubIcon from '@assets/ico_github.svg';
 import LabeledInput from '@components/common/LabeledInput';
-import Button from '@components/common/ModalButton';
+import ModalButton from '@components/common/ModalButton';
 import useFetch from '@hooks/useFetch';
+import { TextLinkMedium, TextSmall } from '@styles/common';
 
-import { SignInModalWrapper, SignUpButton, SignUpContainer } from './styled';
+import { SignInModalContainer, SignUpButton, SignUpWrapper } from './styled';
 
 interface SignInModalProps {
   handleSignUpModalOpen: () => void;
@@ -30,17 +31,17 @@ export default function SignInModal({ handleSignUpModalOpen }: SignInModalProps)
     });
   };
 
-  const handleSignInGithubClick = () => {
-    const GH_SIGNIN_URL = `https://github.com/login/oauth/authorize?client_id=${process.env.NEXT_PUBLIC_GH_ID}&redirect_url=${process.env.NEXT_PUBLIC_GH_CALLBACK}`;
-
-    window.location.assign(GH_SIGNIN_URL);
-  };
-
-  const handleSignInBtnOnClick = () => {
+  const handleSignInLocalClick = () => {
     localSignIn({
       username: info.username,
       password: info.password,
     });
+  };
+
+  const handleSignInGitHubClick = () => {
+    const GH_SIGNIN_URL = `https://github.com/login/oauth/authorize?client_id=${process.env.NEXT_PUBLIC_GH_ID}&redirect_url=${process.env.NEXT_PUBLIC_GH_CALLBACK}`;
+
+    window.location.assign(GH_SIGNIN_URL);
   };
 
   useEffect(() => {
@@ -50,7 +51,7 @@ export default function SignInModal({ handleSignUpModalOpen }: SignInModalProps)
   }, [user]);
 
   return (
-    <SignInModalWrapper>
+    <SignInModalContainer>
       <LabeledInput
         label="아이디"
         type="text"
@@ -65,17 +66,19 @@ export default function SignInModal({ handleSignUpModalOpen }: SignInModalProps)
         placeholder="비밀번호를 입력해주세요"
         onChange={handleInputChange}
       />
-      <Button theme="primary" onClick={handleSignInBtnOnClick}>
+      <ModalButton theme="primary" onClick={handleSignInLocalClick}>
         로그인하기
-      </Button>
-      <Button theme="second" onClick={handleSignInGithubClick}>
-        <Image src={GithubIcon} alt="Github Icon" />
+      </ModalButton>
+      <ModalButton theme="second" onClick={handleSignInGitHubClick}>
+        <Image src={GitHubIcon} alt="GitHub Icon" />
         GitHub으로 로그인하기
-      </Button>
-      <SignUpContainer>
-        <div>아직 계정이 없으신가요?</div>
-        <SignUpButton onClick={handleSignUpModalOpen}>회원가입하기</SignUpButton>
-      </SignUpContainer>
-    </SignInModalWrapper>
+      </ModalButton>
+      <SignUpWrapper>
+        <TextSmall>아직 계정이 없으신가요?</TextSmall>
+        <SignUpButton onClick={handleSignUpModalOpen}>
+          <TextLinkMedium>회원가입하기</TextLinkMedium>
+        </SignUpButton>
+      </SignUpWrapper>
+    </SignInModalContainer>
   );
 }

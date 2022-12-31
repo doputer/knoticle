@@ -1,27 +1,18 @@
 import styled from 'styled-components';
 
-import { FlexColumnAlignCenter } from '@styles/layout';
+import { FlexColumn, FlexColumnAlignCenter } from '@styles/layout';
 
-export const SignInModalWrapper = styled.div`
-  margin-top: 56px;
-  display: flex;
-  flex-direction: column;
+export const SignInModalContainer = styled(FlexColumn)`
   gap: 24px;
-  box-sizing: border-box;
 `;
 
-export const SignUpContainer = styled(FlexColumnAlignCenter)`
-  padding: 20px;
-  gap: 10px;
-
-  border-top: 1px solid var(--title-active-color);
-
-  font-size: 14px;
+export const SignUpWrapper = styled(FlexColumnAlignCenter)`
+  padding-top: 16px;
   color: var(--grey-01-color);
+  border-top: 1px solid var(--grey-01-color);
+  gap: 4px;
 `;
 
 export const SignUpButton = styled.button`
   color: var(--primary-color);
-  font-size: 16px;
-  font-weight: 700;
 `;
