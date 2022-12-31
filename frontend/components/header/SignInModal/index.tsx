@@ -3,15 +3,13 @@ import { useRouter } from 'next/router';
 
 import { useMutation } from 'react-query';
 
-import { AxiosError } from 'axios';
-
 import { localSignInApi } from '@apis/authApi';
 import GitHubIcon from '@assets/ico_github.svg';
 import LabeledInput from '@components/common/LabeledInput';
 import ModalButton from '@components/common/ModalButton';
+import useApiError from '@hooks/useApiError';
 import useForm from '@hooks/useForm';
 import { TextLinkMedium, TextSmall } from '@styles/common';
-import { toastError } from '@utils/toast';
 
 import { SignInModalContainer, SignUpButton, SignUpWrapper } from './styled';
 
@@ -23,11 +21,7 @@ export default function SignInModal({ handleSignUpModalOpen }: SignInModalProps)
   const router = useRouter();
   const { form, handleInputChange } = useForm({ username: '', password: '' });
   const { mutate: localSignIn } = useMutation(localSignInApi, {
-    onError: (error: AxiosError) => {
-      const { response } = error;
-
-      toastError((response?.data as { message: string }).message);
-    },
+    onError: useApiError,
     onSuccess: () => {
       router.reload();
     },
