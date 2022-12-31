@@ -12,8 +12,8 @@ import useModal from '@hooks/useModal';
 import { GNBContainer, Icon, IconWrapper, Logo, LogoWrapper } from './styled';
 
 export default function GNB() {
-  const SignInModal = dynamic(() => import('@components/auth/SignInModal'));
-  const SignUpModal = dynamic(() => import('@components/auth/SignUpModal'));
+  const SignInModal = dynamic(() => import('@components/header/SignInModal'));
+  const SignUpModal = dynamic(() => import('@components/header/SignUpModal'));
 
   const signInStatus = useRecoilValue(signInStatusState);
 
