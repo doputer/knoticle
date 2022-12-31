@@ -59,11 +59,14 @@ export default function Sidebar({ book, article, isOpen, handleSideBarToggle }: 
                 {scrap.order}. {scrap.article.title}
               </NavigationItem>
             ) : (
-              <NavigationItem key={scrap.id} current={false}>
-                <Link href={`/@${user.nickname}/${encodeURL(book.title, scrap.article.title)}`}>
+              <Link
+                key={scrap.id}
+                href={`/@${user.nickname}/${encodeURL(book.title, scrap.article.title)}`}
+              >
+                <NavigationItem current={false}>
                   {scrap.order}. {scrap.article.title}
-                </Link>
-              </NavigationItem>
+                </NavigationItem>
+              </Link>
             );
           })}
         </ArticleNavigation>

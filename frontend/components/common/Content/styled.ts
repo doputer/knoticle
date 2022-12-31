@@ -32,6 +32,7 @@ export const ContentBody = styled.div`
   h2,
   h3 {
     margin: 16px 0 8px 0;
+    scroll-margin-top: 64px;
   }
 
   h1 {
