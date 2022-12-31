@@ -1,15 +1,17 @@
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 
-import { useEffect } from 'react';
+import { useMutation } from 'react-query';
+
+import { AxiosError } from 'axios';
 
 import { localSignInApi } from '@apis/authApi';
 import GitHubIcon from '@assets/ico_github.svg';
 import LabeledInput from '@components/common/LabeledInput';
 import ModalButton from '@components/common/ModalButton';
-import useFetch from '@hooks/useFetch';
 import useForm from '@hooks/useForm';
 import { TextLinkMedium, TextSmall } from '@styles/common';
+import { toastError } from '@utils/toast';
 
 import { SignInModalContainer, SignUpButton, SignUpWrapper } from './styled';
 
@@ -20,7 +22,16 @@ interface SignInModalProps {
 export default function SignInModal({ handleSignUpModalOpen }: SignInModalProps) {
   const router = useRouter();
   const { form, handleInputChange } = useForm({ username: '', password: '' });
-  const { data: user, execute: localSignIn } = useFetch(localSignInApi);
+  const { mutate: localSignIn } = useMutation(localSignInApi, {
+    onError: (error: AxiosError) => {
+      const { response } = error;
+
+      toastError((response?.data as { message: string }).message);
+    },
+    onSuccess: () => {
+      router.reload();
+    },
+  });
 
   const handleSignInLocalClick = () => {
     localSignIn({ ...form });
@@ -31,12 +42,6 @@ export default function SignInModal({ handleSignUpModalOpen }: SignInModalProps)
 
     window.location.assign(GITHUB_OAUTH_URL);
   };
-
-  useEffect(() => {
-    if (!user) return;
-
-    router.reload();
-  }, [user]);
 
   return (
     <SignInModalContainer>

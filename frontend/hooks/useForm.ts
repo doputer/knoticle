@@ -1,7 +1,7 @@
 import { ChangeEvent, useCallback, useState } from 'react';
 
-const useForm = (initialForm: Record<string, string> = {}) => {
-  const [form, setForm] = useState(initialForm);
+const useForm = <T>(initialForm: T) => {
+  const [form, setForm] = useState<T>(initialForm);
 
   const handleInputChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;

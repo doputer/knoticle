@@ -5,20 +5,17 @@ interface LocalSignInApi {
   password: string;
 }
 
-interface GithubSignInApi {
-  code: string;
-}
-
-interface CreateUserApi extends LocalSignInApi {
-  nickname: string;
-}
-
 export const localSignInApi = async (data: LocalSignInApi) => {
   const url = '/api/auth/signin/local';
+
   const response = await api({ url, method: 'POST', data });
 
   return response.data;
 };
+
+interface GithubSignInApi {
+  code: string;
+}
 
 export const githubSignInApi = async (data: GithubSignInApi) => {
   const url = '/api/auth/signin/github';
@@ -43,6 +40,10 @@ export const signOutApi = async () => {
 
   return response.data;
 };
+
+interface CreateUserApi extends LocalSignInApi {
+  nickname: string;
+}
 
 export const createUserApi = async (data: CreateUserApi) => {
   const url = '/api/auth/signup';
