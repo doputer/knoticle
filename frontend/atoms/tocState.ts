@@ -3,6 +3,7 @@ import { atom } from 'recoil';
 export interface TOC {
   id: string;
   text: string;
+  tag: string;
 }
 
 export const tocState = atom<TOC[]>({

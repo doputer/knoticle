@@ -13,12 +13,12 @@ export default function TOC() {
 
   return (
     <TocContainer>
-      {toc.map(({ id, text }) => (
-        <Link key={id} href={`#${id}`}>
-          <TocItem active={activeToc === id}>
+      {toc.map(({ id, text, tag }) => (
+        <TocItem key={id} tag={tag} active={activeToc === id}>
+          <Link href={`#${id}`} shallow>
             <TextSmall>{text}</TextSmall>
-          </TocItem>
-        </Link>
+          </Link>
+        </TocItem>
       ))}
     </TocContainer>
   );

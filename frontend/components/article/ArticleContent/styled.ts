@@ -70,9 +70,14 @@ export const TocWrapper = styled.div`
   height: 0;
   position: sticky;
   top: 20%;
+
+  @media ${({ theme }) => theme.devices.desktop} {
+    display: none;
+  }
 `;
 
 export const TocInner = styled.div`
+  max-width: 200px;
   position: absolute;
   top: 0;
   right: -48px;

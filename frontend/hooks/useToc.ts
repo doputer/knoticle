@@ -34,6 +34,7 @@ const useTOC = (deps: ReactNode) => {
     const toc = headers.map<TOC>((header) => ({
       id: header.id,
       text: header.textContent || '',
+      tag: header.tagName.toLowerCase(),
     }));
 
     setToc(toc);
