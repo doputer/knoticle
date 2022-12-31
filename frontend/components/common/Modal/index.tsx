@@ -12,7 +12,7 @@ export interface ModalProps {
   hasBackward?: boolean;
 }
 
-export default function Modal({ title, hasBackward, children }: ModalProps) {
+export default function Modal({ title, hasBackward = false, children }: ModalProps) {
   const { closeModal, closeEveryModal } = useModal();
 
   return (
@@ -29,7 +29,3 @@ export default function Modal({ title, hasBackward, children }: ModalProps) {
     </ModalContainer>
   );
 }
-
-Modal.defaultProps = {
-  hasBackward: false,
-};
