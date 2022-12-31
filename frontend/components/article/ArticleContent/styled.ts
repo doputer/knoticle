@@ -61,8 +61,13 @@ export const ArticleNavigatorWrapper = styled(FlexSpaceBetween)`
     transform: translateX(32px);
   }
 
-  @media ${({ theme }) => theme.devices.mobile} {
-    display: none;
+  @media ${({ theme }) => theme.devices.tablet} {
+    top: 100%;
+
+    button:first-child,
+    button:last-child {
+      transform: translateX(0);
+    }
   }
 `;
 
