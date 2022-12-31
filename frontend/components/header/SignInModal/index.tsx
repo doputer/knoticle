@@ -1,13 +1,14 @@
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 import { localSignInApi } from '@apis/authApi';
 import GitHubIcon from '@assets/ico_github.svg';
 import LabeledInput from '@components/common/LabeledInput';
 import ModalButton from '@components/common/ModalButton';
 import useFetch from '@hooks/useFetch';
+import useForm from '@hooks/useForm';
 import { TextLinkMedium, TextSmall } from '@styles/common';
 
 import { SignInModalContainer, SignUpButton, SignUpWrapper } from './styled';
@@ -17,31 +18,18 @@ interface SignInModalProps {
 }
 
 export default function SignInModal({ handleSignUpModalOpen }: SignInModalProps) {
-  const [info, setInfo] = useState({
-    username: '',
-    password: '',
-  });
-  const { data: user, execute: localSignIn } = useFetch(localSignInApi);
   const router = useRouter();
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInfo({
-      ...info,
-      [e.target.name]: e.target.value,
-    });
-  };
+  const { form, handleInputChange } = useForm({ username: '', password: '' });
+  const { data: user, execute: localSignIn } = useFetch(localSignInApi);
 
   const handleSignInLocalClick = () => {
-    localSignIn({
-      username: info.username,
-      password: info.password,
-    });
+    localSignIn({ ...form });
   };
 
   const handleSignInGitHubClick = () => {
-    const GH_SIGNIN_URL = `https://github.com/login/oauth/authorize?client_id=${process.env.NEXT_PUBLIC_GH_ID}&redirect_url=${process.env.NEXT_PUBLIC_GH_CALLBACK}`;
+    const GITHUB_OAUTH_URL = `https://github.com/login/oauth/authorize?client_id=${process.env.NEXT_PUBLIC_GH_ID}&redirect_url=${process.env.NEXT_PUBLIC_GH_CALLBACK}`;
 
-    window.location.assign(GH_SIGNIN_URL);
+    window.location.assign(GITHUB_OAUTH_URL);
   };
 
   useEffect(() => {
