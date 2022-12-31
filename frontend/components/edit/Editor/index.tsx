@@ -37,7 +37,7 @@ interface EditorProps {
   originalArticle?: IArticle;
 }
 
-export default function Editor({ handleModalOpen, originalArticle }: EditorProps) {
+export default function Editor({ handleModalOpen, originalArticle = undefined }: EditorProps) {
   const {
     ref,
     document,
@@ -137,7 +137,3 @@ export default function Editor({ handleModalOpen, originalArticle }: EditorProps
     </EditorWrapper>
   );
 }
-
-Editor.defaultProps = {
-  originalArticle: '',
-};

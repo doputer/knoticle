@@ -10,7 +10,7 @@ interface LabeledInputProps {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-function LabeledInput({ label, type, name, placeholder, onChange }: LabeledInputProps) {
+function LabeledInput({ label, type, name, placeholder = '', onChange }: LabeledInputProps) {
   return (
     <LabeledInputWrapper>
       <TextSmall>{label}</TextSmall>
@@ -20,7 +20,3 @@ function LabeledInput({ label, type, name, placeholder, onChange }: LabeledInput
 }
 
 export default LabeledInput;
-
-LabeledInput.defaultProps = {
-  placeholder: '',
-};

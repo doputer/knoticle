@@ -61,7 +61,30 @@ export const ArticleNavigatorWrapper = styled(FlexSpaceBetween)`
     transform: translateX(32px);
   }
 
-  @media ${({ theme }) => theme.devices.mobile} {
+  @media ${({ theme }) => theme.devices.tablet} {
+    top: 100%;
+
+    button:first-child,
+    button:last-child {
+      transform: translateX(0);
+    }
+  }
+`;
+
+export const TocWrapper = styled.div`
+  height: 0;
+  position: sticky;
+  top: 20%;
+
+  @media ${({ theme }) => theme.devices.desktop} {
     display: none;
   }
+`;
+
+export const TocInner = styled.div`
+  max-width: 200px;
+  position: absolute;
+  top: 0;
+  right: -48px;
+  transform: translate(100%, 0);
 `;

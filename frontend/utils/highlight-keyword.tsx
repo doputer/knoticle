@@ -1,3 +1,8 @@
+import remarkParse from 'remark-parse';
+import remarkStringify from 'remark-stringify';
+import stripMarkdown from 'strip-markdown';
+import { unified } from 'unified';
+
 const getFirstKeyword = (text: string, keywords: string[]) => {
   const keywordMap = new Map<number, string>();
 
@@ -19,7 +24,14 @@ const getFirstKeyword = (text: string, keywords: string[]) => {
   };
 };
 
-export const getTextAfterLastNewLine = (text: string, keywords: string[]) => {
+export const getTextAfterLastNewLine = (markdown: string, keywords: string[]) => {
+  const text = unified()
+    .use(remarkParse)
+    .use(stripMarkdown)
+    .use(remarkStringify)
+    .processSync(markdown)
+    .toString();
+
   const { index } = getFirstKeyword(text, keywords);
 
   const newLineIndex = text.slice(0, index).lastIndexOf('\n');

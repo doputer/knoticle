@@ -65,6 +65,12 @@
     ],
     "prettier/prettier": ["error", { "endOfLine": "auto" }],
     "react/react-in-jsx-scope": "off",
+    "react/require-default-props": [
+      "error",
+      {
+        "functions": "defaultArguments"
+      }
+    ],
     "react/jsx-filename-extension": ["error", { "extensions": [".ts", ".tsx"] }],
     "react/jsx-props-no-spreading": "off",
     "react-hooks/exhaustive-deps": "off"

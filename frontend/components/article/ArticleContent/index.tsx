@@ -15,6 +15,7 @@ import RightArrowIcon from '@assets/ico_rightBtn.svg';
 import StarIcon from '@assets/ico_star.svg';
 import TrashIcon from '@assets/ico_trash.svg';
 import signInStatusState from '@atoms/signInStatus';
+import TOC from '@components/article/TOC';
 import Content from '@components/common/Content';
 import IconButton from '@components/common/IconButton';
 import useModal from '@hooks/useModal';
@@ -30,6 +31,8 @@ import {
   ArticleHeader,
   ArticleNavigatorWrapper,
   ArticleTitle,
+  TocInner,
+  TocWrapper,
 } from './styled';
 
 interface ArticleProps {
@@ -156,6 +159,12 @@ export default function Article({
 
   return (
     <ArticleContainer>
+      <TocWrapper>
+        <TocInner>
+          <TOC />
+        </TocInner>
+      </TocWrapper>
+
       <ArticleHeader>
         <ArticleTitle>{article.title}</ArticleTitle>
         <ArticleButtonWrapper>

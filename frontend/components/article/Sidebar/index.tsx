@@ -1,6 +1,5 @@
 import Image from 'next/image';
-
-import { useState } from 'react';
+import Link from 'next/link';
 
 import Bookmark from '@assets/ico_bookmark.svg';
 import BookmarkFilled from '@assets/ico_bookmark_white_filled.svg';
@@ -11,15 +10,12 @@ import useBookmark from '@hooks/useBookmark';
 import { IArticleBook, IBookScraps } from '@interfaces';
 import { TextMedium, TextSmall } from '@styles/common';
 import encodeURL from '@utils/encode-url';
-import { parseHeadings } from '@utils/toc';
 
 import {
-  ArticleLink,
-  ArticleList,
-  ArticleListTitle,
-  ArticleTitle,
+  ArticleNavigation,
   BookmarkButton,
-  CurrentArticle,
+  NavigationItem,
+  NavigationTitle,
   ProfileImage,
   ProfileLabel,
   SidebarContainer,
@@ -27,7 +23,6 @@ import {
   SidebarHeader,
   SidebarOpenButton,
   SidebarTitle,
-  TocArticleTitle,
 } from './styled';
 
 interface SidebarProps {
@@ -39,14 +34,9 @@ interface SidebarProps {
 
 export default function Sidebar({ book, article, isOpen, handleSideBarToggle }: SidebarProps) {
   const { title, user, scraps } = book;
-  const { id: articleId, content } = article;
+  const { id: articleId } = article;
 
   const { handleBookmarkClick, curBookmarkCnt, curBookmarkId } = useBookmark(book);
-  const [isTocVisible, setTocVisible] = useState(true);
-
-  const handleTocToggle = () => {
-    setTocVisible((prev) => !prev);
-  };
 
   return (
     <>
@@ -61,31 +51,25 @@ export default function Sidebar({ book, article, isOpen, handleSideBarToggle }: 
 
         <SidebarTitle>{title}</SidebarTitle>
 
-        <ArticleList>
-          <ArticleListTitle>목차</ArticleListTitle>
+        <ArticleNavigation>
+          <NavigationTitle>목차</NavigationTitle>
           {scraps.map((scrap) => {
-            return scrap.article.id !== articleId ? (
-              <ArticleLink
-                href={`/@${user.nickname}/${encodeURL(book.title, scrap.article.title)}`}
-                key={scrap.id}
-              >
+            return scrap.article.id === articleId ? (
+              <NavigationItem key={scrap.id} current>
                 {scrap.order}. {scrap.article.title}
-              </ArticleLink>
+              </NavigationItem>
             ) : (
-              <CurrentArticle key={scrap.id}>
-                <ArticleTitle onClick={handleTocToggle}>
+              <Link
+                key={scrap.id}
+                href={`/@${user.nickname}/${encodeURL(book.title, scrap.article.title)}`}
+              >
+                <NavigationItem current={false}>
                   {scrap.order}. {scrap.article.title}
-                </ArticleTitle>
-                {isTocVisible &&
-                  parseHeadings(content).map(({ heading, link, padding }) => (
-                    <TocArticleTitle key={link} href={link} padding={padding}>
-                      {heading}
-                    </TocArticleTitle>
-                  ))}
-              </CurrentArticle>
+                </NavigationItem>
+              </Link>
             );
           })}
-        </ArticleList>
+        </ArticleNavigation>
 
         <SidebarFooter href={`/@${user.nickname}`}>
           <ProfileLabel>

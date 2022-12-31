@@ -32,6 +32,7 @@ export const ContentBody = styled.div`
   h2,
   h3 {
     margin: 16px 0 8px 0;
+    scroll-margin-top: 64px;
   }
 
   h1 {
@@ -62,10 +63,6 @@ export const ContentBody = styled.div`
   p {
     img {
       width: 100%;
-
-      @media ${({ theme }) => theme.devices.desktop} {
-        width: 100%;
-      }
     }
   }
 
@@ -95,6 +92,7 @@ export const ContentBody = styled.div`
   }
 
   pre {
+    display: none;
     margin: 16px 0;
     padding: 16px;
     background-color: var(--light-orange-color);
