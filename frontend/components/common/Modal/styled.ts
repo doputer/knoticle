@@ -1,16 +1,7 @@
 import styled from 'styled-components';
 
 import { TextLinkMedium } from '@styles/common';
-import { FlexCenter } from '@styles/layout';
-
-export const Dimmed = styled.div`
-  position: fixed;
-  top: 0px;
-  left: 0px;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.3);
-`;
+import { FlexCenter, FlexSpaceBetween } from '@styles/layout';
 
 export const ModalContainer = styled(FlexCenter)`
   position: fixed;
@@ -19,6 +10,15 @@ export const ModalContainer = styled(FlexCenter)`
   width: 100vw;
   height: 100vh;
   z-index: 200;
+`;
+
+export const Dimmed = styled.div`
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
 `;
 
 export const ModalInner = styled.div`
@@ -39,13 +39,8 @@ export const ModalInner = styled.div`
   }
 `;
 
-export const ButtonWrapper = styled.div<{ hasBackward?: boolean }>`
-  display: flex;
-  justify-content: space-between;
-
-  img:first-child {
-    visibility: ${(props) => (props.hasBackward ? 'visible' : 'hidden')};
-  }
+export const ModalButtonWrapper = styled(FlexSpaceBetween)`
+  margin-bottom: 8px;
 `;
 
 export const ModalTitle = styled(TextLinkMedium)`
