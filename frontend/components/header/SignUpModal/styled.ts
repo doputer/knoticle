@@ -4,5 +4,5 @@ import { FlexColumn } from '@styles/layout';
 
 // eslint-disable-next-line import/prefer-default-export
 export const SignUpModalContainer = styled(FlexColumn)`
-  gap: 24px;
+  gap: 32px;
 `;
