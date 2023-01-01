@@ -1,6 +1,6 @@
 import Image from 'next/image';
 
-import CancelIcon from '@assets/ico_cancel.svg';
+import CancelIcon from '@assets/ico_close.svg';
 import ModalButton from '@components/common/ModalButton';
 import useModal from '@hooks/useModal';
 

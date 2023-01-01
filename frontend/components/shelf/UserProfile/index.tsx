@@ -3,12 +3,10 @@ import { useRouter } from 'next/router';
 
 import { useEffect } from 'react';
 
-import { useRecoilState } from 'recoil';
-
 import { signOutApi } from '@apis/authApi';
 import Edit from '@assets/ico_edit.svg';
-import signInStatusState from '@atoms/signInStatus';
 import useFetch from '@hooks/useFetch';
+import useUser from '@hooks/useUser';
 import { IUser } from '@interfaces';
 import { TextLinkMedium } from '@styles/common';
 
@@ -30,8 +28,7 @@ interface UserProfileProps {
 
 export default function UserProfile({ curUserProfile, handleEditBtnClick }: UserProfileProps) {
   const router = useRouter();
-
-  const [signInStatus, setSignInStatus] = useRecoilState(signInStatusState);
+  const { signInUser, clearUser } = useUser();
   const { data: user, execute: signOut } = useFetch(signOutApi);
 
   const handleLogoutBtnClick = () => {
@@ -41,9 +38,8 @@ export default function UserProfile({ curUserProfile, handleEditBtnClick }: User
   useEffect(() => {
     if (!user) return;
 
-    setSignInStatus({
-      ...user,
-    });
+    clearUser();
+
     router.push('/');
   }, [user]);
 
@@ -54,7 +50,7 @@ export default function UserProfile({ curUserProfile, handleEditBtnClick }: User
         <Username>{curUserProfile.nickname}</Username>
         <UserDescription>{curUserProfile.description}</UserDescription>
 
-        <ButtonGroup isVisible={signInStatus.id !== 0 && signInStatus.id === curUserProfile.id}>
+        <ButtonGroup isVisible={signInUser.id !== 0 && signInUser.id === curUserProfile.id}>
           <ProfileEditButton type="button" onClick={handleEditBtnClick}>
             <TextLinkMedium>프로필 수정</TextLinkMedium>
             <Image src={Edit} alt="profile_edit" />

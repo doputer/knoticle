@@ -1,4 +1,4 @@
-import GNB from '@components/common/GNB';
+import GNB from '@components/header/GNB';
 
 import { PageContainer } from './styled';
 
