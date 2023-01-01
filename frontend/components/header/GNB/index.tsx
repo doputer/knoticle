@@ -3,8 +3,8 @@ import Link from 'next/link';
 
 import ArticleIcon from '@assets/ico_article.svg';
 import LoginIcon from '@assets/ico_login.svg';
-import PersonIcon from '@assets/ico_person.svg';
 import SearchIcon from '@assets/ico_search.svg';
+import Profile from '@components/header/Profile';
 import useModal from '@hooks/useModal';
 import useUser from '@hooks/useUser';
 
@@ -14,7 +14,7 @@ export default function GNB() {
   const SignInModal = dynamic(() => import('@components/header/SignInModal'));
   const SignUpModal = dynamic(() => import('@components/header/SignUpModal'));
 
-  const { signInUser, isSignInUser } = useUser();
+  const { isSignInUser } = useUser();
   const { openModal } = useModal();
 
   const handleSignUpModalOpen = () => {
@@ -53,9 +53,7 @@ export default function GNB() {
             <Link href="/write">
               <Icon src={ArticleIcon} alt="Article Icon" />
             </Link>
-            <Link href={`/@${signInUser.nickname}`}>
-              <Icon src={PersonIcon} alt="Person Icon" />
-            </Link>
+            <Profile />
           </>
         ) : (
           <Icon src={LoginIcon} alt="Login Icon" onClick={handleSignInModalOpen} />
