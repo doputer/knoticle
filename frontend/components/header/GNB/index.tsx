@@ -6,7 +6,7 @@ import { useRecoilValue } from 'recoil';
 import ArticleIcon from '@assets/ico_article.svg';
 import PersonIcon from '@assets/ico_person.svg';
 import SearchIcon from '@assets/ico_search.svg';
-import signInStatusState from '@atoms/signInStatus';
+import signInUserState from '@atoms/signInUserState';
 import useModal from '@hooks/useModal';
 
 import { GNBContainer, Icon, IconWrapper, Logo, LogoWrapper } from './styled';
@@ -15,7 +15,7 @@ export default function GNB() {
   const SignInModal = dynamic(() => import('@components/header/SignInModal'));
   const SignUpModal = dynamic(() => import('@components/header/SignUpModal'));
 
-  const signInStatus = useRecoilValue(signInStatusState);
+  const signInUser = useRecoilValue(signInUserState);
 
   const { openModal } = useModal();
 
@@ -47,12 +47,12 @@ export default function GNB() {
       </LogoWrapper>
 
       <IconWrapper>
-        {signInStatus.id !== 0 ? (
+        {signInUser.id !== 0 ? (
           <>
             <Link href="/write">
               <Icon src={ArticleIcon} alt="Article Icon" />
             </Link>
-            <Link href={`/@${signInStatus.nickname}`}>
+            <Link href={`/@${signInUser.nickname}`}>
               <Icon src={PersonIcon} alt="Person Icon" />
             </Link>
           </>

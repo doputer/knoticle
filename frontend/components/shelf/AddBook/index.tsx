@@ -5,7 +5,7 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import { addBookApi } from '@apis/bookApi';
 import SampleThumbnail from '@assets/img_sample_thumbnail.jpg';
 import curKnottedBookListState from '@atoms/curKnottedBookList';
-import signInStatusState from '@atoms/signInStatus';
+import signInUserState from '@atoms/signInUserState';
 import Button from '@components/common/ModalButton';
 import useFetch from '@hooks/useFetch';
 import useInput from '@hooks/useInput';
@@ -30,7 +30,7 @@ export default function AddBook() {
   const { closeEveryModal } = useModal();
 
   const [curKnottedBookList, setCurKnottedBookList] = useRecoilState(curKnottedBookListState);
-  const user = useRecoilValue(signInStatusState);
+  const signInUser = useRecoilValue(signInUserState);
   const title = useInput('');
   const { data: addBookData, execute: addBook } = useFetch(addBookApi);
 
@@ -58,7 +58,7 @@ export default function AddBook() {
           <FlexSpaceBetween>
             <BookTitle>
               <Input type="text" placeholder="제목을 입력하세요." {...title} />
-              <Author>by {user.nickname}</Author>
+              <Author>by {signInUser.nickname}</Author>
             </BookTitle>
           </FlexSpaceBetween>
           <BookContentsInfo>

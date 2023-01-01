@@ -7,7 +7,7 @@ import { useRecoilValue } from 'recoil';
 
 import { getArticleApi } from '@apis/articleApi';
 import { getUserKnottedBooksApi } from '@apis/bookApi';
-import signInStatusState from '@atoms/signInStatus';
+import signInUserState from '@atoms/signInUserState';
 import EditHead from '@components/edit/EditHead';
 import Editor from '@components/edit/Editor';
 import useFetch from '@hooks/useFetch';
@@ -29,7 +29,7 @@ export default function WritePage() {
   const { data: books, execute: getUserKnottedBooks } = useFetch(getUserKnottedBooksApi);
   const { data: article, execute: getArticle } = useFetch(getArticleApi);
 
-  const user = useRecoilValue(signInStatusState);
+  const signInUser = useRecoilValue(signInUserState);
 
   const syncHeight = () => {
     document.documentElement.style.setProperty('--window-inner-height', `${window.innerHeight}px`);
@@ -64,8 +64,8 @@ export default function WritePage() {
   }, []);
 
   useEffect(() => {
-    getUserKnottedBooks(user.nickname);
-  }, [user.nickname]);
+    getUserKnottedBooks(signInUser.nickname);
+  }, [signInUser.nickname]);
 
   useEffect(() => {
     if (router.query.id) getArticle({ id: router.query.id });
@@ -74,7 +74,7 @@ export default function WritePage() {
   useEffect(() => {
     if (!article) return;
 
-    if (article.book.user.nickname !== user.nickname) {
+    if (article.book.signInUser.nickname !== signInUser.nickname) {
       toastError('수정 권한이 없습니다.');
       router.push('/');
       return;

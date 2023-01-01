@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 import { useSetRecoilState } from 'recoil';
 
 import { githubSignInApi } from '@apis/authApi';
-import signInStatusState from '@atoms/signInStatus';
+import signInUserState from '@atoms/signInUserState';
 import Spinner from '@components/common/Spinner';
 import useFetch from '@hooks/useFetch';
 import { FlexColumnCenter, FullPageWrapper } from '@styles/layout';
@@ -14,7 +14,7 @@ import { toastError } from '@utils/toast';
 export default function Github() {
   const router = useRouter();
 
-  const setSignInStatus = useSetRecoilState(signInStatusState);
+  const setSignInUser = useSetRecoilState(signInUserState);
   const { data: user, execute: githubSignIn } = useFetch(githubSignInApi);
 
   useEffect(() => {
@@ -32,7 +32,7 @@ export default function Github() {
   useEffect(() => {
     if (!user) return;
 
-    setSignInStatus({ ...user });
+    setSignInUser({ ...user });
 
     router.push('/');
   }, [user]);

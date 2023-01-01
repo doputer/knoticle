@@ -9,7 +9,7 @@ import { getUserBookmarkedBooksApi, getUserKnottedBooksApi } from '@apis/bookApi
 import { getUserProfileApi, updateUserProfileApi } from '@apis/userApi';
 import curBookmarkedBookListState from '@atoms/curBookmarkedBookList';
 import curKnottedBookListState from '@atoms/curKnottedBookList';
-import signInStatusState from '@atoms/signInStatus';
+import signInUserState from '@atoms/signInUserState';
 import HeaderLayout from '@components/layout/HeaderLayout';
 import BookListTab from '@components/shelf/BookListTab';
 import EditUserProfile from '@components/shelf/EditUserProfile';
@@ -36,7 +36,7 @@ export default function ShelfPage({ userProfile }: ShelfPageProps) {
   const { data: bookmarkedBookList, execute: getBookmarkedBookList } =
     useFetch(getUserBookmarkedBooksApi);
 
-  const [signInStatus, setSignInStatus] = useRecoilState(signInStatusState);
+  const [signInUser, setSignInUser] = useRecoilState(signInUserState);
   const [curKnottedBookList, setCurKnottedBookList] = useRecoilState(curKnottedBookListState);
   const [curBookmarkedBookList, setCurBookmarkedBookList] = useRecoilState(
     curBookmarkedBookListState
@@ -72,8 +72,8 @@ export default function ShelfPage({ userProfile }: ShelfPageProps) {
     if (updatedUserProfile === undefined || !curUserProfile) return;
 
     setIsEditing(false);
-    setSignInStatus({
-      ...signInStatus,
+    setSignInUser({
+      ...signInUser,
       nickname: curUserProfile.nickname,
     });
     window.history.replaceState(null, '', `/@${curUserProfile.nickname}`);
@@ -117,7 +117,7 @@ export default function ShelfPage({ userProfile }: ShelfPageProps) {
           <BookListTab
             knottedBookList={curKnottedBookList}
             bookmarkedBookList={curBookmarkedBookList}
-            isUserMatched={signInStatus.id === curUserProfile.id}
+            isUserMatched={signInUser.id === curUserProfile.id}
           />
         </PageInnerLarge>
       )}
