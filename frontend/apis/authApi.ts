@@ -13,11 +13,11 @@ export const localSignInApi = async (data: LocalSignInApi) => {
   return response.data;
 };
 
-interface GithubSignInApi {
+interface GitHubSignInApi {
   code: string;
 }
 
-export const githubSignInApi = async (data: GithubSignInApi) => {
+export const githubSignInApi = async (data: GitHubSignInApi) => {
   const url = '/api/auth/signin/github';
 
   const response = await api({ url, method: 'POST', data });

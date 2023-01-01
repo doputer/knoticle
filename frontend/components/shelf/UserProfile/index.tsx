@@ -3,12 +3,10 @@ import { useRouter } from 'next/router';
 
 import { useEffect } from 'react';
 
-import { useRecoilState } from 'recoil';
-
 import { signOutApi } from '@apis/authApi';
 import Edit from '@assets/ico_edit.svg';
-import signInUserState from '@atoms/signInUserState';
 import useFetch from '@hooks/useFetch';
+import useUser from '@hooks/useUser';
 import { IUser } from '@interfaces';
 import { TextLinkMedium } from '@styles/common';
 
@@ -30,8 +28,7 @@ interface UserProfileProps {
 
 export default function UserProfile({ curUserProfile, handleEditBtnClick }: UserProfileProps) {
   const router = useRouter();
-
-  const [signInUser, setSignInUser] = useRecoilState(signInUserState);
+  const { signInUser, clearUser } = useUser();
   const { data: user, execute: signOut } = useFetch(signOutApi);
 
   const handleLogoutBtnClick = () => {
@@ -41,9 +38,8 @@ export default function UserProfile({ curUserProfile, handleEditBtnClick }: User
   useEffect(() => {
     if (!user) return;
 
-    setSignInUser({
-      ...user,
-    });
+    clearUser();
+
     router.push('/');
   }, [user]);
 

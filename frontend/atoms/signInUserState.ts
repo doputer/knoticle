@@ -1,12 +1,12 @@
 import { atom } from 'recoil';
 
-interface SignInUserState {
+export interface SignInUser {
   id: number;
   nickname: string;
   profile_image: string;
 }
 
-const signInUserState = atom<SignInUserState>({
+const signInUserState = atom<SignInUser>({
   key: 'signInUserState',
   default: {
     id: 0,

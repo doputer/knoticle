@@ -1,18 +1,14 @@
 import { useQuery } from 'react-query';
 
-import { useSetRecoilState } from 'recoil';
-
 import { checkSignInApi } from '@apis/authApi';
-import signInUserState from '@atoms/signInUserState';
+import useUser from '@hooks/useUser';
 
 export default function Authentication() {
-  const setSignInUser = useSetRecoilState(signInUserState);
+  const { setUser } = useUser();
 
   useQuery('checkSignIn', checkSignInApi, {
     refetchOnWindowFocus: false,
-    onSuccess: (user) => {
-      setSignInUser(user);
-    },
+    onSuccess: setUser,
   });
 
   return null;

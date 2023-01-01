@@ -9,13 +9,13 @@ import { getUserBookmarkedBooksApi, getUserKnottedBooksApi } from '@apis/bookApi
 import { getUserProfileApi, updateUserProfileApi } from '@apis/userApi';
 import curBookmarkedBookListState from '@atoms/curBookmarkedBookList';
 import curKnottedBookListState from '@atoms/curKnottedBookList';
-import signInUserState from '@atoms/signInUserState';
 import HeaderLayout from '@components/layout/HeaderLayout';
 import BookListTab from '@components/shelf/BookListTab';
 import EditUserProfile from '@components/shelf/EditUserProfile';
 import StudyHead from '@components/shelf/StudyHead';
 import UserProfile from '@components/shelf/UserProfile';
 import useFetch from '@hooks/useFetch';
+import useUser from '@hooks/useUser';
 import { IUser } from '@interfaces';
 import { PageInnerLarge } from '@styles/layout';
 
@@ -30,13 +30,12 @@ interface ShelfPageProps {
 
 export default function ShelfPage({ userProfile }: ShelfPageProps) {
   const router = useRouter();
-
+  const { signInUser, setUser } = useUser();
   const { data: updatedUserProfile, execute: updateUserProfile } = useFetch(updateUserProfileApi);
   const { data: knottedBookList, execute: getKnottedBookList } = useFetch(getUserKnottedBooksApi);
   const { data: bookmarkedBookList, execute: getBookmarkedBookList } =
     useFetch(getUserBookmarkedBooksApi);
 
-  const [signInUser, setSignInUser] = useRecoilState(signInUserState);
   const [curKnottedBookList, setCurKnottedBookList] = useRecoilState(curKnottedBookListState);
   const [curBookmarkedBookList, setCurBookmarkedBookList] = useRecoilState(
     curBookmarkedBookListState
@@ -72,7 +71,7 @@ export default function ShelfPage({ userProfile }: ShelfPageProps) {
     if (updatedUserProfile === undefined || !curUserProfile) return;
 
     setIsEditing(false);
-    setSignInUser({
+    setUser({
       ...signInUser,
       nickname: curUserProfile.nickname,
     });
