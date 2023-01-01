@@ -1,25 +1,33 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
-import { TextMedium } from '@styles/common';
+import { TextSmall } from '@styles/common';
 
-export const CustomButton = styled.button<{ theme: 'primary' | 'second' }>`
-  padding: 16px 0;
+export const ModalButtonContainer = styled.button<{ theme: 'primary' | 'second' }>`
+  padding: 8px 0;
   width: 100%;
-  border-radius: 10px;
-  border: 1px solid var(--grey-02-color);
+  height: 50px;
+  border-radius: 8px;
   border: none;
 
   ${(props) =>
     props.theme === 'primary'
-      ? { 'background-color': 'var(--primary-color)', color: 'var(--white-color)' }
-      : {
-          'background-color': 'transparent',
-          border: '1px solid var(--primary-color)',
-          color: 'var(--title-active-color)',
-        }};
+      ? css`
+          background-color: var(--primary-color);
+          color: var(--white-color);
+        `
+      : css`
+          background-color: transparent;
+          color: var(--title-active-color);
+          border: 1px solid var(--primary-color);
+        `}
+
+  :disabled {
+    background-color: var(--grey-02-color);
+    cursor: not-allowed;
+  }
 `;
 
-export const Label = styled(TextMedium)`
+export const Label = styled(TextSmall)`
   display: flex;
   justify-content: center;
   align-items: center;

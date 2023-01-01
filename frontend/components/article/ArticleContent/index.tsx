@@ -14,7 +14,7 @@ import OriginIcon from '@assets/ico_origin.svg';
 import RightArrowIcon from '@assets/ico_rightBtn.svg';
 import StarIcon from '@assets/ico_star.svg';
 import TrashIcon from '@assets/ico_trash.svg';
-import signInStatusState from '@atoms/signInStatus';
+import signInUserState from '@atoms/signInUserState';
 import TOC from '@components/article/TOC';
 import Content from '@components/common/Content';
 import IconButton from '@components/common/IconButton';
@@ -55,7 +55,7 @@ export default function Article({
 
   const router = useRouter();
   const { openModal } = useModal();
-  const user = useRecoilValue(signInStatusState);
+  const signInUser = useRecoilValue(signInUserState);
 
   const navigateArticle = (diff: -1 | 1) => {
     const currentScrapIndex = scraps.findIndex((scrap) => scrap.article.id === article.id);
@@ -168,7 +168,7 @@ export default function Article({
       <ArticleHeader>
         <ArticleTitle>{article.title}</ArticleTitle>
         <ArticleButtonWrapper>
-          {article.book_id === bookId && article.book.user.nickname === user.nickname && (
+          {article.book_id === bookId && article.book.user.nickname === signInUser.nickname && (
             <>
               <ArticleButton onClick={handleUpdateArticleButtonClick}>
                 <Image src={EditIcon} alt="Edit Icon" width={20} height={20} />
@@ -180,13 +180,13 @@ export default function Article({
               </ArticleButton>
             </>
           )}
-          {user.id !== 0 && (
+          {signInUser.id !== 0 && (
             <ArticleButton onClick={handleScrapModalOpen}>
               <Image src={StarIcon} alt="Star Icon" width={20} height={20} />
               <TextSmall>스크랩</TextSmall>
             </ArticleButton>
           )}
-          {article.book_id !== bookId && owner === user.nickname && (
+          {article.book_id !== bookId && owner === signInUser.nickname && (
             <ArticleButton onClick={handleDeleteScrapButtonClick}>
               <Image src={TrashIcon} alt="Trash Icon" width={20} height={20} />
               <TextSmall>스크랩 삭제</TextSmall>

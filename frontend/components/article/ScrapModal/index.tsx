@@ -5,7 +5,7 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import { getUserKnottedBooksApi } from '@apis/bookApi';
 import { createScrapApi } from '@apis/scrapApi';
 import scrapState from '@atoms/scrap';
-import signInStatusState from '@atoms/signInStatus';
+import signInUserState from '@atoms/signInUserState';
 import DragArticle from '@components/common/DragDrop';
 import Dropdown from '@components/common/Dropdown';
 import ModalButton from '@components/common/ModalButton';
@@ -29,7 +29,7 @@ export default function ScrapModal({ article }: ScrapModalProps) {
   const { data: books, execute: getUserKnottedBooks } =
     useFetch<IBookScraps[]>(getUserKnottedBooksApi);
 
-  const user = useRecoilValue(signInStatusState);
+  const signInUser = useRecoilValue(signInUserState);
 
   const [scrapList, setScrapList] = useRecoilState(scrapState);
 
@@ -67,8 +67,8 @@ export default function ScrapModal({ article }: ScrapModalProps) {
     createScrap({ book_id: selectedBookIndex, article_id: article.id, scraps });
   };
   useEffect(() => {
-    getUserKnottedBooks(user.nickname);
-  }, [user.nickname]);
+    getUserKnottedBooks(signInUser.nickname);
+  }, [signInUser.nickname]);
 
   useEffect(() => {
     if (selectedBookIndex === -1 || !books) return;

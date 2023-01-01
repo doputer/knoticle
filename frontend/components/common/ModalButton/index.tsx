@@ -1,4 +1,4 @@
-import { CustomButton, Label } from './styled';
+import { Label, ModalButtonContainer } from './styled';
 
 interface ButtonProps {
   theme: 'primary' | 'second';
@@ -9,8 +9,8 @@ interface ButtonProps {
 
 export default function ModalButton({ theme, children, onClick, disabled = false }: ButtonProps) {
   return (
-    <CustomButton type="button" onClick={onClick} theme={theme} disabled={disabled}>
+    <ModalButtonContainer type="button" onClick={onClick} theme={theme} disabled={disabled}>
       <Label>{children}</Label>
-    </CustomButton>
+    </ModalButtonContainer>
   );
 }

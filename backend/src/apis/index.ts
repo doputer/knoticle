@@ -20,7 +20,7 @@ router.post('/auth/signin/local', catchAsync(authController.signIn));
 router.post('/auth/signin/github', catchAsync(authController.signInGithub));
 router.post('/auth/signup', catchAsync(authController.signUp));
 router.get('/auth/signout', catchAsync(authController.signOut));
-router.get('/auth', guard, tokenErrorHandler, catchAsync(authController.checkSignInStatus));
+router.get('/auth', guard, tokenErrorHandler, catchAsync(authController.checkSignIn));
 
 router.get('/articles/temporary', guard, catchAsync(articlesController.getTemporaryArticle));
 router.post('/articles/temporary', guard, catchAsync(articlesController.createTemporaryArticle));

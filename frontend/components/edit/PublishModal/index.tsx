@@ -7,7 +7,7 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import { createArticleApi } from '@apis/articleApi';
 import articleState from '@atoms/article';
 import scrapState from '@atoms/scrap';
-import signInStatusState from '@atoms/signInStatus';
+import signInUserState from '@atoms/signInUserState';
 import DragArticle from '@components/common/DragDrop';
 import Dropdown from '@components/common/Dropdown';
 import ModalButton from '@components/common/ModalButton';
@@ -29,7 +29,7 @@ export default function PublishModal({ books }: PublishModalProps) {
 
   // 전역으로 관리해야할까?
   const [article, setArticle] = useRecoilState(articleState);
-  const signInStatus = useRecoilValue(signInStatusState);
+  const signInUser = useRecoilValue(signInUserState);
 
   const [selectedBookIndex, setSelectedBookIndex] = useState(-1);
   const [filteredScraps, setFilteredScraps] = useState<IScrap[]>([]);
@@ -83,7 +83,7 @@ export default function PublishModal({ books }: PublishModalProps) {
 
       if (!bookTitle) return;
 
-      router.push(`/@${signInStatus.nickname}/${encodeURL(bookTitle, title)}`);
+      router.push(`/@${signInUser.nickname}/${encodeURL(bookTitle, title)}`);
 
       toastSuccess(`${title}글이 발행되었습니다.`);
     }

@@ -9,7 +9,6 @@ import { getUserBookmarkedBooksApi, getUserKnottedBooksApi } from '@apis/bookApi
 import { getUserProfileApi, updateUserProfileApi } from '@apis/userApi';
 import curBookmarkedBookListState from '@atoms/curBookmarkedBookList';
 import curKnottedBookListState from '@atoms/curKnottedBookList';
-import signInStatusState from '@atoms/signInStatus';
 import HeaderLayout from '@components/layout/HeaderLayout';
 import PageLayout from '@components/layout/PageLayout';
 import BookListTab from '@components/shelf/BookListTab';
@@ -17,6 +16,7 @@ import EditUserProfile from '@components/shelf/EditUserProfile';
 import StudyHead from '@components/shelf/StudyHead';
 import UserProfile from '@components/shelf/UserProfile';
 import useFetch from '@hooks/useFetch';
+import useUser from '@hooks/useUser';
 import { IUser } from '@interfaces';
 
 interface ShelfPageProps {
@@ -30,13 +30,12 @@ interface ShelfPageProps {
 
 export default function ShelfPage({ userProfile }: ShelfPageProps) {
   const router = useRouter();
-
+  const { signInUser, setUser } = useUser();
   const { data: updatedUserProfile, execute: updateUserProfile } = useFetch(updateUserProfileApi);
   const { data: knottedBookList, execute: getKnottedBookList } = useFetch(getUserKnottedBooksApi);
   const { data: bookmarkedBookList, execute: getBookmarkedBookList } =
     useFetch(getUserBookmarkedBooksApi);
 
-  const [signInStatus, setSignInStatus] = useRecoilState(signInStatusState);
   const [curKnottedBookList, setCurKnottedBookList] = useRecoilState(curKnottedBookListState);
   const [curBookmarkedBookList, setCurBookmarkedBookList] = useRecoilState(
     curBookmarkedBookListState
@@ -72,8 +71,8 @@ export default function ShelfPage({ userProfile }: ShelfPageProps) {
     if (updatedUserProfile === undefined || !curUserProfile) return;
 
     setIsEditing(false);
-    setSignInStatus({
-      ...signInStatus,
+    setUser({
+      ...signInUser,
       nickname: curUserProfile.nickname,
     });
     window.history.replaceState(null, '', `/@${curUserProfile.nickname}`);
@@ -117,7 +116,7 @@ export default function ShelfPage({ userProfile }: ShelfPageProps) {
           <BookListTab
             knottedBookList={curKnottedBookList}
             bookmarkedBookList={curBookmarkedBookList}
-            isUserMatched={signInStatus.id === curUserProfile.id}
+            isUserMatched={signInUser.id === curUserProfile.id}
           />
         </>
       )}

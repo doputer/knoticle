@@ -59,6 +59,7 @@ const getUserByLocalDB = async (provider_id: string) => {
     select: {
       id: true,
       nickname: true,
+      profile_image: true,
     },
   });
 

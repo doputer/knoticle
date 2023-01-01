@@ -8,7 +8,7 @@ import { ToastContainer } from 'react-toastify';
 import { RecoilRoot } from 'recoil';
 import { ThemeProvider } from 'styled-components';
 
-import CheckSignInStatus from '@components/auth/CheckSignInStatus';
+import Authentication from '@components/common/Authentication';
 import GlobalModal from '@components/common/GlobalModal';
 import GlobalStyle from '@styles/GlobalStyle';
 import theme from '@styles/theme';
@@ -31,14 +31,13 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
     <QueryClientProvider client={queryClient}>
       <Hydrate state={pageProps.dehydratedState}>
         <RecoilRoot>
-          <CheckSignInStatus>
-            <GlobalStyle />
-            <ThemeProvider theme={theme}>
-              {getLayout(<Component {...pageProps} />)}
-              <ToastContainer limit={3} />
-              <GlobalModal />
-            </ThemeProvider>
-          </CheckSignInStatus>
+          <GlobalStyle />
+          <ThemeProvider theme={theme}>
+            <Authentication />
+            {getLayout(<Component {...pageProps} />)}
+            <ToastContainer limit={3} />
+            <GlobalModal />
+          </ThemeProvider>
         </RecoilRoot>
       </Hydrate>
     </QueryClientProvider>

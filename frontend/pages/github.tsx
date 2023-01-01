@@ -1,45 +1,39 @@
 import { useRouter } from 'next/router';
 
 import { useEffect } from 'react';
-
-import { useSetRecoilState } from 'recoil';
+import { useMutation } from 'react-query';
 
 import { githubSignInApi } from '@apis/authApi';
-import signInStatusState from '@atoms/signInStatus';
 import Spinner from '@components/common/Spinner';
-import useFetch from '@hooks/useFetch';
+import useApiError from '@hooks/useApiError';
+import useUser from '@hooks/useUser';
 import { FlexColumnCenter, FullPageWrapper } from '@styles/layout';
-import { toastError } from '@utils/toast';
 
-export default function Github() {
+export default function GitHubPage() {
   const router = useRouter();
-
-  const setSignInStatus = useSetRecoilState(signInStatusState);
-  const { data: user, execute: githubSignIn } = useFetch(githubSignInApi);
+  const { setUser } = useUser();
+  const { mutate: githubSignIn } = useMutation(githubSignInApi, {
+    onError: useApiError,
+    onSuccess: (user) => {
+      setUser(user);
+      router.replace('/');
+    },
+  });
 
   useEffect(() => {
-    if (router.query.error) {
-      toastError('GitHub 로그인에 실패했습니다.');
+    const { code, error } = router.query;
 
-      router.push('/');
+    if (!code || error) {
+      router.replace('/');
+      return;
     }
-  }, [router.query.error]);
 
-  useEffect(() => {
-    if (router.query.code) githubSignIn({ code: router.query.code });
-  }, [router.query.code]);
-
-  useEffect(() => {
-    if (!user) return;
-
-    setSignInStatus({ ...user });
-
-    router.push('/');
-  }, [user]);
+    githubSignIn({ code: code as string });
+  }, [router.query]);
 
   return (
     <FullPageWrapper>
-      <FlexColumnCenter style={{ height: '100%', backgroundColor: 'var(--light-yellow-color)' }}>
+      <FlexColumnCenter style={{ height: '100%', backgroundColor: 'var(--white-color)' }}>
         <Spinner style={{ width: 100, height: 100, borderWidth: 16 }} />
         <div style={{ marginTop: '32px' }}>GitHub 로그인 중 입니다.</div>
       </FlexColumnCenter>

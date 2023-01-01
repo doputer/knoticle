@@ -5,22 +5,19 @@ interface LocalSignInApi {
   password: string;
 }
 
-interface GithubSignInApi {
-  code: string;
-}
-
-interface CreateUserApi extends LocalSignInApi {
-  nickname: string;
-}
-
 export const localSignInApi = async (data: LocalSignInApi) => {
   const url = '/api/auth/signin/local';
+
   const response = await api({ url, method: 'POST', data });
 
   return response.data;
 };
 
-export const githubSignInApi = async (data: GithubSignInApi) => {
+interface GitHubSignInApi {
+  code: string;
+}
+
+export const githubSignInApi = async (data: GitHubSignInApi) => {
   const url = '/api/auth/signin/github';
 
   const response = await api({ url, method: 'POST', data });
@@ -28,10 +25,14 @@ export const githubSignInApi = async (data: GithubSignInApi) => {
   return response.data;
 };
 
-export const checkSignInApi = async () => {
-  const url = '/api/auth';
+interface SignUpApi extends LocalSignInApi {
+  nickname: string;
+}
 
-  const response = await api({ url, method: 'GET' });
+export const signUpApi = async (data: SignUpApi) => {
+  const url = '/api/auth/signup';
+
+  const response = await api({ url, method: 'POST', data });
 
   return response.data;
 };
@@ -44,10 +45,10 @@ export const signOutApi = async () => {
   return response.data;
 };
 
-export const createUserApi = async (data: CreateUserApi) => {
-  const url = '/api/auth/signup';
+export const checkSignInApi = async () => {
+  const url = '/api/auth';
 
-  const response = await api({ url, method: 'POST', data });
+  const response = await api({ url, method: 'GET' });
 
   return response.data;
 };
