@@ -2,6 +2,7 @@ import dynamic from 'next/dynamic';
 import Link from 'next/link';
 
 import ArticleIcon from '@assets/ico_article.svg';
+import LoginIcon from '@assets/ico_login.svg';
 import PersonIcon from '@assets/ico_person.svg';
 import SearchIcon from '@assets/ico_search.svg';
 import useModal from '@hooks/useModal';
@@ -57,7 +58,7 @@ export default function GNB() {
             </Link>
           </>
         ) : (
-          <Icon src={PersonIcon} alt="Person Icon" onClick={handleSignInModalOpen} />
+          <Icon src={LoginIcon} alt="Login Icon" onClick={handleSignInModalOpen} />
         )}
       </IconWrapper>
     </GNBContainer>
