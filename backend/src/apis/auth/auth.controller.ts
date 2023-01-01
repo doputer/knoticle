@@ -41,7 +41,11 @@ const signInGithub = async (req: Request, res: Response) => {
   res.cookie('access_token', accessToken, { httpOnly: true });
   res.cookie('refresh_token', refreshToken, { httpOnly: true });
 
-  return res.status(200).send({ id: githubUser.id, nickname: githubUser.nickname });
+  return res.status(200).send({
+    id: githubUser.id,
+    nickname: githubUser.nickname,
+    profile_image: githubUser.profile_image,
+  });
 };
 
 const signUp = async (req: Request, res: Response) => {
