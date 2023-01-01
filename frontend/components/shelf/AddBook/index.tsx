@@ -1,15 +1,15 @@
 import { useEffect } from 'react';
 
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState } from 'recoil';
 
 import { addBookApi } from '@apis/bookApi';
 import SampleThumbnail from '@assets/img_sample_thumbnail.jpg';
 import curKnottedBookListState from '@atoms/curKnottedBookList';
-import signInUserState from '@atoms/signInUserState';
 import Button from '@components/common/ModalButton';
 import useFetch from '@hooks/useFetch';
 import useInput from '@hooks/useInput';
 import useModal from '@hooks/useModal';
+import useUser from '@hooks/useUser';
 import { FlexSpaceBetween } from '@styles/layout';
 import { toastError, toastSuccess } from '@utils/toast';
 
@@ -27,10 +27,10 @@ import {
 } from './styled';
 
 export default function AddBook() {
+  const { signInUser } = useUser();
   const { closeEveryModal } = useModal();
 
   const [curKnottedBookList, setCurKnottedBookList] = useRecoilState(curKnottedBookListState);
-  const signInUser = useRecoilValue(signInUserState);
   const title = useInput('');
   const { data: addBookData, execute: addBook } = useFetch(addBookApi);
 

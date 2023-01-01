@@ -1,16 +1,16 @@
 import { useEffect, useState } from 'react';
 
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState } from 'recoil';
 
 import { getUserKnottedBooksApi } from '@apis/bookApi';
 import { createScrapApi } from '@apis/scrapApi';
 import scrapState from '@atoms/scrap';
-import signInUserState from '@atoms/signInUserState';
 import DragArticle from '@components/common/DragDrop';
 import Dropdown from '@components/common/Dropdown';
 import ModalButton from '@components/common/ModalButton';
 import useFetch from '@hooks/useFetch';
 import useModal from '@hooks/useModal';
+import useUser from '@hooks/useUser';
 import { IArticle, IBook, IBookScraps, IScrap } from '@interfaces';
 import { toastSuccess } from '@utils/toast';
 
@@ -21,6 +21,7 @@ interface ScrapModalProps {
 }
 
 export default function ScrapModal({ article }: ScrapModalProps) {
+  const { signInUser } = useUser();
   const { closeEveryModal } = useModal();
 
   const [selectedBookIndex, setSelectedBookIndex] = useState(-1);
@@ -28,8 +29,6 @@ export default function ScrapModal({ article }: ScrapModalProps) {
   const { data: createScrapData, execute: createScrap } = useFetch(createScrapApi);
   const { data: books, execute: getUserKnottedBooks } =
     useFetch<IBookScraps[]>(getUserKnottedBooksApi);
-
-  const signInUser = useRecoilValue(signInUserState);
 
   const [scrapList, setScrapList] = useRecoilState(scrapState);
 

@@ -1,18 +1,18 @@
 import { useCallback, useEffect, useState } from 'react';
 
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState } from 'recoil';
 
 import { deleteBookmarkApi, postBookmarkApi } from '@apis/bookmarkApi';
 import curBookmarkedBookListState from '@atoms/curBookmarkedBookList';
 import curKnottedBookListState from '@atoms/curKnottedBookList';
-import signInUserState from '@atoms/signInUserState';
 import { IBookScraps } from '@interfaces';
 import { toastError } from '@utils/toast';
 
 import useFetch from './useFetch';
+import useUser from './useUser';
 
 const useBookmark = (book: IBookScraps) => {
-  const signInUser = useRecoilValue(signInUserState);
+  const { signInUser, isSignInUser } = useUser();
   const [curKnottedBookList, setCurKnottedBookList] = useRecoilState(curKnottedBookListState);
   const [curBookmarkedBookList, setCurBookmarkedBookList] = useRecoilState(
     curBookmarkedBookListState
@@ -28,7 +28,7 @@ const useBookmark = (book: IBookScraps) => {
   const { data: deletedBookmark, execute: deleteBookmark } = useFetch(deleteBookmarkApi);
 
   const handleBookmarkClick = useCallback(async () => {
-    if (signInUser.id === 0) {
+    if (!isSignInUser) {
       toastError('로그인이 필요합니다.');
       return;
     }

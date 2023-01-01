@@ -1,13 +1,11 @@
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 
-import { useRecoilValue } from 'recoil';
-
 import ArticleIcon from '@assets/ico_article.svg';
 import PersonIcon from '@assets/ico_person.svg';
 import SearchIcon from '@assets/ico_search.svg';
-import signInUserState from '@atoms/signInUserState';
 import useModal from '@hooks/useModal';
+import useUser from '@hooks/useUser';
 
 import { GNBContainer, Icon, IconWrapper, Logo, LogoWrapper } from './styled';
 
@@ -15,8 +13,7 @@ export default function GNB() {
   const SignInModal = dynamic(() => import('@components/header/SignInModal'));
   const SignUpModal = dynamic(() => import('@components/header/SignUpModal'));
 
-  const signInUser = useRecoilValue(signInUserState);
-
+  const { signInUser, isSignInUser } = useUser();
   const { openModal } = useModal();
 
   const handleSignUpModalOpen = () => {
@@ -47,7 +44,10 @@ export default function GNB() {
       </LogoWrapper>
 
       <IconWrapper>
-        {signInUser.id !== 0 ? (
+        <Link href="/search">
+          <Icon src={SearchIcon} alt="Search Icon" />
+        </Link>
+        {isSignInUser ? (
           <>
             <Link href="/write">
               <Icon src={ArticleIcon} alt="Article Icon" />
@@ -59,9 +59,6 @@ export default function GNB() {
         ) : (
           <Icon src={PersonIcon} alt="Person Icon" onClick={handleSignInModalOpen} />
         )}
-        <Link href="/search">
-          <Icon src={SearchIcon} alt="Search Icon" />
-        </Link>
       </IconWrapper>
     </GNBContainer>
   );
