@@ -28,7 +28,7 @@ export default function SignInModal({ handleSignUpModalOpen }: SignInModalProps)
   });
 
   const handleSignInLocalClick = () => {
-    localSignIn({ ...form });
+    localSignIn(form);
   };
 
   const handleSignInGitHubClick = () => {
@@ -39,20 +39,8 @@ export default function SignInModal({ handleSignUpModalOpen }: SignInModalProps)
 
   return (
     <SignInModalContainer>
-      <LabeledInput
-        label="아이디"
-        type="text"
-        name="username"
-        placeholder="아이디를 입력해주세요"
-        onChange={handleInputChange}
-      />
-      <LabeledInput
-        label="비밀번호"
-        type="password"
-        name="password"
-        placeholder="비밀번호를 입력해주세요"
-        onChange={handleInputChange}
-      />
+      <LabeledInput label="아이디" type="text" name="username" onChange={handleInputChange} />
+      <LabeledInput label="비밀번호" type="password" name="password" onChange={handleInputChange} />
       <ModalButton theme="primary" onClick={handleSignInLocalClick}>
         로그인하기
       </ModalButton>
