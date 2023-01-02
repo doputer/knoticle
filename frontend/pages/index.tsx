@@ -7,6 +7,7 @@ import HomeHead from '@components/home/HomeHead';
 import Slider from '@components/home/Slider';
 import HeaderLayout from '@components/layout/HeaderLayout';
 import PageLayout from '@components/layout/PageLayout';
+import { FlexColumnCenter } from '@styles/layout';
 
 export default function HomePage() {
   const { isLoading: isPopularBooksLoading, data: popularBooks } = useQuery(
@@ -43,7 +44,7 @@ export default function HomePage() {
     <>
       <HomeHead />
       {bookCountPerPage !== 0 && (
-        <>
+        <FlexColumnCenter>
           <Slider
             title="가장 인기 있는 책"
             books={popularBooks}
@@ -57,7 +58,7 @@ export default function HomePage() {
             isLoading={isNewestBooksLoading}
           />
           <Footer />
-        </>
+        </FlexColumnCenter>
       )}
     </>
   );

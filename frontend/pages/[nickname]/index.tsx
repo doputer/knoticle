@@ -1,23 +1,21 @@
 import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 
-import { ReactElement, useEffect, useState } from 'react';
+import { ReactElement, useEffect } from 'react';
 
 import { useRecoilState } from 'recoil';
 
 import { getUserBookmarkedBooksApi, getUserKnottedBooksApi } from '@apis/bookApi';
-import { getUserProfileApi, updateUserProfileApi } from '@apis/userApi';
+import { getUserProfileApi } from '@apis/userApi';
 import curBookmarkedBookListState from '@atoms/curBookmarkedBookList';
 import curKnottedBookListState from '@atoms/curKnottedBookList';
 import HeaderLayout from '@components/layout/HeaderLayout';
 import PageLayout from '@components/layout/PageLayout';
 import BookListTab from '@components/shelf/BookListTab';
-import EditUserProfile from '@components/shelf/EditUserProfile';
 import StudyHead from '@components/shelf/StudyHead';
 import UserProfile from '@components/shelf/UserProfile';
 import useFetch from '@hooks/useFetch';
 import useUser from '@hooks/useUser';
-import { IUser } from '@interfaces';
 
 interface ShelfPageProps {
   userProfile: {
@@ -30,8 +28,7 @@ interface ShelfPageProps {
 
 export default function ShelfPage({ userProfile }: ShelfPageProps) {
   const router = useRouter();
-  const { signInUser, setUser } = useUser();
-  const { data: updatedUserProfile, execute: updateUserProfile } = useFetch(updateUserProfileApi);
+  const { signInUser } = useUser();
   const { data: knottedBookList, execute: getKnottedBookList } = useFetch(getUserKnottedBooksApi);
   const { data: bookmarkedBookList, execute: getBookmarkedBookList } =
     useFetch(getUserBookmarkedBooksApi);
@@ -41,15 +38,6 @@ export default function ShelfPage({ userProfile }: ShelfPageProps) {
     curBookmarkedBookListState
   );
 
-  const [curUserProfile, setCurUserProfile] = useState<IUser | null>(null);
-  const [isEditing, setIsEditing] = useState<boolean>(false);
-
-  const handleEditFinishBtnClick = () => {
-    if (!curUserProfile) return;
-
-    updateUserProfile(curUserProfile);
-  };
-
   useEffect(() => {
     const { nickname } = router.query;
 
@@ -58,25 +46,6 @@ export default function ShelfPage({ userProfile }: ShelfPageProps) {
     getKnottedBookList(nickname.slice(1));
     getBookmarkedBookList(nickname.slice(1));
   }, []);
-
-  useEffect(() => {
-    if (!userProfile) return;
-
-    setCurUserProfile({
-      ...userProfile,
-    });
-  }, [userProfile]);
-
-  useEffect(() => {
-    if (updatedUserProfile === undefined || !curUserProfile) return;
-
-    setIsEditing(false);
-    setUser({
-      ...signInUser,
-      nickname: curUserProfile.nickname,
-    });
-    window.history.replaceState(null, '', `/@${curUserProfile.nickname}`);
-  }, [updatedUserProfile]);
 
   useEffect(() => {
     if (!knottedBookList) return;
@@ -97,29 +66,12 @@ export default function ShelfPage({ userProfile }: ShelfPageProps) {
         userDescription={userProfile.description}
         userImage={userProfile.profile_image}
       />
-      {curUserProfile && (
-        <>
-          {isEditing ? (
-            <EditUserProfile
-              handleEditFinishBtnClick={handleEditFinishBtnClick}
-              curUserProfile={curUserProfile}
-              setCurUserProfile={setCurUserProfile}
-            />
-          ) : (
-            <UserProfile
-              curUserProfile={curUserProfile}
-              handleEditBtnClick={() => {
-                setIsEditing(true);
-              }}
-            />
-          )}
-          <BookListTab
-            knottedBookList={curKnottedBookList}
-            bookmarkedBookList={curBookmarkedBookList}
-            isUserMatched={signInUser.id === curUserProfile.id}
-          />
-        </>
-      )}
+      <UserProfile userProfile={userProfile} />
+      <BookListTab
+        knottedBookList={curKnottedBookList}
+        bookmarkedBookList={curBookmarkedBookList}
+        isUserMatched={signInUser.id === userProfile.id}
+      />
     </>
   );
 }
