@@ -59,6 +59,7 @@
     "unified": "^10.1.2"
   },
   "devDependencies": {
+    "@svgr/webpack": "^6.5.1",
     "@types/codemirror": "^5.60.5",
     "@types/styled-components": "^5.1.26",
     "@typescript-eslint/eslint-plugin": "^5.43.0",
