@@ -23,10 +23,7 @@ export default function GitHubPage() {
   useEffect(() => {
     const { code, error } = router.query;
 
-    if (!code || error) {
-      router.replace('/');
-      return;
-    }
+    if (!code || error) return;
 
     githubSignIn({ code: code as string });
   }, [router.query]);

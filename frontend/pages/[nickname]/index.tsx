@@ -10,6 +10,7 @@ import { getUserProfileApi, updateUserProfileApi } from '@apis/userApi';
 import curBookmarkedBookListState from '@atoms/curBookmarkedBookList';
 import curKnottedBookListState from '@atoms/curKnottedBookList';
 import HeaderLayout from '@components/layout/HeaderLayout';
+import PageLayout from '@components/layout/PageLayout';
 import BookListTab from '@components/shelf/BookListTab';
 import EditUserProfile from '@components/shelf/EditUserProfile';
 import StudyHead from '@components/shelf/StudyHead';
@@ -17,7 +18,6 @@ import UserProfile from '@components/shelf/UserProfile';
 import useFetch from '@hooks/useFetch';
 import useUser from '@hooks/useUser';
 import { IUser } from '@interfaces';
-import { PageInnerLarge } from '@styles/layout';
 
 interface ShelfPageProps {
   userProfile: {
@@ -98,7 +98,7 @@ export default function ShelfPage({ userProfile }: ShelfPageProps) {
         userImage={userProfile.profile_image}
       />
       {curUserProfile && (
-        <PageInnerLarge>
+        <>
           {isEditing ? (
             <EditUserProfile
               handleEditFinishBtnClick={handleEditFinishBtnClick}
@@ -118,7 +118,7 @@ export default function ShelfPage({ userProfile }: ShelfPageProps) {
             bookmarkedBookList={curBookmarkedBookList}
             isUserMatched={signInUser.id === curUserProfile.id}
           />
-        </PageInnerLarge>
+        </>
       )}
     </>
   );
@@ -133,5 +133,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 };
 
 ShelfPage.getLayout = function getLayout(page: ReactElement) {
-  return <HeaderLayout>{page}</HeaderLayout>;
+  return (
+    <HeaderLayout>
+      <PageLayout>{page}</PageLayout>
+    </HeaderLayout>
+  );
 };

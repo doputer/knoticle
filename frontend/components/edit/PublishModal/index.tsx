@@ -2,16 +2,16 @@ import { useRouter } from 'next/router';
 
 import { useEffect, useState } from 'react';
 
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState } from 'recoil';
 
 import { createArticleApi } from '@apis/articleApi';
 import articleState from '@atoms/article';
 import scrapState from '@atoms/scrap';
-import signInUserState from '@atoms/signInUserState';
 import DragArticle from '@components/common/DragDrop';
 import Dropdown from '@components/common/Dropdown';
 import ModalButton from '@components/common/ModalButton';
 import useFetch from '@hooks/useFetch';
+import useUser from '@hooks/useUser';
 import { IBook, IBookScraps, IScrap } from '@interfaces';
 import encodeURL from '@utils/encode-url';
 import { toastSuccess } from '@utils/toast';
@@ -24,12 +24,11 @@ interface PublishModalProps {
 
 export default function PublishModal({ books }: PublishModalProps) {
   const router = useRouter();
-
+  const { signInUser } = useUser();
   const { data: createdArticle, execute: createArticle } = useFetch(createArticleApi);
 
   // 전역으로 관리해야할까?
   const [article, setArticle] = useRecoilState(articleState);
-  const signInUser = useRecoilValue(signInUserState);
 
   const [selectedBookIndex, setSelectedBookIndex] = useState(-1);
   const [filteredScraps, setFilteredScraps] = useState<IScrap[]>([]);

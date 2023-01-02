@@ -3,15 +3,13 @@ import { useRouter } from 'next/router';
 
 import { useEffect, useState } from 'react';
 
-import { useRecoilValue } from 'recoil';
-
 import { getArticleApi } from '@apis/articleApi';
 import { getUserKnottedBooksApi } from '@apis/bookApi';
-import signInUserState from '@atoms/signInUserState';
 import EditHead from '@components/edit/EditHead';
 import Editor from '@components/edit/Editor';
 import useFetch from '@hooks/useFetch';
 import useModal from '@hooks/useModal';
+import useUser from '@hooks/useUser';
 import { IArticleBook } from '@interfaces';
 import { PageNoScrollWrapper } from '@styles/layout';
 import { toastError } from '@utils/toast';
@@ -21,15 +19,13 @@ export default function WritePage() {
   const ModifyModal = dynamic(() => import('@components/edit/ModifyModal'));
 
   const router = useRouter();
-
   const { openModal } = useModal();
+  const { signInUser } = useUser();
 
   const [originalArticle, setOriginalArticle] = useState<IArticleBook | undefined>(undefined);
 
   const { data: books, execute: getUserKnottedBooks } = useFetch(getUserKnottedBooksApi);
   const { data: article, execute: getArticle } = useFetch(getArticleApi);
-
-  const signInUser = useRecoilValue(signInUserState);
 
   const syncHeight = () => {
     document.documentElement.style.setProperty('--window-inner-height', `${window.innerHeight}px`);

@@ -4,8 +4,6 @@ import { useRouter } from 'next/router';
 
 import { useMutation } from 'react-query';
 
-import { useRecoilValue } from 'recoil';
-
 import { deleteArticleApi } from '@apis/articleApi';
 import { deleteScrapApi } from '@apis/scrapApi';
 import EditIcon from '@assets/ico_edit.svg';
@@ -14,11 +12,11 @@ import OriginIcon from '@assets/ico_origin.svg';
 import RightArrowIcon from '@assets/ico_rightBtn.svg';
 import StarIcon from '@assets/ico_star.svg';
 import TrashIcon from '@assets/ico_trash.svg';
-import signInUserState from '@atoms/signInUserState';
 import TOC from '@components/article/TOC';
 import Content from '@components/common/Content';
 import IconButton from '@components/common/IconButton';
 import useModal from '@hooks/useModal';
+import useUser from '@hooks/useUser';
 import { IArticleBook, IBookScraps } from '@interfaces';
 import { TextSmall } from '@styles/common';
 import encodeURL from '@utils/encode-url';
@@ -54,8 +52,8 @@ export default function Article({
   const ScrapModal = dynamic(() => import('@components/article/ScrapModal'));
 
   const router = useRouter();
+  const { signInUser, isSignInUser } = useUser();
   const { openModal } = useModal();
-  const signInUser = useRecoilValue(signInUserState);
 
   const navigateArticle = (diff: -1 | 1) => {
     const currentScrapIndex = scraps.findIndex((scrap) => scrap.article.id === article.id);
@@ -180,7 +178,7 @@ export default function Article({
               </ArticleButton>
             </>
           )}
-          {signInUser.id !== 0 && (
+          {isSignInUser && (
             <ArticleButton onClick={handleScrapModalOpen}>
               <Image src={StarIcon} alt="Star Icon" width={20} height={20} />
               <TextSmall>스크랩</TextSmall>

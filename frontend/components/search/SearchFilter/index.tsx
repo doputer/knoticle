@@ -1,6 +1,4 @@
-import { useRecoilValue } from 'recoil';
-
-import signInUserState from '@atoms/signInUserState';
+import useUser from '@hooks/useUser';
 
 import { FilterButton, FilterGroup, FilterLabel, FilterWrapper } from './styled';
 
@@ -15,7 +13,7 @@ interface SearchFilterProps {
 }
 
 export default function SearchFilter({ handleFilter, filter }: SearchFilterProps) {
-  const signInUser = useRecoilValue(signInUserState);
+  const { isSignInUser } = useUser();
 
   return (
     <FilterWrapper>
@@ -39,7 +37,7 @@ export default function SearchFilter({ handleFilter, filter }: SearchFilterProps
           책
         </FilterLabel>
       </FilterGroup>
-      {signInUser.id !== 0 && (
+      {isSignInUser && (
         <FilterLabel>
           <FilterButton
             type="checkbox"

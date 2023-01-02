@@ -37,18 +37,15 @@ export const Logo = styled(Link)`
   font-style: normal;
   font-weight: 500;
   font-size: 32px;
-  text-decoration: none;
 `;
 
 export const IconWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 24px;
+  gap: 16px;
 `;
 
 export const Icon = styled(Image)`
-  width: 20px;
-  height: 20px;
   cursor: pointer;
 `;

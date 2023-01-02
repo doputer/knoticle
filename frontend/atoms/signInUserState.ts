@@ -1,4 +1,4 @@
-import { atom } from 'recoil';
+import { atom, selector } from 'recoil';
 
 export interface SignInUser {
   id: number;
@@ -12,6 +12,15 @@ const signInUserState = atom<SignInUser>({
     id: 0,
     nickname: '',
     profile_image: '',
+  },
+});
+
+export const isSignInUserState = selector({
+  key: 'isSignInUserState',
+  get: ({ get }) => {
+    const signInUser = get(signInUserState);
+
+    return signInUser.id !== 0;
   },
 });
 
