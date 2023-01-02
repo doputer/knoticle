@@ -6,9 +6,16 @@ import { useEffect, useState } from 'react';
 import { useMutation } from 'react-query';
 
 import { signOutApi } from '@apis/authApi';
+import DropdownIcon from '@assets/ico_dropdown.svg';
 import useUser from '@hooks/useUser';
 
-import { Dropdown, DropdownItem, ProfileContainer, ProfileImage } from './styled';
+import {
+  Dropdown,
+  DropdownItem,
+  ProfileContainer,
+  ProfileImage,
+  ProfileImageWrapper,
+} from './styled';
 
 export default function Profile() {
   const router = useRouter();
@@ -37,9 +44,12 @@ export default function Profile() {
 
   return (
     <ProfileContainer onClick={handleProfileClick}>
-      <ProfileImage>
-        <Image src={signInUser.profile_image} alt="Profile Image" width={32} height={32} />
-      </ProfileImage>
+      <ProfileImageWrapper>
+        <ProfileImage>
+          <Image src={signInUser.profile_image} alt="Profile Image" width={32} height={32} />
+        </ProfileImage>
+        <Image src={DropdownIcon} alt="Dropdown Icon" />
+      </ProfileImageWrapper>
       {dropdownVisible && (
         <Dropdown>
           <Link href={`/@${signInUser.nickname}`}>

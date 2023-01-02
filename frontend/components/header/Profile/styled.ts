@@ -1,11 +1,14 @@
 import styled from 'styled-components';
 
 import { TextMedium } from '@styles/common';
+import { FlexCenter } from '@styles/layout';
 
 export const ProfileContainer = styled.div`
   position: relative;
   cursor: pointer;
 `;
+
+export const ProfileImageWrapper = styled(FlexCenter)``;
 
 export const ProfileImage = styled.div`
   width: 32px;
