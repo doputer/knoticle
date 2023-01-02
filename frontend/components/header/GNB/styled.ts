@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import Link from 'next/link';
 
 import styled from 'styled-components';
@@ -44,8 +43,4 @@ export const IconWrapper = styled.div`
   justify-content: space-between;
   align-items: center;
   gap: 16px;
-`;
-
-export const Icon = styled(Image)`
-  cursor: pointer;
 `;

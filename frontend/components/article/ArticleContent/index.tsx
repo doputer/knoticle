@@ -1,15 +1,14 @@
 import dynamic from 'next/dynamic';
-import Image from 'next/image';
 import { useRouter } from 'next/router';
 
 import { useMutation } from 'react-query';
 
 import { deleteArticleApi } from '@apis/articleApi';
 import { deleteScrapApi } from '@apis/scrapApi';
+import LeftArrowIcon from '@assets/ico_arrow_left.svg';
+import RightArrowIcon from '@assets/ico_arrow_right.svg';
 import EditIcon from '@assets/ico_edit.svg';
-import LeftArrowIcon from '@assets/ico_leftBtn.svg';
 import OriginIcon from '@assets/ico_origin.svg';
-import RightArrowIcon from '@assets/ico_rightBtn.svg';
 import StarIcon from '@assets/ico_star.svg';
 import TrashIcon from '@assets/ico_trash.svg';
 import TOC from '@components/article/TOC';
@@ -169,30 +168,30 @@ export default function Article({
           {article.book_id === bookId && article.book.user.nickname === signInUser.nickname && (
             <>
               <ArticleButton onClick={handleUpdateArticleButtonClick}>
-                <Image src={EditIcon} alt="Edit Icon" width={20} height={20} />
+                <EditIcon />
                 <TextSmall>글 수정</TextSmall>
               </ArticleButton>
               <ArticleButton onClick={handleDeleteArticleButtonClick}>
-                <Image src={TrashIcon} alt="Trash Icon" width={20} height={20} />
+                <TrashIcon />
                 <TextSmall>글 삭제</TextSmall>
               </ArticleButton>
             </>
           )}
           {isSignInUser && (
             <ArticleButton onClick={handleScrapModalOpen}>
-              <Image src={StarIcon} alt="Star Icon" width={20} height={20} />
+              <StarIcon />
               <TextSmall>스크랩</TextSmall>
             </ArticleButton>
           )}
           {article.book_id !== bookId && owner === signInUser.nickname && (
             <ArticleButton onClick={handleDeleteScrapButtonClick}>
-              <Image src={TrashIcon} alt="Trash Icon" width={20} height={20} />
+              <TrashIcon />
               <TextSmall>스크랩 삭제</TextSmall>
             </ArticleButton>
           )}
           {article.book_id !== bookId && (
             <ArticleButton onClick={handleOriginalArticleButtonClick}>
-              <Image src={OriginIcon} alt="Origin Icon" width={20} height={20} />
+              <OriginIcon />
               <TextSmall>원본 글 보기</TextSmall>
             </ArticleButton>
           )}
@@ -201,14 +200,12 @@ export default function Article({
 
       <ArticleNavigatorWrapper>
         <IconButton
-          src={LeftArrowIcon}
-          alt="Left Arrow Icon"
+          icon={<LeftArrowIcon />}
           onClick={handlePrevArticleButtonClick}
           visible={article.id !== scraps.at(0)?.article.id}
         />
         <IconButton
-          src={RightArrowIcon}
-          alt="Right Arrow Icon"
+          icon={<RightArrowIcon />}
           onClick={handleNextArticleButtonClick}
           visible={article.id !== scraps.at(-1)?.article.id}
         />

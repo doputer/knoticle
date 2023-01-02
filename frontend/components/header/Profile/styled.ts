@@ -8,7 +8,13 @@ export const ProfileContainer = styled.div`
   cursor: pointer;
 `;
 
-export const ProfileImageWrapper = styled(FlexCenter)``;
+export const ProfileImageWrapper = styled(FlexCenter)`
+  fill: var(--grey-02-color);
+
+  :hover {
+    fill: var(--grey-01-color);
+  }
+`;
 
 export const ProfileImage = styled.div`
   width: 32px;

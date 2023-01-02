@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { useRecoilState, useSetRecoilState } from 'recoil';
 
-import MinusWhite from '@assets/ico_minus_white.svg';
+import RemoveIcon from '@assets/ico_remove.svg';
 import curKnottedBookListState from '@atoms/curKnottedBookList';
 import editInfoState from '@atoms/editInfo';
 import scrapState from '@atoms/scrap';
@@ -18,8 +18,7 @@ import {
   EditBookWrapper,
   EditModalOpener,
   EditModeIndicator,
-  MinusButton,
-  MinusIcon,
+  RemoveButton,
   TabTitle,
   TabTitleContent,
 } from './styled';
@@ -116,13 +115,13 @@ export default function BookListTab({
             knottedBookList.map((book) =>
               isEditing ? (
                 <EditBookWrapper key={book.id}>
-                  <MinusButton
+                  <RemoveButton
                     onClick={(e) => {
                       handleMinusBtnClick(e, book.id);
                     }}
                   >
-                    <MinusIcon src={MinusWhite} alt="책 삭제" />
-                  </MinusButton>
+                    <RemoveIcon />
+                  </RemoveButton>
                   <EditModalOpener
                     onClick={(e) => {
                       handleEditModalOpenerClick(e, book.id);

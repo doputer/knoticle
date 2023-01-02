@@ -1,6 +1,5 @@
-import Image from 'next/image';
-
-import CancelIcon from '@assets/ico_close.svg';
+import CloseIcon from '@assets/ico_close.svg';
+import IconButton from '@components/common/IconButton';
 import ModalButton from '@components/common/ModalButton';
 import useModal from '@hooks/useModal';
 
@@ -19,7 +18,7 @@ export default function ConfirmModal({ message, handleConfirm }: ConfirmModalPro
       <Dimmed onClick={closeEveryModal} />
       <ModalInner>
         <ModalHeader>
-          <Image src={CancelIcon} alt="Cancel Icon" onClick={closeEveryModal} />
+          <IconButton icon={<CloseIcon />} onClick={closeEveryModal} />
         </ModalHeader>
         <ModalBody>{message}</ModalBody>
         <ModalFooter>

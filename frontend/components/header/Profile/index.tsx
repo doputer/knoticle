@@ -48,7 +48,7 @@ export default function Profile() {
         <ProfileImage>
           <Image src={signInUser.profile_image} alt="Profile Image" width={32} height={32} />
         </ProfileImage>
-        <Image src={DropdownIcon} alt="Dropdown Icon" />
+        <DropdownIcon />
       </ProfileImageWrapper>
       {dropdownVisible && (
         <Dropdown>

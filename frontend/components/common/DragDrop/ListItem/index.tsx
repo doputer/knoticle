@@ -3,12 +3,12 @@ import { useDrag, useDrop } from 'react-dnd';
 
 import { useRecoilState } from 'recoil';
 
-import MinusWhite from '@assets/ico_minus_white.svg';
+import RemoveIcon from '@assets/ico_remove.svg';
 import editInfoState from '@atoms/editInfo';
 import scrapState from '@atoms/scrap';
 import useModal from '@hooks/useModal';
 
-import { Article, MinusButton, MinusIcon, OriginalBadge, Text, TextWapper } from './styled';
+import { Article, OriginalBadge, RemoveButton, Text, TextWapper } from './styled';
 
 const ItemTypes = {
   Scrap: 'scrap',
@@ -131,9 +131,9 @@ export const ListItem = memo(function Scrap({
         {isOriginal && isDeleteBtnShown && <OriginalBadge>원본</OriginalBadge>}
       </TextWapper>
       {isDeleteBtnShown && (
-        <MinusButton onClick={handleMinusBtnClick}>
-          <MinusIcon src={MinusWhite} alt="글 삭제" />
-        </MinusButton>
+        <RemoveButton onClick={handleMinusBtnClick}>
+          <RemoveIcon />
+        </RemoveButton>
       )}
     </Article>
   );

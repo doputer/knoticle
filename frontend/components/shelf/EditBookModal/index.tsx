@@ -1,11 +1,9 @@
-import Image from 'next/image';
-
 import { useRef, useState } from 'react';
 
 import { useRecoilState } from 'recoil';
 
 import { createImageApi } from '@apis/imageApi';
-import Edit from '@assets/ico_edit.svg';
+import EditIcon from '@assets/ico_edit.svg';
 import curKnottedBookListState from '@atoms/curKnottedBookList';
 import editInfoState from '@atoms/editInfo';
 import scrapState from '@atoms/scrap';
@@ -127,7 +125,7 @@ export default function EditBookModal({ book }: BookProps) {
               height={220}
             />
             <EditBookThumbnailIcon onClick={handleEditBookImgClick}>
-              <Image src={Edit} alt="profile_edit" width={20} />
+              <EditIcon />
               <input
                 type="file"
                 id="file"

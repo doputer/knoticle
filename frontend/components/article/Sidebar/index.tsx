@@ -1,10 +1,9 @@
-import Image from 'next/image';
 import Link from 'next/link';
 
-import Bookmark from '@assets/ico_bookmark.svg';
-import BookmarkFilled from '@assets/ico_bookmark_white_filled.svg';
-import HideIcon from '@assets/ico_hide.svg';
-import OpenIcon from '@assets/ico_open.svg';
+import BookmarkIcon from '@assets/ico_bookmark.svg';
+import BookmarkFillIcon from '@assets/ico_bookmark_fill.svg';
+import DoubleLeftIcon from '@assets/ico_double_arrow_left.svg';
+import DoubleRightIcon from '@assets/ico_double_arrow_right.svg';
 import IconButton from '@components/common/IconButton';
 import useBookmark from '@hooks/useBookmark';
 import { IArticleBook, IBookScraps } from '@interfaces';
@@ -43,10 +42,10 @@ export default function Sidebar({ book, article, isOpen, handleSideBarToggle }: 
       <SidebarContainer className={isOpen ? 'show' : 'hide'}>
         <SidebarHeader>
           <BookmarkButton onClick={handleBookmarkClick}>
-            <Image src={curBookmarkId ? BookmarkFilled : Bookmark} alt="Bookmark Icon" />
+            {curBookmarkId ? <BookmarkFillIcon /> : <BookmarkIcon />}
             <TextSmall>{curBookmarkCnt}</TextSmall>
           </BookmarkButton>
-          <IconButton src={HideIcon} alt="Closed Sidebar Icon" onClick={handleSideBarToggle} />
+          <IconButton icon={<DoubleLeftIcon />} onClick={handleSideBarToggle} />
         </SidebarHeader>
 
         <SidebarTitle>{title}</SidebarTitle>
@@ -82,7 +81,7 @@ export default function Sidebar({ book, article, isOpen, handleSideBarToggle }: 
 
       {!isOpen && (
         <SidebarOpenButton onClick={handleSideBarToggle}>
-          <Image src={OpenIcon} alt="Open Icon" />
+          <DoubleRightIcon />
         </SidebarOpenButton>
       )}
     </>

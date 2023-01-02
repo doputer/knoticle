@@ -1,10 +1,9 @@
-import Image from 'next/image';
 import { useRouter } from 'next/router';
 
 import { useEffect } from 'react';
 
 import { signOutApi } from '@apis/authApi';
-import Edit from '@assets/ico_edit.svg';
+import EditIcon from '@assets/ico_edit.svg';
 import useFetch from '@hooks/useFetch';
 import useUser from '@hooks/useUser';
 import { IUser } from '@interfaces';
@@ -53,7 +52,7 @@ export default function UserProfile({ curUserProfile, handleEditBtnClick }: User
         <ButtonGroup isVisible={signInUser.id !== 0 && signInUser.id === curUserProfile.id}>
           <ProfileEditButton type="button" onClick={handleEditBtnClick}>
             <TextLinkMedium>프로필 수정</TextLinkMedium>
-            <Image src={Edit} alt="profile_edit" />
+            <EditIcon />
           </ProfileEditButton>
 
           <LogoutButton onClick={handleLogoutBtnClick}>

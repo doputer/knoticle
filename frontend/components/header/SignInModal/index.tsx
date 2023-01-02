@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import { useRouter } from 'next/router';
 
 import { useMutation } from 'react-query';
@@ -45,7 +44,7 @@ export default function SignInModal({ handleSignUpModalOpen }: SignInModalProps)
         로그인하기
       </ModalButton>
       <ModalButton theme="second" onClick={handleSignInGitHubClick}>
-        <Image src={GitHubIcon} alt="GitHub Icon" />
+        <GitHubIcon />
         GitHub으로 로그인하기
       </ModalButton>
       <SignUpWrapper>

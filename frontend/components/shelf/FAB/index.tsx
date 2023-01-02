@@ -1,13 +1,11 @@
-import Image from 'next/image';
-
 import { useRecoilState } from 'recoil';
 
 import { deleteArticleApi } from '@apis/articleApi';
 import { deleteBookApi, editBookApi } from '@apis/bookApi';
 import { deleteScrapApi } from '@apis/scrapApi';
-import Add from '@assets/ico_add.svg';
-import CheckWhite from '@assets/ico_check_white.svg';
-import EditWhite from '@assets/ico_edit_white.svg';
+import AddIcon from '@assets/ico_add.svg';
+import CheckIcon from '@assets/ico_check.svg';
+import UpdateIcon from '@assets/ico_update.svg';
 import editInfoState from '@atoms/editInfo';
 import useFetch from '@hooks/useFetch';
 import useModal from '@hooks/useModal';
@@ -126,12 +124,12 @@ export default function FAB({ isEditing, setIsEditing }: FabProps) {
   return (
     <FabWrapper>
       <FabButton onClick={handleCreateBookModalOpen}>
-        <Image src={Add} alt="책 추가" />
+        <AddIcon />
       </FabButton>
 
       {isEditing ? (
         <FabButton isGreen onClick={handleEditFinishBtnClick}>
-          <Image src={CheckWhite} alt="책 수정 완료" />
+          <CheckIcon />
         </FabButton>
       ) : (
         <FabButton
@@ -139,7 +137,7 @@ export default function FAB({ isEditing, setIsEditing }: FabProps) {
             setIsEditing(true);
           }}
         >
-          <Image src={EditWhite} alt="책 수정" />
+          <UpdateIcon />
         </FabButton>
       )}
     </FabWrapper>

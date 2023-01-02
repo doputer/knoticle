@@ -2,13 +2,14 @@ import dynamic from 'next/dynamic';
 import Link from 'next/link';
 
 import ArticleIcon from '@assets/ico_article.svg';
-import LoginIcon from '@assets/ico_login.svg';
+import ProfileIcon from '@assets/ico_profile.svg';
 import SearchIcon from '@assets/ico_search.svg';
+import IconButton from '@components/common/IconButton';
 import Profile from '@components/header/Profile';
 import useModal from '@hooks/useModal';
 import useUser from '@hooks/useUser';
 
-import { GNBContainer, Icon, IconWrapper, Logo, LogoWrapper } from './styled';
+import { GNBContainer, IconWrapper, Logo, LogoWrapper } from './styled';
 
 export default function GNB() {
   const SignInModal = dynamic(() => import('@components/header/SignInModal'));
@@ -45,18 +46,18 @@ export default function GNB() {
       </LogoWrapper>
 
       <IconWrapper>
-        <Link href="/search">
-          <Icon src={SearchIcon} alt="Search Icon" />
+        <Link aria-label="link" href="/search">
+          <SearchIcon />
         </Link>
         {isSignInUser ? (
           <>
-            <Link href="/write">
-              <Icon src={ArticleIcon} alt="Article Icon" />
+            <Link aria-label="link" href="/write">
+              <ArticleIcon />
             </Link>
             <Profile />
           </>
         ) : (
-          <Icon src={LoginIcon} alt="Login Icon" onClick={handleSignInModalOpen} />
+          <IconButton icon={<ProfileIcon />} onClick={handleSignInModalOpen} />
         )}
       </IconWrapper>
     </GNBContainer>

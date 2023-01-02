@@ -1,9 +1,7 @@
-import Image from 'next/image';
-
 import { useEffect, useRef } from 'react';
 
 import { createImageApi } from '@apis/imageApi';
-import Edit from '@assets/ico_edit.svg';
+import EditIcon from '@assets/ico_edit.svg';
 import useFetch from '@hooks/useFetch';
 import useInput from '@hooks/useInput';
 import { IUser } from '@interfaces';
@@ -81,7 +79,7 @@ export default function EditUserProfile({
       <UserThumbnailGroup>
         <UserThumbnail src={curUserProfile.profile_image} alt="User1" width={200} height={200} />
         <EditThumbnailIcon onClick={handleEditThumbnailClick}>
-          <Image src={Edit} alt="profile_edit" width={20} />
+          <EditIcon />
           <input
             type="file"
             id="file"

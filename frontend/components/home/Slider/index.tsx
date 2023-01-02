@@ -1,10 +1,8 @@
-import Image from 'next/image';
-
 import React, { useEffect, useState } from 'react';
 
 import LeftArrowIcon from '@assets/ico_arrow_left.svg';
 import RightArrowIcon from '@assets/ico_arrow_right.svg';
-import ListIcon from '@assets/ico_flower.svg';
+import FlowerIcon from '@assets/ico_flower.svg';
 import Book from '@components/common/Book';
 import IconButton from '@components/common/IconButton';
 import SkeletonBook from '@components/common/SkeletonBook';
@@ -101,8 +99,7 @@ export default function Slider({ title, books, bookCountPerPage, isLoading }: Sl
   return (
     <SliderContainer>
       <IconButton
-        src={LeftArrowIcon}
-        alt="Left Arrow Icon"
+        icon={<LeftArrowIcon />}
         onClick={handleLeftArrowClick}
         visible={currentPage !== 1}
       />
@@ -110,7 +107,7 @@ export default function Slider({ title, books, bookCountPerPage, isLoading }: Sl
       <SliderInner bookCountPerPage={bookCountPerPage}>
         <SliderHeader>
           <SliderTitle>
-            <Image src={ListIcon} alt="List Icon" />
+            <FlowerIcon />
             {title}
           </SliderTitle>
           {bookCountPerPage !== 1 && (
@@ -144,8 +141,7 @@ export default function Slider({ title, books, bookCountPerPage, isLoading }: Sl
       </SliderInner>
 
       <IconButton
-        src={RightArrowIcon}
-        alt="Right Arrow Icon"
+        icon={<RightArrowIcon />}
         onClick={handleRightArrowClick}
         visible={currentPage !== sliderIndicatorCount}
       />

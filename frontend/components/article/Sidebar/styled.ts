@@ -41,14 +41,16 @@ export const SidebarContainer = styled(FlexColumn)`
   }
 `;
 
-export const SidebarHeader = styled(FlexSpaceBetween)``;
+export const SidebarHeader = styled(FlexSpaceBetween)`
+  fill: var(--white-color);
+`;
 
 export const BookmarkButton = styled.button`
   padding: 0;
   color: var(--white-color);
   display: flex;
   align-items: center;
-  gap: 8px;
+  fill: var(--white-color);
 `;
 
 export const SidebarTitle = styled.div`
@@ -114,4 +116,5 @@ export const SidebarOpenButton = styled.button`
   top: 64px;
   left: 0;
   z-index: 150;
+  fill: var(--primary-color);
 `;
