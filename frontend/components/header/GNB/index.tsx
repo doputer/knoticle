@@ -46,12 +46,12 @@ export default function GNB() {
       </LogoWrapper>
 
       <IconWrapper>
-        <Link href="/search">
+        <Link aria-label="link" href="/search">
           <SearchIcon />
         </Link>
         {isSignInUser ? (
           <>
-            <Link href="/write">
+            <Link aria-label="link" href="/write">
               <ArticleIcon />
             </Link>
             <Profile />

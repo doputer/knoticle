@@ -6,7 +6,12 @@ interface IconButtonProps {
 
 export default function IconButton({ icon, visible = true, onClick }: IconButtonProps) {
   return (
-    <button type="button" onClick={onClick} style={{ visibility: visible ? 'visible' : 'hidden' }}>
+    <button
+      aria-label="button"
+      type="button"
+      onClick={onClick}
+      style={{ visibility: visible ? 'visible' : 'hidden' }}
+    >
       {icon}
     </button>
   );
