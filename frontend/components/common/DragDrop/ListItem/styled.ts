@@ -1,5 +1,3 @@
-import Image from 'next/image';
-
 import styled from 'styled-components';
 
 import { TextXSmall } from '@styles/common';
@@ -20,7 +18,7 @@ export const Article = styled.div<{ isShown: boolean; isEdit: boolean; isActive:
   background-color: ${(props) => (props.isActive ? 'var(--light-orange-color)' : 'none')};
 `;
 
-export const MinusButton = styled.div`
+export const RemoveButton = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -28,9 +26,9 @@ export const MinusButton = styled.div`
   height: 25px;
   border-radius: 50%;
   background-color: var(--red-color);
+  fill: var(--white-color);
 `;
 
-export const MinusIcon = styled(Image)``;
 export const TextWapper = styled(Flex)``;
 
 export const OriginalBadge = styled(TextXSmall)`

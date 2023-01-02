@@ -1,5 +1,3 @@
-import Image from 'next/image';
-
 import styled from 'styled-components';
 
 import { TextLinkMedium } from '@styles/common';
@@ -65,7 +63,7 @@ export const EditModalOpener = styled.div`
   background-color: transparent;
 `;
 
-export const MinusButton = styled.button`
+export const RemoveButton = styled.button`
   z-index: 5;
   position: absolute;
   display: center;
@@ -77,6 +75,5 @@ export const MinusButton = styled.button`
   background-color: var(--red-color);
   right: -10px;
   top: -10px;
+  fill: var(--white-color);
 `;
-
-export const MinusIcon = styled(Image)``;

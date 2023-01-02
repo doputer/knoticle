@@ -54,14 +54,15 @@ export const ArticleNavigatorWrapper = styled(FlexSpaceBetween)`
   z-index: 0;
 
   button:first-child {
-    transform: translateX(-32px);
+    transform: translateX(-64px);
   }
 
   button:last-child {
-    transform: translateX(32px);
+    transform: translateX(64px);
   }
 
   @media ${({ theme }) => theme.devices.tablet} {
+    margin-bottom: 32px;
     top: 100%;
 
     button:first-child,

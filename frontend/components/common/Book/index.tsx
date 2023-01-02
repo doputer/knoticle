@@ -1,15 +1,14 @@
 import Link from 'next/link';
 
-import InactiveBookmarkIcon from '@assets/ico_bookmark_black.svg';
-import ActiveBookmarkIcon from '@assets/ico_bookmark_grey_filled.svg';
-import sampleImage from '@assets/img_sample_thumbnail.jpg';
+import BookmarkIcon from '@assets/ico_bookmark.svg';
+import BookmarkFillIcon from '@assets/ico_bookmark_fill.svg';
+import IconButton from '@components/common/IconButton';
 import useBookmark from '@hooks/useBookmark';
 import { IBookScraps } from '@interfaces';
 import { TextSmall, TextXSmall } from '@styles/common';
 import { Ellipsis } from '@styles/layout';
 import encodeURL from '@utils/encode-url';
 
-import IconButton from '../IconButton';
 import {
   BookAuthor,
   BookBody,
@@ -37,7 +36,7 @@ export default function Book({ book }: BookProps) {
         href={scraps[0] ? `/@${user.nickname}/${encodeURL(title, scraps[0].article.title)}` : ``}
       >
         <BookThumbnail
-          src={book.thumbnail_image || sampleImage}
+          src={book.thumbnail_image}
           alt="thumbnail"
           width={280}
           height={157.5}
@@ -63,8 +62,7 @@ export default function Book({ book }: BookProps) {
           </BookDescription>
           <Bookmark>
             <IconButton
-              src={curBookmarkId ? ActiveBookmarkIcon : InactiveBookmarkIcon}
-              alt="Bookmark Icon"
+              icon={curBookmarkId ? <BookmarkFillIcon /> : <BookmarkIcon />}
               onClick={handleBookmarkClick}
             />
             <TextXSmall>{curBookmarkCnt}</TextXSmall>

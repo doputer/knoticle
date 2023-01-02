@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import { useRouter } from 'next/router';
 
 import { useEffect } from 'react';
@@ -6,7 +5,7 @@ import { useEffect } from 'react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 
 import { createTemporaryArticleApi, getTemporaryArticleApi } from '@apis/articleApi';
-import ExitIcon from '@assets/ico_exit.svg';
+import BackIcon from '@assets/ico_back.svg';
 import articleState from '@atoms/article';
 import articleBuffer from '@atoms/articleBuffer';
 import useFetch from '@hooks/useFetch';
@@ -79,7 +78,7 @@ export default function EditBar({ handleModalOpen, isModifyMode }: EditBarProps)
     <Bar>
       <ButtonGroup>
         <ExitButton tabIndex={-1} onClick={() => handleExitButton()}>
-          <Image src={ExitIcon} alt="Exit Icon" />
+          <BackIcon />
         </ExitButton>
       </ButtonGroup>
       <ButtonGroup>

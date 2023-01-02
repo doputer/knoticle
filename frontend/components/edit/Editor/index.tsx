@@ -1,5 +1,3 @@
-import Image from 'next/image';
-
 import { useEffect, useState } from 'react';
 
 import { useRecoilState } from 'recoil';
@@ -86,35 +84,35 @@ export default function Editor({ handleModalOpen, originalArticle = undefined }:
         <TitleInput placeholder="제목을 입력해주세요" {...title} />
         <EditorButtonWrapper>
           <EditorButton onClick={() => insertStartToggle('# ')}>
-            <Image src={H1Icon} alt="Heading1 Icon" />
+            <H1Icon />
           </EditorButton>
           <EditorButton onClick={() => insertStartToggle('## ')}>
-            <Image src={H2Icon} alt="Heading2 Icon" />
+            <H2Icon />
           </EditorButton>
           <EditorButton onClick={() => insertStartToggle('### ')}>
-            <Image src={H3Icon} alt="Heading3 Icon" />
+            <H3Icon />
           </EditorButton>
           <EditorButtonSplit />
           <EditorButton onClick={() => insertBetweenToggle('**')}>
-            <Image src={BoldIcon} alt="Bold Icon" />
+            <BoldIcon />
           </EditorButton>
           <EditorButton onClick={() => insertBetweenToggle('_')}>
-            <Image src={ItalicIcon} alt="Italic Icon" />
+            <ItalicIcon />
           </EditorButton>
           <EditorButtonSplit />
           <EditorButton onClick={() => insertStartToggle('> ')}>
-            <Image src={QuoteIcon} alt="Quote Icon" />
+            <QuoteIcon />
           </EditorButton>
           <EditorButton onClick={() => insertBetweenToggle('\n```\n', '코드')}>
-            <Image src={CodeIcon} alt="Code Icon" />
+            <CodeIcon />
           </EditorButton>
           <EditorButtonSplit />
           <EditorButton onClick={() => insertCursor('[텍스트](주소)')}>
-            <Image src={LinkIcon} alt="Link Icon" />
+            <LinkIcon />
           </EditorButton>
           <EditorButton>
             <label htmlFor="image">
-              <Image src={ImageIcon} alt="Image Icon" />
+              <ImageIcon />
             </label>
             <EditorImageInput
               id="image"

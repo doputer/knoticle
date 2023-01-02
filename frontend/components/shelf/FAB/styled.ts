@@ -19,4 +19,5 @@ export const FabButton = styled.button<{ isGreen?: boolean }>`
   height: 50px;
   border-radius: 100%;
   background-color: ${(props) => (props.isGreen ? 'var(--green-color)' : 'var(--primary-color)')};
+  fill: var(--white-color);
 `;

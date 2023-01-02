@@ -1,8 +1,6 @@
-import Image from 'next/image';
-
 import { useState } from 'react';
 
-import CaretDownIcon from '@assets/ico_caret_down.svg';
+import DropdownIcon from '@assets/ico_dropdown.svg';
 
 import {
   DropdownWrapper,
@@ -42,7 +40,7 @@ export default function Dropdown({ label, items, selectedId, handleItemSelect }:
         }}
       >
         <IconWrapper className={isDropdownSpread ? 'open' : 'close'}>
-          <Image src={CaretDownIcon} alt="Caret Down Icon" />
+          <DropdownIcon />
         </IconWrapper>
         {selectedId !== -1 ? (
           <SelectedItem>{items.find((item) => item.id === selectedId)?.name}</SelectedItem>

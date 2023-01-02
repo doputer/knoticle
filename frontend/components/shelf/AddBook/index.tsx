@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { useRecoilState } from 'recoil';
 
 import { addBookApi } from '@apis/bookApi';
-import SampleThumbnail from '@assets/img_sample_thumbnail.jpg';
+import ThumbnailImage from '@assets/img_book_thumbnail.jpg';
 import curKnottedBookListState from '@atoms/curKnottedBookList';
 import Button from '@components/common/ModalButton';
 import useFetch from '@hooks/useFetch';
@@ -52,7 +52,7 @@ export default function AddBook() {
   return (
     <>
       <BookWrapper>
-        <BookThumbnail src={SampleThumbnail} alt="thumbnail" />
+        <BookThumbnail src={ThumbnailImage} alt="thumbnail" />
 
         <BookInfoContainer>
           <FlexSpaceBetween>

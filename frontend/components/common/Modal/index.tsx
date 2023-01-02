@@ -19,13 +19,8 @@ export default function Modal({ title, hasBackward = false, children }: ModalPro
       <Dimmed onClick={closeEveryModal} />
       <ModalInner>
         <ModalButtonWrapper>
-          <IconButton
-            src={BackwardIcon}
-            alt="Backward Icon"
-            onClick={closeModal}
-            visible={hasBackward}
-          />
-          <IconButton src={CancelIcon} alt="Cancel Icon" onClick={closeEveryModal} />
+          <IconButton icon={<BackwardIcon />} onClick={closeModal} visible={hasBackward} />
+          <IconButton icon={<CancelIcon />} onClick={closeEveryModal} />
         </ModalButtonWrapper>
         <ModalTitle>{title}</ModalTitle>
         {children}
