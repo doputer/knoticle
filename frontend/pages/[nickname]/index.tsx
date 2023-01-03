@@ -2,11 +2,12 @@ import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 
 import { ReactElement, useEffect } from 'react';
+import { dehydrate, QueryClient, useQuery } from 'react-query';
 
 import { useRecoilState } from 'recoil';
 
 import { getUserBookmarkedBooksApi, getUserKnottedBooksApi } from '@apis/bookApi';
-import { getUserProfileApi } from '@apis/userApi';
+import { getUserApi } from '@apis/userApi';
 import curBookmarkedBookListState from '@atoms/curBookmarkedBookList';
 import curKnottedBookListState from '@atoms/curKnottedBookList';
 import HeaderLayout from '@components/layout/HeaderLayout';
@@ -14,20 +15,20 @@ import PageLayout from '@components/layout/PageLayout';
 import BookListTab from '@components/shelf/BookListTab';
 import StudyHead from '@components/shelf/StudyHead';
 import UserProfile from '@components/shelf/UserProfile';
+import { DISABLE_REFETCH_OPTIONS } from '@constants/react-query';
 import useFetch from '@hooks/useFetch';
 import useUser from '@hooks/useUser';
 
-interface ShelfPageProps {
-  userProfile: {
-    id: number;
-    profile_image: string;
-    nickname: string;
-    description: string;
-  };
-}
-
-export default function ShelfPage({ userProfile }: ShelfPageProps) {
+export default function ShelfPage() {
   const router = useRouter();
+
+  const { nickname } = router.query as { nickname: string };
+
+  const { data: userProfile } = useQuery(
+    ['getUser'],
+    () => getUserApi(nickname.slice(1)),
+    DISABLE_REFETCH_OPTIONS
+  );
   const { signInUser } = useUser();
   const { data: knottedBookList, execute: getKnottedBookList } = useFetch(getUserKnottedBooksApi);
   const { data: bookmarkedBookList, execute: getBookmarkedBookList } =
@@ -39,13 +40,11 @@ export default function ShelfPage({ userProfile }: ShelfPageProps) {
   );
 
   useEffect(() => {
-    const { nickname } = router.query;
-
     if (!nickname) return;
 
     getKnottedBookList(nickname.slice(1));
     getBookmarkedBookList(nickname.slice(1));
-  }, []);
+  }, [nickname]);
 
   useEffect(() => {
     if (!knottedBookList) return;
@@ -77,11 +76,13 @@ export default function ShelfPage({ userProfile }: ShelfPageProps) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { nickname } = context.query as { [key: string]: string };
+  const { nickname } = context.query as { nickname: string };
 
-  const data = await getUserProfileApi(nickname.slice(1));
+  const queryClient = new QueryClient();
 
-  return { props: { userProfile: data } };
+  await queryClient.prefetchQuery(['getUser'], () => getUserApi(nickname.slice(1)));
+
+  return { props: { dehydratedState: dehydrate(queryClient) } };
 };
 
 ShelfPage.getLayout = function getLayout(page: ReactElement) {
