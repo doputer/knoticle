@@ -1,25 +1,22 @@
 import { GetServerSideProps } from 'next';
+import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 
-import { ReactElement, useEffect } from 'react';
+import { ReactElement, useState } from 'react';
 import { dehydrate, QueryClient, useQuery } from 'react-query';
 
-import { useRecoilState } from 'recoil';
-
-import { getUserBookmarkedBooksApi, getUserKnottedBooksApi } from '@apis/bookApi';
 import { getUserApi } from '@apis/userApi';
-import curBookmarkedBookListState from '@atoms/curBookmarkedBookList';
-import curKnottedBookListState from '@atoms/curKnottedBookList';
 import HeaderLayout from '@components/layout/HeaderLayout';
 import PageLayout from '@components/layout/PageLayout';
-import BookListTab from '@components/shelf/BookListTab';
+import KnotTab from '@components/shelf/KnotTab';
 import StudyHead from '@components/shelf/StudyHead';
+import TabFilter, { type TabType } from '@components/shelf/TabFilter';
 import UserProfile from '@components/shelf/UserProfile';
 import { DISABLE_REFETCH_OPTIONS } from '@constants/react-query';
-import useFetch from '@hooks/useFetch';
-import useUser from '@hooks/useUser';
 
 export default function ShelfPage() {
+  const BookmarkTab = dynamic(() => import('@components/shelf/BookmarkTab'));
+
   const router = useRouter();
 
   const { nickname } = router.query as { nickname: string };
@@ -29,34 +26,11 @@ export default function ShelfPage() {
     () => getUserApi(nickname.slice(1)),
     DISABLE_REFETCH_OPTIONS
   );
-  const { signInUser } = useUser();
-  const { data: knottedBookList, execute: getKnottedBookList } = useFetch(getUserKnottedBooksApi);
-  const { data: bookmarkedBookList, execute: getBookmarkedBookList } =
-    useFetch(getUserBookmarkedBooksApi);
+  const [tab, setTab] = useState<TabType>('knot');
 
-  const [curKnottedBookList, setCurKnottedBookList] = useRecoilState(curKnottedBookListState);
-  const [curBookmarkedBookList, setCurBookmarkedBookList] = useRecoilState(
-    curBookmarkedBookListState
-  );
-
-  useEffect(() => {
-    if (!nickname) return;
-
-    getKnottedBookList(nickname.slice(1));
-    getBookmarkedBookList(nickname.slice(1));
-  }, [nickname]);
-
-  useEffect(() => {
-    if (!knottedBookList) return;
-
-    setCurKnottedBookList(knottedBookList);
-  }, [knottedBookList]);
-
-  useEffect(() => {
-    if (!bookmarkedBookList) return;
-
-    setCurBookmarkedBookList(bookmarkedBookList);
-  }, [bookmarkedBookList]);
+  const handleTab = (type: TabType) => {
+    setTab(type);
+  };
 
   return (
     <>
@@ -66,11 +40,9 @@ export default function ShelfPage() {
         userImage={userProfile.profile_image}
       />
       <UserProfile userProfile={userProfile} />
-      <BookListTab
-        knottedBookList={curKnottedBookList}
-        bookmarkedBookList={curBookmarkedBookList}
-        isUserMatched={signInUser.id === userProfile.id}
-      />
+      <TabFilter tab={tab} handleTab={handleTab} />
+      {tab === 'knot' && <KnotTab nickname={nickname} />}
+      {tab === 'bookmark' && <BookmarkTab nickname={nickname} />}
     </>
   );
 }
