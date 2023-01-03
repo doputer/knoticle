@@ -1,7 +1,5 @@
 import styled from 'styled-components';
 
-import { Flex } from '@styles/layout';
-
 export const BookGrid = styled.div`
   padding: 24px 0;
   display: grid;
@@ -22,7 +20,4 @@ export const BookGrid = styled.div`
   }
 `;
 
-export const OptionWrapper = styled(Flex)`
-  height: 24px;
-  justify-content: flex-end;
-`;
+export const BookWrapper = styled.div``;

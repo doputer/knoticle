@@ -1,13 +1,12 @@
 import { useQuery } from 'react-query';
 
 import { getUserKnottedBooksApi } from '@apis/bookApi';
-import MoreIcon from '@assets/ico_more.svg';
 import Book from '@components/common/Book';
-import IconButton from '@components/common/IconButton';
 import useUser from '@hooks/useUser';
 import { IBookScraps } from '@interfaces';
 
-import { BookGrid, OptionWrapper } from './styled';
+import BookOption from '../BookOption';
+import { BookGrid, BookWrapper } from './styled';
 
 interface KnotTabProps {
   nickname: string;
@@ -24,14 +23,10 @@ function KnotTab({ nickname }: KnotTabProps) {
   return (
     <BookGrid>
       {knotBooks?.map((book) => (
-        <div key={book.id}>
-          {signInUser.nickname === nickname.slice(1) && (
-            <OptionWrapper>
-              <IconButton icon={<MoreIcon />} onClick={() => alert(1)} />
-            </OptionWrapper>
-          )}
+        <BookWrapper key={book.id}>
+          {signInUser.nickname === nickname.slice(1) && <BookOption book={book} />}
           <Book book={book} />
-        </div>
+        </BookWrapper>
       ))}
     </BookGrid>
   );

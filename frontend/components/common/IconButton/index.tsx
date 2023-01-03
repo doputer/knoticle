@@ -1,7 +1,7 @@
 interface IconButtonProps {
   icon: React.ReactNode;
   visible?: boolean;
-  onClick: () => void;
+  onClick: (event?: React.MouseEvent) => void;
 }
 
 export default function IconButton({ icon, visible = true, onClick }: IconButtonProps) {
