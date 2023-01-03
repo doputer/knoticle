@@ -31,6 +31,7 @@ export const ModalInner = styled.div`
   left: 50%;
   transform: translate(-50%, -50%);
   box-sizing: border-box;
+  overflow: auto;
 
   @media ${({ theme }) => theme.devices.mobile} {
     width: 100%;

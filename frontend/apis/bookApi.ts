@@ -80,14 +80,14 @@ export const addBookApi = async (data: { title: string }) => {
   return response.data;
 };
 
-interface EditBookApi {
+interface UpdateBookApi {
   id: number;
   title: string;
   thumbnail_image: string;
   scraps: IScrap[];
 }
 
-export const editBookApi = async (data: EditBookApi) => {
+export const updateBookApi = async (data: UpdateBookApi) => {
   const url = `/api/books`;
 
   const response = await api({ url, method: 'PATCH', data });

@@ -15,7 +15,7 @@ interface KnotTabProps {
 function KnotTab({ nickname }: KnotTabProps) {
   const { signInUser } = useUser();
   const { data: knotBooks } = useQuery<IBookScraps[]>(
-    ['knotBooks', { nickname }],
+    ['knotBooks', { nickname: nickname.slice(1) }],
     () => getUserKnottedBooksApi(nickname.slice(1)),
     { refetchOnWindowFocus: false }
   );
