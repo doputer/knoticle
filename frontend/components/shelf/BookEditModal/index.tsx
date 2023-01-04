@@ -1,32 +1,28 @@
 import Image from 'next/image';
 
-import React, { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useMutation, useQueryClient } from 'react-query';
 
 import { updateBookApi } from '@apis/bookApi';
 import { createImageApi } from '@apis/imageApi';
-import BookmarkFillIcon from '@assets/ico_bookmark_fill.svg';
+import EditIcon from '@assets/ico_edit.svg';
 import LabeledInput from '@components/common/LabeledInput';
 import ModalButton from '@components/common/ModalButton';
 import useApiError from '@hooks/useApiError';
 import useModal from '@hooks/useModal';
 import { IBookScraps } from '@interfaces';
-import { TextSmall, TextXSmall } from '@styles/common';
 import { Ellipsis } from '@styles/layout';
 import { toastSuccess } from '@utils/toast';
 
 import {
-  BookAuthor,
-  BookBody,
-  BookContainer,
-  BookDescription,
   BookEditModalContainer,
-  BookInformation,
-  Bookmark,
-  BookScrap,
-  BookScrapList,
-  BookThumbnail,
+  Label,
+  Scrap,
+  ScrapList,
+  ScrapListWrapper,
+  ThumbnailImage,
   ThumbnailImageInput,
+  ThumbnailImageWrapper,
 } from './styled';
 
 interface BookProps {
@@ -71,20 +67,67 @@ export default function BookEditModal({ book }: BookProps) {
     setNewBook({ ...newBook, title: value });
   };
 
+  const dragItem = useRef(0);
+  const dragOverItem = useRef(0);
+
+  const handleDragStart = (event: React.DragEvent<HTMLDivElement>, id: number) => {
+    dragItem.current = id;
+  };
+
+  const handleDragEnter = (event: React.DragEvent<HTMLDivElement>, id: number) => {
+    dragOverItem.current = id;
+
+    const $target = event.target as HTMLDivElement;
+
+    if (dragItem.current < id) $target.classList.add('space-bottom');
+    else if (dragItem.current > id) $target.classList.add('space-top');
+  };
+
+  const handleDragLeave = (event: React.DragEvent<HTMLDivElement>, id: number) => {
+    dragOverItem.current = id;
+
+    const $target = event.target as HTMLDivElement;
+
+    if (dragItem.current < id) $target.classList.remove('space-bottom');
+    else if (dragItem.current > id) $target.classList.remove('space-top');
+  };
+
+  const handleDrop = () => {
+    const copyScraps = [...newBook.scraps];
+    const dragItemContent = copyScraps[dragItem.current];
+
+    copyScraps.splice(dragItem.current, 1);
+    copyScraps.splice(dragOverItem.current, 0, dragItemContent);
+    dragItem.current = 0;
+    dragOverItem.current = 0;
+
+    setNewBook({ ...newBook, scraps: copyScraps });
+  };
+
   const handleOkButtonClick = () => {
-    updateBook(newBook);
+    updateBook({
+      id: newBook.id,
+      title: newBook.title,
+      thumbnail_image: newBook.thumbnail_image,
+      scraps: newBook.scraps.map((scrap, index) => ({
+        ...scrap,
+        order: index + 1,
+      })),
+    });
   };
 
   return (
     <BookEditModalContainer>
-      <BookContainer>
-        <BookThumbnail>
+      <ThumbnailImageWrapper>
+        <Label>썸네일</Label>
+        <EditIcon />
+        <ThumbnailImage>
           <label htmlFor="file">
             <Image
               src={newBook.thumbnail_image}
-              width={280}
-              height={157.5}
-              alt="Profile Image"
+              alt="Thumbnail Image"
+              width={296}
+              height={167}
               priority
             />
           </label>
@@ -94,39 +137,36 @@ export default function BookEditModal({ book }: BookProps) {
             accept="image/jpg, image/png, image/jpeg"
             onChange={handleImageUpload}
           />
-        </BookThumbnail>
-        <BookBody>
-          <BookInformation>
-            <BookDescription>
-              <LabeledInput
-                label="제목*"
-                type="text"
-                name="title"
-                defaultValue={newBook.title}
-                onChange={handleTitleChange}
-              />
-              <BookAuthor>by {newBook.user.nickname}</BookAuthor>
-            </BookDescription>
-            <Bookmark>
-              <BookmarkFillIcon />
-              <TextXSmall>{0}</TextXSmall>
-            </Bookmark>
-          </BookInformation>
-
-          <BookScrapList>
-            <TextSmall>Contents</TextSmall>
-            <BookScrap>
-              {newBook.scraps.slice(0, 4).map((scrap) => (
-                <Ellipsis key={scrap.id}>
-                  {scrap.order}. {scrap.article.title}
-                </Ellipsis>
-              ))}
-            </BookScrap>
-          </BookScrapList>
-        </BookBody>
-      </BookContainer>
+        </ThumbnailImage>
+      </ThumbnailImageWrapper>
+      <LabeledInput
+        label="제목*"
+        type="text"
+        name="title"
+        defaultValue={newBook.title}
+        onChange={handleTitleChange}
+      />
+      <ScrapListWrapper>
+        <Label>스크랩</Label>
+        <ScrapList>
+          {newBook.scraps.map((scrap, index) => (
+            <Scrap
+              key={scrap.id}
+              onDragStart={(event) => handleDragStart(event, index)}
+              onDragEnter={(event) => handleDragEnter(event, index)}
+              onDragLeave={(event) => handleDragLeave(event, index)}
+              onDragEnd={handleDrop}
+              draggable
+            >
+              <Ellipsis>
+                {index + 1}. {scrap.article.title}
+              </Ellipsis>
+            </Scrap>
+          ))}
+        </ScrapList>
+      </ScrapListWrapper>
       <ModalButton theme="primary" onClick={handleOkButtonClick}>
-        수정 완료
+        수정하기
       </ModalButton>
     </BookEditModalContainer>
   );
