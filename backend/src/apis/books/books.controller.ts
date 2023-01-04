@@ -91,9 +91,9 @@ const deleteBook = async (req: Request, res: Response) => {
 
   const userId = res.locals.user.id;
 
-  const book = await booksService.deleteBook(bookId, userId);
+  const deletedBook = await booksService.deleteBook(bookId, userId);
 
-  return res.status(200).send(book);
+  return res.status(200).send(deletedBook);
 };
 
 export default {

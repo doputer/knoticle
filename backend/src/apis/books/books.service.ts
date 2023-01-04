@@ -273,9 +273,16 @@ const updateBook = async (dto: any) => {
 };
 
 const deleteBook = async (id: number, userId: number) => {
-  if (!(await checkBookOwnerCorrect(id, userId))) throw new NotFound(Message.BOOK_NOTFOUND);
+  const book = await prisma.book.findFirst({
+    where: {
+      id,
+      user: { id: userId },
+    },
+  });
 
-  const book = await prisma.book.update({
+  if (!book) throw new NotFound(Message.BOOK_NOTFOUND);
+
+  const deletedBook = await prisma.book.update({
     where: {
       id,
     },
@@ -284,18 +291,7 @@ const deleteBook = async (id: number, userId: number) => {
     },
   });
 
-  return book;
-};
-
-const checkBookOwnerCorrect = async (id: number, userId: number) => {
-  const book = await prisma.book.findFirst({
-    where: {
-      id,
-      user_id: userId,
-    },
-  });
-
-  return book;
+  return deletedBook;
 };
 
 export default {
