@@ -22,6 +22,7 @@ export const DropdownItem = styled(TextMedium)`
   padding: 16px 0;
   width: 128px;
   text-align: center;
+  cursor: pointer;
 
   :hover {
     color: var(--primary-color);
