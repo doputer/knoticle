@@ -1,4 +1,4 @@
-import { CreateScrap, IScrap } from '@apis/scraps/scraps.interface';
+import { CreateScrap, Scrap } from '@apis/scraps/scraps.interface';
 import { prisma } from '@config/orm.config';
 import { ResourceConflict } from '@errors/error';
 import Message from '@errors/message';
@@ -74,20 +74,20 @@ const checkScrapExists = async (dto: CreateScrap) => {
   if (scrap) throw new ResourceConflict(Message.SCRAP_OVERLAP);
 };
 
-const updateScrapOrder = async (scraps: IScrap) => {
-  const scrap = await prisma.scrap.update({
+const updateScrapOrder = async (scrap: Scrap) => {
+  const updatedScrap = await prisma.scrap.update({
     where: {
-      id: scraps.id,
+      id: scrap.id,
     },
     data: {
-      order: scraps.order,
+      order: scrap.order,
     },
   });
 
-  return scrap;
+  return updatedScrap;
 };
 
-const updateScrapBookId = async (articleId: number, bookId: number, scraps: IScrap) => {
+const updateScrapBookId = async (articleId: number, bookId: number, scraps: Scrap) => {
   const originalScrap = await prisma.scrap.findFirst({
     where: {
       is_original: true,

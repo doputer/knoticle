@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 
-import { IScrap } from '@apis/scraps/scraps.interface';
+import { Scrap } from '@apis/scraps/scraps.interface';
 
 import scrapsService from './scraps.service';
 
@@ -13,7 +13,7 @@ const getScraps = async (req: Request, res: Response) => {
 const createScrap = async (req: Request, res: Response) => {
   const { book_id, article_id, scraps } = req.body;
 
-  scraps.forEach(async (scrap: IScrap) => {
+  scraps.forEach(async (scrap: Scrap) => {
     if (scrap.id === 0) {
       await scrapsService.createScrap({
         order: scrap.order,
@@ -32,7 +32,7 @@ const createScrap = async (req: Request, res: Response) => {
 const updateScrapsOrder = async (req: Request, res: Response) => {
   const scraps = req.body;
 
-  scraps.forEach(async (scrap: IScrap) => {
+  scraps.forEach(async (scrap: Scrap) => {
     await scrapsService.updateScrapOrder(scrap);
   });
 

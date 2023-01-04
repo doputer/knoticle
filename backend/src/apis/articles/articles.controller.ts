@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 
 import { GetArticle, SearchArticles } from '@apis/articles/articles.interface';
 import articlesService from '@apis/articles/articles.service';
-import { IScrap } from '@apis/scraps/scraps.interface';
+import { Scrap } from '@apis/scraps/scraps.interface';
 import scrapsService from '@apis/scraps/scraps.service';
 import { Forbidden, Message } from '@errors';
 
@@ -48,7 +48,7 @@ const createArticle = async (req: Request, res: Response) => {
   });
 
   // forEach와 async,await을 같이사용하는 것이 맞나? 다른방법은 없나?
-  scraps.forEach(async (scrap: IScrap) => {
+  scraps.forEach(async (scrap: Scrap) => {
     if (scrap.id === 0) {
       await scrapsService.createScrap({
         order: scrap.order,
@@ -79,7 +79,7 @@ const updateArticle = async (req: Request, res: Response) => {
 
   const result: any[] = [];
 
-  scraps.forEach(async (scrap: IScrap) => {
+  scraps.forEach(async (scrap: Scrap) => {
     if (scrap.id === 0) {
       result.push(await scrapsService.updateScrapBookId(articleId, article.book_id, scrap));
     } else {

@@ -88,7 +88,7 @@ interface UpdateBookApi {
 }
 
 export const updateBookApi = async (data: UpdateBookApi) => {
-  const url = `/api/books`;
+  const url = `/api/books/${data.id}`;
 
   const response = await api({ url, method: 'PATCH', data });
 

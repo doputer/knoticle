@@ -258,17 +258,18 @@ const createBook = async ({ title, userId }: CreateBook) => {
 
 const updateBook = async (dto: any) => {
   const { id, title, thumbnail_image } = dto;
-  const book = await prisma.book.update({
+
+  const updatedBook = await prisma.book.update({
     where: {
       id,
     },
     data: {
       title,
-      thumbnail_image: thumbnail_image,
+      thumbnail_image,
     },
   });
 
-  return book;
+  return updatedBook;
 };
 
 const deleteBook = async (id: number, userId: number) => {

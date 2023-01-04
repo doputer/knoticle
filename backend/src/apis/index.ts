@@ -41,7 +41,7 @@ router.get('/books/owner', catchAsync(booksController.getOwnerBook));
 router.get('/books/:bookId', decoder, catchAsync(booksController.getBook));
 router.get('/books', decoder, catchAsync(booksController.getBooks));
 router.post('/books', guard, catchAsync(booksController.createBook));
-router.patch('/books', guard, catchAsync(booksController.updateBook));
+router.patch('/books/:bookId', guard, catchAsync(booksController.updateBook));
 router.delete('/books/:bookId', guard, catchAsync(booksController.deleteBook));
 
 router.post('/bookmarks', guard, catchAsync(bookmarksController.createBookmark));
