@@ -4,12 +4,12 @@ import type { BasicModalProps } from '@components/modal/BasicModal';
 import type { ConfirmModalProps } from '@components/modal/ConfirmModal';
 
 export const MODAL_TYPES = {
-  Modal: 'Modal',
+  Basic: 'Modal',
   Confirm: 'Confirm',
 } as const;
 
 interface BasicModalType {
-  modalType: typeof MODAL_TYPES.Modal;
+  modalType: typeof MODAL_TYPES.Basic;
   modalProps: BasicModalProps;
 }
 
