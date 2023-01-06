@@ -7,7 +7,7 @@ import { createImageApi } from '@apis/imageApi';
 import EditIcon from '@assets/ico_edit.svg';
 import Thumbnail from '@assets/img_book_thumbnail.jpg';
 import LabeledInput from '@components/common/LabeledInput';
-import ModalButton from '@components/common/ModalButton';
+import ModalButton from '@components/modal/ModalButton';
 import useApiError from '@hooks/useApiError';
 import useForm from '@hooks/useForm';
 import useModal from '@hooks/useModal';

@@ -1,6 +1,6 @@
 import CloseIcon from '@assets/ico_close.svg';
 import IconButton from '@components/common/IconButton';
-import ModalButton from '@components/common/ModalButton';
+import ModalButton from '@components/modal/ModalButton';
 import useModal from '@hooks/useModal';
 
 import { Dimmed, ModalBody, ModalContainer, ModalFooter, ModalHeader, ModalInner } from './styled';

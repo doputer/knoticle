@@ -7,7 +7,7 @@ import { createScrapApi } from '@apis/scrapApi';
 import scrapState from '@atoms/scrap';
 import DragArticle from '@components/common/DragDrop';
 import Dropdown from '@components/common/Dropdown';
-import ModalButton from '@components/common/ModalButton';
+import ModalButton from '@components/modal/ModalButton';
 import useFetch from '@hooks/useFetch';
 import useModal from '@hooks/useModal';
 import useUser from '@hooks/useUser';

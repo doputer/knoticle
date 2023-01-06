@@ -5,7 +5,7 @@ import { useMutation } from 'react-query';
 import { localSignInApi } from '@apis/authApi';
 import GitHubIcon from '@assets/ico_github.svg';
 import LabeledInput from '@components/common/LabeledInput';
-import ModalButton from '@components/common/ModalButton';
+import ModalButton from '@components/modal/ModalButton';
 import useApiError from '@hooks/useApiError';
 import useForm from '@hooks/useForm';
 import { TextLinkMedium, TextSmall } from '@styles/common';

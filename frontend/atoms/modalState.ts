@@ -1,7 +1,7 @@
 import { atom } from 'recoil';
 
-import type { ConfirmModalProps } from '@components/common/ConfirmModal';
-import type { ModalProps } from '@components/common/Modal';
+import type { BasicModalProps } from '@components/modal/BasicModal';
+import type { ConfirmModalProps } from '@components/modal/ConfirmModal';
 
 export const MODAL_TYPES = {
   Modal: 'Modal',
@@ -10,7 +10,7 @@ export const MODAL_TYPES = {
 
 interface BasicModalType {
   modalType: typeof MODAL_TYPES.Modal;
-  modalProps: ModalProps;
+  modalProps: BasicModalProps;
 }
 
 interface ConfirmModalType {

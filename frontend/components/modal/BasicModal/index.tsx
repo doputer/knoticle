@@ -5,13 +5,13 @@ import useModal from '@hooks/useModal';
 
 import { Dimmed, ModalButtonWrapper, ModalContainer, ModalInner, ModalTitle } from './styled';
 
-export interface ModalProps {
+export interface BasicModalProps {
   title: string;
   hasBackward?: boolean;
   children: React.ReactNode;
 }
 
-export default function Modal({ title, hasBackward = false, children }: ModalProps) {
+export default function BasicModal({ title, hasBackward = false, children }: BasicModalProps) {
   const { closeModal, closeEveryModal } = useModal();
 
   return (

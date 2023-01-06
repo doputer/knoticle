@@ -7,7 +7,7 @@ import { updateBookApi } from '@apis/bookApi';
 import { createImageApi } from '@apis/imageApi';
 import EditIcon from '@assets/ico_edit.svg';
 import LabeledInput from '@components/common/LabeledInput';
-import ModalButton from '@components/common/ModalButton';
+import ModalButton from '@components/modal/ModalButton';
 import useApiError from '@hooks/useApiError';
 import useModal from '@hooks/useModal';
 import { IBookScraps } from '@interfaces';

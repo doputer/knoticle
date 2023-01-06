@@ -3,8 +3,8 @@ import React, { useCallback } from 'react';
 import { useRecoilValue } from 'recoil';
 
 import { MODAL_TYPES, modalState } from '@atoms/modalState';
-import ConfirmModal from '@components/common/ConfirmModal';
-import Modal from '@components/common/Modal';
+import Modal from '@components/modal/BasicModal';
+import ConfirmModal from '@components/modal/ConfirmModal';
 
 const MODAL_COMPONENTS: any = {
   [MODAL_TYPES.Modal]: Modal,

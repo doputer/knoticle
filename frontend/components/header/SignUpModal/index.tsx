@@ -3,7 +3,7 @@ import { useMutation } from 'react-query';
 
 import { signUpApi } from '@apis/authApi';
 import LabeledInput from '@components/common/LabeledInput';
-import ModalButton from '@components/common/ModalButton';
+import ModalButton from '@components/modal/ModalButton';
 import useApiError from '@hooks/useApiError';
 import useForm from '@hooks/useForm';
 import useModal from '@hooks/useModal';
