@@ -1,16 +1,21 @@
-import { Label, ModalButtonContainer } from './styled';
+import { ModalButtonContainer, ModalButtonInner } from './styled';
 
-interface ButtonProps {
+interface ModalButtonProps {
   theme: 'primary' | 'second';
   children: React.ReactNode;
-  onClick: () => void;
   disabled?: boolean;
+  onClick: () => void;
 }
 
-export default function ModalButton({ theme, children, onClick, disabled = false }: ButtonProps) {
+export default function ModalButton({
+  theme,
+  children,
+  disabled = false,
+  onClick,
+}: ModalButtonProps) {
   return (
-    <ModalButtonContainer type="button" onClick={onClick} theme={theme} disabled={disabled}>
-      <Label>{children}</Label>
+    <ModalButtonContainer theme={theme} disabled={disabled} onClick={onClick}>
+      <ModalButtonInner>{children}</ModalButtonInner>
     </ModalButtonContainer>
   );
 }
