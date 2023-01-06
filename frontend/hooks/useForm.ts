@@ -9,7 +9,7 @@ const useForm = <T>(initialForm: T) => {
     setForm((prev) => ({ ...prev, [name]: value }));
   }, []);
 
-  return { form, handleInputChange };
+  return { form, setForm, handleInputChange };
 };
 
 export default useForm;

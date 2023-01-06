@@ -1,65 +1,56 @@
-import { useRouter } from 'next/router';
+import dynamic from 'next/dynamic';
+import Image from 'next/image';
 
-import { useEffect } from 'react';
-
-import { signOutApi } from '@apis/authApi';
 import EditIcon from '@assets/ico_edit.svg';
-import useFetch from '@hooks/useFetch';
+import useModal from '@hooks/useModal';
 import useUser from '@hooks/useUser';
 import { IUser } from '@interfaces';
-import { TextLinkMedium } from '@styles/common';
+import { TextSmall } from '@styles/common';
 
 import {
-  ButtonGroup,
-  LogoutButton,
+  Description,
+  Nickname,
+  ProfileContainer,
   ProfileEditButton,
-  UserDescription,
-  UserDetailGroup,
-  Username,
-  UserProfileWrapper,
+  UserInformation,
   UserThumbnail,
 } from './styled';
 
 interface UserProfileProps {
-  curUserProfile: IUser;
-  handleEditBtnClick: () => void;
+  profile: IUser;
 }
 
-export default function UserProfile({ curUserProfile, handleEditBtnClick }: UserProfileProps) {
-  const router = useRouter();
-  const { signInUser, clearUser } = useUser();
-  const { data: user, execute: signOut } = useFetch(signOutApi);
+export default function UserProfile({ profile }: UserProfileProps) {
+  const UpdateProfileModal = dynamic(() => import('@components/shelf/UpdateProfileModal'));
 
-  const handleLogoutBtnClick = () => {
-    signOut();
+  const { signInUser } = useUser();
+  const { openModal } = useModal();
+
+  const handleProfileEditModalOpen = () => {
+    openModal({
+      modalType: 'Modal',
+      modalProps: {
+        title: '회원 정보 수정하기',
+        children: <UpdateProfileModal profile={profile} />,
+      },
+    });
   };
 
-  useEffect(() => {
-    if (!user) return;
-
-    clearUser();
-
-    router.push('/');
-  }, [user]);
-
   return (
-    <UserProfileWrapper>
-      <UserThumbnail src={curUserProfile.profile_image} alt="User1" width={200} height={200} />
-      <UserDetailGroup>
-        <Username>{curUserProfile.nickname}</Username>
-        <UserDescription>{curUserProfile.description}</UserDescription>
-
-        <ButtonGroup isVisible={signInUser.id !== 0 && signInUser.id === curUserProfile.id}>
-          <ProfileEditButton type="button" onClick={handleEditBtnClick}>
-            <TextLinkMedium>프로필 수정</TextLinkMedium>
-            <EditIcon />
-          </ProfileEditButton>
-
-          <LogoutButton onClick={handleLogoutBtnClick}>
-            <TextLinkMedium>로그아웃</TextLinkMedium>
-          </LogoutButton>
-        </ButtonGroup>
-      </UserDetailGroup>
-    </UserProfileWrapper>
+    <ProfileContainer>
+      <UserThumbnail>
+        <Image src={profile.profile_image} alt="thumbnail" width={128} height={128} priority />
+      </UserThumbnail>
+      <UserInformation>
+        <Nickname>{profile.nickname}</Nickname>
+        <Description>{profile.description}</Description>
+      </UserInformation>
+      {signInUser.id === profile.id && (
+        <ProfileEditButton onClick={handleProfileEditModalOpen}>
+          <EditIcon />
+          <TextSmall>프로필 수정</TextSmall>
+        </ProfileEditButton>
+      )}
+    </ProfileContainer>
   );
 }

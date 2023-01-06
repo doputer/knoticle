@@ -1,79 +1,52 @@
-import Image from 'next/image';
-
 import styled from 'styled-components';
 
-import { TextLarge, TextSmall } from '@styles/common';
+import { TextMedium } from '@styles/common';
+import { Flex, FlexColumn } from '@styles/layout';
 
-export const UserProfileWrapper = styled.div`
-  margin: 40px 0 20px 0;
-  width: 78%;
-  display: flex;
-
-  @media ${({ theme }) => theme.devices.mobile} {
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin: 20px;
-  }
-`;
-
-export const UserThumbnail = styled(Image)`
-  width: 200px;
-  height: 200px;
-  border-radius: 100%;
-  border: 1px solid var(--grey-01-color);
-  object-fit: cover;
-`;
-
-export const UserDetailGroup = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-left: 30px;
-
-  @media ${({ theme }) => theme.devices.mobile} {
-    margin-top: 20px;
-  }
-`;
-
-export const Username = styled(TextLarge)`
-  font-size: 24px;
-  margin-bottom: 10px;
-`;
-
-export const UserDescription = styled(TextSmall)`
-  width: 400px;
-
-  @media ${({ theme }) => theme.devices.tablet} {
-    width: 250px;
-  }
-`;
-
-export const ButtonGroup = styled.div<{ isVisible: boolean }>`
-  display: flex;
-  gap: 8px;
-  ${(props) => (props.isVisible ? '' : 'visibility : hidden')}
-`;
-
-const Button = styled.button`
-  padding: 4px 8px;
-  border-radius: 10px;
-  cursor: pointer;
-  margin: 30px 0 30px;
-`;
-
-export const ProfileEditButton = styled(Button)`
-  width: 120px;
-  height: 40px;
-  display: flex;
-  justify-content: space-between;
+export const ProfileContainer = styled(Flex)`
+  padding: 24px 0;
+  width: 768px;
+  justify-content: flex-start;
   align-items: center;
 
-  border-radius: 10px;
-  border: 1px solid var(--grey-01-color);
+  @media ${({ theme }) => theme.devices.tablet} {
+    width: auto;
+    flex-direction: column;
+    justify-content: center;
+  }
 `;
 
-export const LogoutButton = styled(Button)`
-  border: 1px solid #8f4c26;
-  background-color: var(--primary-color);
-  color: white;
+export const UserThumbnail = styled.div`
+  width: 128px;
+  height: 128px;
+  border-radius: 50%;
+  border: 1px solid var(--grey-01-color);
+  overflow: hidden;
+
+  img {
+    object-fit: cover;
+  }
+`;
+
+export const UserInformation = styled(FlexColumn)`
+  padding: 16px;
+  max-width: 360px;
+  gap: 8px;
+`;
+
+export const Nickname = styled.div`
+  font-size: 24px;
+`;
+
+export const Description = styled(TextMedium)`
+  word-break: break-all;
+`;
+
+export const ProfileEditButton = styled.button`
+  padding: 4px 8px;
+  background-color: var(--light-orange-color);
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--grey-02-color);
+  border-radius: 16px;
 `;

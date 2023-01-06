@@ -109,7 +109,7 @@ const getOwnerBook = async ({ title, owner }: GetOwnerBook) => {
   return book;
 };
 
-const getBooks = async ({ order, take, userId, editor, type }: FindBooks) => {
+const getBooks = async ({ order, take, userId }: FindBooks) => {
   const sortOptions = [];
 
   if (order === 'bookmark') sortOptions.push({ bookmarks: { _count: 'desc' as const } });
@@ -151,26 +151,6 @@ const getBooks = async ({ order, take, userId, editor, type }: FindBooks) => {
     },
     where: {
       deleted_at: null,
-      user:
-        type === 'bookmark'
-          ? {}
-          : {
-              is: {
-                nickname: editor ? editor : undefined,
-              },
-            },
-      bookmarks:
-        type === 'bookmark'
-          ? {
-              some: {
-                user: {
-                  is: {
-                    nickname: editor ? editor : undefined,
-                  },
-                },
-              },
-            }
-          : {},
     },
     orderBy: sortOptions,
     take,
@@ -239,12 +219,11 @@ const searchBooks = async ({ query, userId, isUsers, take, page }: SearchBooks) 
   };
 };
 
-const createBook = async ({ title, userId }: CreateBook) => {
-  const book = await prisma.book.create({
+const createBook = async ({ title, thumbnail_image, userId }: CreateBook) => {
+  const createdBook = await prisma.book.create({
     data: {
       title,
-      thumbnail_image:
-        'https://kr.object.ncloudstorage.com/j027/3947d647-f26e-43cc-9834-82d59703cd9c.png',
+      thumbnail_image: thumbnail_image ? thumbnail_image : undefined,
       user: {
         connect: {
           id: userId,
@@ -253,28 +232,36 @@ const createBook = async ({ title, userId }: CreateBook) => {
     },
   });
 
-  return book;
+  return createdBook;
 };
 
 const updateBook = async (dto: any) => {
   const { id, title, thumbnail_image } = dto;
-  const book = await prisma.book.update({
+
+  const updatedBook = await prisma.book.update({
     where: {
       id,
     },
     data: {
       title,
-      thumbnail_image: thumbnail_image,
+      thumbnail_image,
     },
   });
 
-  return book;
+  return updatedBook;
 };
 
 const deleteBook = async (id: number, userId: number) => {
-  if (!(await checkBookOwnerCorrect(id, userId))) throw new NotFound(Message.BOOK_NOTFOUND);
+  const book = await prisma.book.findFirst({
+    where: {
+      id,
+      user: { id: userId },
+    },
+  });
 
-  const book = await prisma.book.update({
+  if (!book) throw new NotFound(Message.BOOK_NOTFOUND);
+
+  const deletedBook = await prisma.book.update({
     where: {
       id,
     },
@@ -283,18 +270,7 @@ const deleteBook = async (id: number, userId: number) => {
     },
   });
 
-  return book;
-};
-
-const checkBookOwnerCorrect = async (id: number, userId: number) => {
-  const book = await prisma.book.findFirst({
-    where: {
-      id,
-      user_id: userId,
-    },
-  });
-
-  return book;
+  return deletedBook;
 };
 
 export default {

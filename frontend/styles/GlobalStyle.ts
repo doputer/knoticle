@@ -21,6 +21,7 @@ const GlobalStyle = createGlobalStyle`
     color: var(--title-active-color);
     font-family: 'Noto Sans KR';
     font-weight: 500;
+    fill: var(--title-active-color)
   }
     
   button {

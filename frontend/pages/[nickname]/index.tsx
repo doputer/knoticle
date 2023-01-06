@@ -1,135 +1,60 @@
 import { GetServerSideProps } from 'next';
+import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 
-import { ReactElement, useEffect, useState } from 'react';
+import { ReactElement, useState } from 'react';
+import { dehydrate, QueryClient, useQuery } from 'react-query';
 
-import { useRecoilState } from 'recoil';
-
-import { getUserBookmarkedBooksApi, getUserKnottedBooksApi } from '@apis/bookApi';
-import { getUserProfileApi, updateUserProfileApi } from '@apis/userApi';
-import curBookmarkedBookListState from '@atoms/curBookmarkedBookList';
-import curKnottedBookListState from '@atoms/curKnottedBookList';
+import { getUserApi } from '@apis/userApi';
 import HeaderLayout from '@components/layout/HeaderLayout';
 import PageLayout from '@components/layout/PageLayout';
-import BookListTab from '@components/shelf/BookListTab';
-import EditUserProfile from '@components/shelf/EditUserProfile';
+import KnotTab from '@components/shelf/KnotTab';
 import StudyHead from '@components/shelf/StudyHead';
+import TabFilter, { type TabType } from '@components/shelf/TabFilter';
 import UserProfile from '@components/shelf/UserProfile';
-import useFetch from '@hooks/useFetch';
-import useUser from '@hooks/useUser';
-import { IUser } from '@interfaces';
+import { DISABLE_REFETCH_OPTIONS } from '@constants/react-query';
 
-interface ShelfPageProps {
-  userProfile: {
-    id: number;
-    profile_image: string;
-    nickname: string;
-    description: string;
-  };
-}
+export default function ShelfPage() {
+  const BookmarkTab = dynamic(() => import('@components/shelf/BookmarkTab'));
 
-export default function ShelfPage({ userProfile }: ShelfPageProps) {
   const router = useRouter();
-  const { signInUser, setUser } = useUser();
-  const { data: updatedUserProfile, execute: updateUserProfile } = useFetch(updateUserProfileApi);
-  const { data: knottedBookList, execute: getKnottedBookList } = useFetch(getUserKnottedBooksApi);
-  const { data: bookmarkedBookList, execute: getBookmarkedBookList } =
-    useFetch(getUserBookmarkedBooksApi);
 
-  const [curKnottedBookList, setCurKnottedBookList] = useRecoilState(curKnottedBookListState);
-  const [curBookmarkedBookList, setCurBookmarkedBookList] = useRecoilState(
-    curBookmarkedBookListState
+  const { nickname } = router.query as { nickname: string };
+
+  const { data: profile } = useQuery(
+    ['getUser'],
+    () => getUserApi(nickname.slice(1)),
+    DISABLE_REFETCH_OPTIONS
   );
+  const [tab, setTab] = useState<TabType>('knot');
 
-  const [curUserProfile, setCurUserProfile] = useState<IUser | null>(null);
-  const [isEditing, setIsEditing] = useState<boolean>(false);
-
-  const handleEditFinishBtnClick = () => {
-    if (!curUserProfile) return;
-
-    updateUserProfile(curUserProfile);
+  const handleTab = (type: TabType) => {
+    setTab(type);
   };
-
-  useEffect(() => {
-    const { nickname } = router.query;
-
-    if (!nickname) return;
-
-    getKnottedBookList(nickname.slice(1));
-    getBookmarkedBookList(nickname.slice(1));
-  }, []);
-
-  useEffect(() => {
-    if (!userProfile) return;
-
-    setCurUserProfile({
-      ...userProfile,
-    });
-  }, [userProfile]);
-
-  useEffect(() => {
-    if (updatedUserProfile === undefined || !curUserProfile) return;
-
-    setIsEditing(false);
-    setUser({
-      ...signInUser,
-      nickname: curUserProfile.nickname,
-    });
-    window.history.replaceState(null, '', `/@${curUserProfile.nickname}`);
-  }, [updatedUserProfile]);
-
-  useEffect(() => {
-    if (!knottedBookList) return;
-
-    setCurKnottedBookList(knottedBookList);
-  }, [knottedBookList]);
-
-  useEffect(() => {
-    if (!bookmarkedBookList) return;
-
-    setCurBookmarkedBookList(bookmarkedBookList);
-  }, [bookmarkedBookList]);
 
   return (
     <>
       <StudyHead
-        userNickname={userProfile.nickname}
-        userDescription={userProfile.description}
-        userImage={userProfile.profile_image}
+        userNickname={profile.nickname}
+        userDescription={profile.description}
+        userImage={profile.profile_image}
       />
-      {curUserProfile && (
-        <>
-          {isEditing ? (
-            <EditUserProfile
-              handleEditFinishBtnClick={handleEditFinishBtnClick}
-              curUserProfile={curUserProfile}
-              setCurUserProfile={setCurUserProfile}
-            />
-          ) : (
-            <UserProfile
-              curUserProfile={curUserProfile}
-              handleEditBtnClick={() => {
-                setIsEditing(true);
-              }}
-            />
-          )}
-          <BookListTab
-            knottedBookList={curKnottedBookList}
-            bookmarkedBookList={curBookmarkedBookList}
-            isUserMatched={signInUser.id === curUserProfile.id}
-          />
-        </>
-      )}
+      <UserProfile profile={profile} />
+      <TabFilter tab={tab} handleTab={handleTab} />
+      {tab === 'knot' && <KnotTab nickname={nickname} />}
+      {tab === 'bookmark' && <BookmarkTab nickname={nickname} />}
     </>
   );
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { nickname } = context.query as { [key: string]: string };
+  const { nickname } = context.query as { nickname: string };
 
-  const data = await getUserProfileApi(nickname.slice(1));
+  const queryClient = new QueryClient();
 
-  return { props: { userProfile: data } };
+  await queryClient.prefetchQuery(['getUser'], () => getUserApi(nickname.slice(1)));
+
+  return { props: { dehydratedState: dehydrate(queryClient) } };
 };
 
 ShelfPage.getLayout = function getLayout(page: ReactElement) {

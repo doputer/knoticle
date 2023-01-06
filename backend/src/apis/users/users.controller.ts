@@ -2,24 +2,39 @@ import { Request, Response } from 'express';
 
 import usersService from '@apis/users/users.service';
 
-const getUserProfile = async (req: Request, res: Response) => {
-  const userNickname = req.query.nickname as string;
+const getUser = async (req: Request, res: Response) => {
+  const nickname = req.query.nickname as string;
 
-  const userProfile = await usersService.findUserProfile(userNickname);
+  const user = await usersService.getUser(nickname);
 
-  return res.status(200).send(userProfile);
+  return res.status(200).send(user);
 };
 
-// PATCH인데 id가 req.body에 담겨서 오다보니 params를 확인할 일이 없는데...
-const editUserProfile = async (req: Request, res: Response) => {
-  // const userId = Number(req.params.userId);
+const getUserBooks = async (req: Request, res: Response) => {
+  const { nickname } = req.params;
 
-  const userProfile = await usersService.updateUserProfile(req.body);
+  const books = await usersService.getUserBooks(nickname);
+
+  return res.status(200).send(books);
+};
+
+const getUserBookmarks = async (req: Request, res: Response) => {
+  const { nickname } = req.params;
+
+  const books = await usersService.getUserBookmarks(nickname);
+
+  return res.status(200).send(books);
+};
+
+const updateUser = async (req: Request, res: Response) => {
+  const userProfile = await usersService.updateUser(req.body);
 
   return res.status(200).send(userProfile);
 };
 
 export default {
-  getUserProfile,
-  editUserProfile,
+  getUser,
+  getUserBooks,
+  getUserBookmarks,
+  updateUser,
 };

@@ -28,9 +28,13 @@ interface GetBooksApi {
 }
 
 export const getBooksApi = async (data: GetBooksApi) => {
-  const url = `/api/books?order=${data.order}&take=${data.take}`;
+  const url = `/api/books`;
+  const params = {
+    order: data.order,
+    take: data.take,
+  };
 
-  const response = await api({ url, method: 'GET' });
+  const response = await api({ url, method: 'GET', params });
 
   return response.data;
 };
@@ -57,22 +61,19 @@ export const searchBooksApi = async (data: SearchBooksApi) => {
 };
 
 export const getUserKnottedBooksApi = async (nickname: string) => {
-  const url = `/api/books?editor=${nickname}&take=12`;
+  const url = `/api/books?owner=${nickname}&take=12`;
 
   const response = await api({ url, method: 'GET' });
 
   return response.data;
 };
 
-export const getUserBookmarkedBooksApi = async (nickname: string) => {
-  const url = `/api/books?editor=${nickname}&type=bookmark&take=12`;
+interface CreateBookApi {
+  title: string;
+  thumbnail_image: string;
+}
 
-  const response = await api({ url, method: 'GET' });
-
-  return response.data;
-};
-
-export const addBookApi = async (data: { title: string }) => {
+export const createBookApi = async (data: CreateBookApi) => {
   const url = `/api/books`;
 
   const response = await api({ url, method: 'POST', data });
@@ -80,15 +81,15 @@ export const addBookApi = async (data: { title: string }) => {
   return response.data;
 };
 
-interface EditBookApi {
+interface UpdateBookApi {
   id: number;
   title: string;
   thumbnail_image: string;
   scraps: IScrap[];
 }
 
-export const editBookApi = async (data: EditBookApi) => {
-  const url = `/api/books`;
+export const updateBookApi = async (data: UpdateBookApi) => {
+  const url = `/api/books/${data.id}`;
 
   const response = await api({ url, method: 'PATCH', data });
 

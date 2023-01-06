@@ -1,9 +1,8 @@
+import { UpdateUserProfile } from '@apis/users/users.interface';
 import { prisma } from '@config/orm.config';
 import { Message, NotFound, ResourceConflict } from '@errors';
 
-import { UpdateUserProfile } from './users.interface';
-
-const findUserProfile = async (nickname: string) => {
+const getUser = async (nickname: string) => {
   const userProfile = await prisma.user.findFirst({
     where: {
       nickname,
@@ -21,7 +20,100 @@ const findUserProfile = async (nickname: string) => {
   return userProfile;
 };
 
-const updateUserProfile = async (dto: UpdateUserProfile) => {
+const getUserBooks = async (nickname: string) => {
+  const user = await prisma.user.findFirst({
+    select: {
+      books: {
+        select: {
+          id: true,
+          title: true,
+          thumbnail_image: true,
+          scraps: {
+            select: {
+              id: true,
+              article: {
+                select: {
+                  title: true,
+                },
+              },
+            },
+            orderBy: {
+              order: 'asc',
+            },
+          },
+          bookmarks: true,
+          user: {
+            select: {
+              nickname: true,
+            },
+          },
+          _count: {
+            select: {
+              bookmarks: true,
+            },
+          },
+        },
+        where: {
+          deleted_at: null,
+        },
+      },
+    },
+    where: {
+      nickname,
+    },
+  });
+
+  return user.books;
+};
+
+const getUserBookmarks = async (nickname: string) => {
+  const user = await prisma.user.findFirst({
+    select: {
+      bookmarks: {
+        select: {
+          book: {
+            select: {
+              id: true,
+              title: true,
+              thumbnail_image: true,
+              scraps: {
+                select: {
+                  id: true,
+                  article: {
+                    select: {
+                      title: true,
+                    },
+                  },
+                },
+                orderBy: {
+                  order: 'asc',
+                },
+              },
+              bookmarks: true,
+              user: {
+                select: {
+                  nickname: true,
+                },
+              },
+              _count: {
+                select: {
+                  bookmarks: true,
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+    where: {
+      nickname,
+    },
+  });
+
+  return user.bookmarks.map((bookmark) => bookmark.book);
+};
+
+const updateUser = async (dto: UpdateUserProfile) => {
   const { id, nickname, profile_image, description } = dto;
 
   const user = await getUserByNickname(nickname);
@@ -65,7 +157,9 @@ const getUserById = async (id: number) => {
 };
 
 export default {
-  findUserProfile,
-  updateUserProfile,
+  getUser,
+  getUserBooks,
+  getUserBookmarks,
+  updateUser,
   getUserById,
 };

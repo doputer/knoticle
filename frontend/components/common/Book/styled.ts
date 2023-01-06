@@ -6,8 +6,9 @@ import { TextLarge, TextLinkSmall } from '@styles/common';
 import { FlexColumn, FlexColumnCenter, FlexSpaceBetween } from '@styles/layout';
 
 export const BookContainer = styled(FlexColumn)`
-  min-width: 280px;
   width: 280px;
+  min-width: 280px;
+  min-height: 452.5px;
   background-color: #ffffff;
   border: 1px solid var(--primary-color);
   border-radius: 8px;
