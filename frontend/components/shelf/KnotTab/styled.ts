@@ -21,3 +21,12 @@ export const BookGrid = styled.div`
 `;
 
 export const BookWrapper = styled.div``;
+
+export const CreateBookButton = styled.button`
+  margin-top: 24px;
+  height: 452.5px;
+  background-color: #fff;
+  border: 1px dashed var(--primary-color);
+  border-radius: 8px;
+  fill: var(--primary-color);
+`;
