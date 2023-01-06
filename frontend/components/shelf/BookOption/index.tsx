@@ -27,7 +27,7 @@ function BookOption({ book }: BookOptionProps) {
     onSuccess: () => {
       toastSuccess('책이 삭제되었습니다.');
 
-      queryClient.invalidateQueries(['knotBooks', { nickname: book.user.nickname }]);
+      queryClient.invalidateQueries(['getUserBooks', { nickname: book.user.nickname }]);
     },
   });
   const [dropdown, setDropdown] = useState(false);

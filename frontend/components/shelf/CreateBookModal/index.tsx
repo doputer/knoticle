@@ -38,7 +38,7 @@ function CreateBookModal() {
     onSuccess: () => {
       toastSuccess('책이 생성되었습니다.');
 
-      queryClient.invalidateQueries(['knotBooks', { nickname: signInUser.nickname }]);
+      queryClient.invalidateQueries(['getUserBooks', { nickname: signInUser.nickname }]);
 
       closeEveryModal();
     },

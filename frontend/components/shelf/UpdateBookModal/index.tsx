@@ -44,7 +44,7 @@ function UpdateBookModal({ book }: BookProps) {
     onSuccess: () => {
       toastSuccess('책이 수정되었습니다.');
 
-      queryClient.invalidateQueries(['knotBooks', { nickname: book.user.nickname }]);
+      queryClient.invalidateQueries(['getUserBooks', { nickname: book.user.nickname }]);
 
       closeEveryModal();
     },
