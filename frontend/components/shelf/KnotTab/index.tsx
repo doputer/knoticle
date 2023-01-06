@@ -1,6 +1,6 @@
 import { useQuery } from 'react-query';
 
-import { getUserKnottedBooksApi } from '@apis/bookApi';
+import { getUserBooksApi } from '@apis/userApi';
 import PlusIcon from '@assets/ico_add.svg';
 import Book from '@components/common/Book';
 import BookOption from '@components/shelf/BookOption';
@@ -18,9 +18,9 @@ interface KnotTabProps {
 function KnotTab({ nickname }: KnotTabProps) {
   const { signInUser } = useUser();
   const { openModal } = useModal();
-  const { data: knotBooks } = useQuery<IBookScraps[]>(
-    ['knotBooks', { nickname: nickname.slice(1) }],
-    () => getUserKnottedBooksApi(nickname.slice(1)),
+  const { data: userBooks } = useQuery<IBookScraps[]>(
+    ['getUserBooks', { nickname: nickname.slice(1) }],
+    () => getUserBooksApi(nickname.slice(1)),
     { refetchOnWindowFocus: false }
   );
 
@@ -36,7 +36,7 @@ function KnotTab({ nickname }: KnotTabProps) {
 
   return (
     <BookGrid>
-      {knotBooks?.map((book) => (
+      {userBooks?.map((book) => (
         <BookWrapper key={book.id}>
           {signInUser.nickname === nickname.slice(1) && <BookOption book={book} />}
           <Book book={book} />

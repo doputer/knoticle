@@ -8,6 +8,22 @@ export const getUserApi = async (nickname: string) => {
   return response.data;
 };
 
+export const getUserBooksApi = async (nickname: string) => {
+  const url = `/api/users/${nickname}/books`;
+
+  const response = await api({ url, method: 'GET' });
+
+  return response.data;
+};
+
+export const getUserBookmarksApi = async (nickname: string) => {
+  const url = `/api/users/${nickname}/bookmarks`;
+
+  const response = await api({ url, method: 'GET' });
+
+  return response.data;
+};
+
 interface UpdateUserApi {
   id: number;
   nickname?: string;

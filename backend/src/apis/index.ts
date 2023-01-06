@@ -52,7 +52,9 @@ router.patch('/scraps', guard, catchAsync(scrapsController.updateScrapsOrder));
 router.post('/scraps', guard, catchAsync(scrapsController.createScrap));
 router.delete('/scraps/:scrapId', guard, catchAsync(scrapsController.deleteScrap));
 
-router.get('/users', catchAsync(usersController.getUserProfile));
-router.patch('/users/:userId', guard, catchAsync(usersController.editUserProfile));
+router.get('/users/:nickname/books', catchAsync(usersController.getUserBooks));
+router.get('/users/:nickname/bookmarks', catchAsync(usersController.getUserBookmarks));
+router.get('/users', catchAsync(usersController.getUser));
+router.patch('/users/:userId', guard, catchAsync(usersController.updateUser));
 
 export default router;

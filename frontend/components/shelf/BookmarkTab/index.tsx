@@ -1,6 +1,6 @@
 import { useQuery } from 'react-query';
 
-import { getUserBookmarkedBooksApi } from '@apis/bookApi';
+import { getUserBookmarksApi } from '@apis/userApi';
 import Book from '@components/common/Book';
 import { IBookScraps } from '@interfaces';
 
@@ -11,15 +11,15 @@ interface BookmarkTabProps {
 }
 
 function BookmarkTab({ nickname }: BookmarkTabProps) {
-  const { data: bookmarkBooks } = useQuery<IBookScraps[]>(
-    ['bookmarkBooks', { nickname }],
-    () => getUserBookmarkedBooksApi(nickname.slice(1)),
+  const { data: userBookmarks } = useQuery<IBookScraps[]>(
+    ['getUserBookmarks', { nickname }],
+    () => getUserBookmarksApi(nickname.slice(1)),
     { refetchOnWindowFocus: false }
   );
 
   return (
     <BookGrid>
-      {bookmarkBooks?.map((book) => (
+      {userBookmarks?.map((book) => (
         <Book key={book.id} book={book} />
       ))}
     </BookGrid>

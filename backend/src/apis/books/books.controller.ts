@@ -30,13 +30,13 @@ const getOwnerBook = async (req: Request, res: Response) => {
 };
 
 const getBooks = async (req: Request, res: Response) => {
-  const { order, take, editor, type } = req.query as unknown as FindBooks;
+  const { order, take } = req.query as unknown as FindBooks;
 
   let userId = res.locals.user?.id;
 
   if (!userId) userId = 0;
 
-  const books = await booksService.getBooks({ order, take: +take, userId, editor, type });
+  const books = await booksService.getBooks({ order, take: +take, userId });
 
   return res.status(200).send(books);
 };

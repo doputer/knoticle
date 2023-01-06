@@ -109,7 +109,7 @@ const getOwnerBook = async ({ title, owner }: GetOwnerBook) => {
   return book;
 };
 
-const getBooks = async ({ order, take, userId, editor, type }: FindBooks) => {
+const getBooks = async ({ order, take, userId }: FindBooks) => {
   const sortOptions = [];
 
   if (order === 'bookmark') sortOptions.push({ bookmarks: { _count: 'desc' as const } });
@@ -151,26 +151,6 @@ const getBooks = async ({ order, take, userId, editor, type }: FindBooks) => {
     },
     where: {
       deleted_at: null,
-      user:
-        type === 'bookmark'
-          ? {}
-          : {
-              is: {
-                nickname: editor ? editor : undefined,
-              },
-            },
-      bookmarks:
-        type === 'bookmark'
-          ? {
-              some: {
-                user: {
-                  is: {
-                    nickname: editor ? editor : undefined,
-                  },
-                },
-              },
-            }
-          : {},
     },
     orderBy: sortOptions,
     take,

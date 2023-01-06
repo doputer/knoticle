@@ -72,13 +72,13 @@ export default function Book({ book }: BookProps) {
         <BookScrapList>
           <TextSmall>Contents</TextSmall>
           <BookScrap>
-            {scraps.slice(0, 4).map((scrap) => (
+            {scraps.slice(0, 4).map((scrap, index) => (
               <Link
                 key={scrap.id}
                 href={`/@${user.nickname}/${encodeURL(title, scrap.article.title)}`}
               >
                 <Ellipsis>
-                  {scrap.order}. {scrap.article.title}
+                  {index + 1}. {scrap.article.title}
                 </Ellipsis>
               </Link>
             ))}
