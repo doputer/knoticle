@@ -32,15 +32,28 @@ export const ModalInner = styled.div`
   transform: translate(-50%, -50%);
   box-sizing: border-box;
   overflow: auto;
+  animation: openAnimation 0.3s ease;
 
   @media ${({ theme }) => theme.devices.mobile} {
     width: 100%;
     height: 100%;
     border-radius: 0;
   }
+
+  @keyframes openAnimation {
+    0% {
+      transform: translate(-50%, calc(-50% - 50px));
+      opacity: 0.5;
+    }
+    100% {
+      transform: translate(-50%, -50%);
+      opacity: 1;
+    }
+  }
 `;
 
 export const ModalButtonWrapper = styled(FlexSpaceBetween)`
+  height: 24px;
   margin-bottom: 8px;
 `;
 
