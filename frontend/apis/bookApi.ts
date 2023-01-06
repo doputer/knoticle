@@ -72,7 +72,12 @@ export const getUserBookmarkedBooksApi = async (nickname: string) => {
   return response.data;
 };
 
-export const addBookApi = async (data: { title: string }) => {
+interface CreateBookApi {
+  title: string;
+  thumbnail_image: string;
+}
+
+export const createBookApi = async (data: CreateBookApi) => {
   const url = `/api/books`;
 
   const response = await api({ url, method: 'POST', data });

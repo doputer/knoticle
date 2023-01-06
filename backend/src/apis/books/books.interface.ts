@@ -21,5 +21,6 @@ export interface FindBooks {
 
 export interface CreateBook {
   title: string;
+  thumbnail_image?: string;
   userId: number;
 }

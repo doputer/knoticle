@@ -60,13 +60,13 @@ const searchBooks = async (req: Request, res: Response) => {
 };
 
 const createBook = async (req: Request, res: Response) => {
-  const { title } = req.body;
+  const { title, thumbnail_image } = req.body;
 
   if (!title.length) throw new Forbidden(Message.BOOK_INVALID_TITLE);
 
   const userId = res.locals.user.id;
 
-  const book = await booksService.createBook({ title, userId });
+  const book = await booksService.createBook({ title, thumbnail_image, userId });
 
   const bookData = await booksService.getBook(book.id, userId);
 

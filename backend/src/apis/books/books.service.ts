@@ -239,12 +239,11 @@ const searchBooks = async ({ query, userId, isUsers, take, page }: SearchBooks) 
   };
 };
 
-const createBook = async ({ title, userId }: CreateBook) => {
-  const book = await prisma.book.create({
+const createBook = async ({ title, thumbnail_image, userId }: CreateBook) => {
+  const createdBook = await prisma.book.create({
     data: {
       title,
-      thumbnail_image:
-        'https://kr.object.ncloudstorage.com/j027/3947d647-f26e-43cc-9834-82d59703cd9c.png',
+      thumbnail_image: thumbnail_image ? thumbnail_image : undefined,
       user: {
         connect: {
           id: userId,
@@ -253,7 +252,7 @@ const createBook = async ({ title, userId }: CreateBook) => {
     },
   });
 
-  return book;
+  return createdBook;
 };
 
 const updateBook = async (dto: any) => {
