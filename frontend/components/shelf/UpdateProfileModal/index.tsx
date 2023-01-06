@@ -26,7 +26,7 @@ interface ProfileEditModalProps {
   profile: IUser;
 }
 
-function ProfileEditModal({ profile }: ProfileEditModalProps) {
+function UpdateProfileModal({ profile }: ProfileEditModalProps) {
   const router = useRouter();
   const { closeEveryModal } = useModal();
   const { form, setForm, handleInputChange } = useForm(profile);
@@ -109,4 +109,4 @@ function ProfileEditModal({ profile }: ProfileEditModalProps) {
   );
 }
 
-export default ProfileEditModal;
+export default UpdateProfileModal;

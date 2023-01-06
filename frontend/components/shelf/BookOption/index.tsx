@@ -1,7 +1,7 @@
 import dynamic from 'next/dynamic';
 
 import { useEffect, useState } from 'react';
-import { useMutation } from 'react-query';
+import { useMutation, useQueryClient } from 'react-query';
 
 import { deleteBookApi } from '@apis/bookApi';
 import MoreIcon from '@assets/ico_more.svg';
@@ -9,6 +9,7 @@ import IconButton from '@components/common/IconButton';
 import useApiError from '@hooks/useApiError';
 import useModal from '@hooks/useModal';
 import { IBookScraps } from '@interfaces';
+import { toastSuccess } from '@utils/toast';
 
 import { BookOptionContainer, Dropdown, DropdownItem } from './styled';
 
@@ -17,11 +18,17 @@ interface BookOptionProps {
 }
 
 function BookOption({ book }: BookOptionProps) {
-  const BookEditModal = dynamic(() => import('@components/shelf/BookEditModal'));
+  const UpdateBookModal = dynamic(() => import('@components/shelf/UpdateBookModal'));
 
+  const queryClient = useQueryClient();
   const { openModal } = useModal();
   const { mutate: deleteBook } = useMutation(deleteBookApi, {
     onError: useApiError,
+    onSuccess: () => {
+      toastSuccess('책이 삭제되었습니다.');
+
+      queryClient.invalidateQueries(['knotBooks', { nickname: book.user.nickname }]);
+    },
   });
   const [dropdown, setDropdown] = useState(false);
 
@@ -30,7 +37,7 @@ function BookOption({ book }: BookOptionProps) {
       modalType: 'Modal',
       modalProps: {
         title: '책 수정하기',
-        children: <BookEditModal book={book} />,
+        children: <UpdateBookModal book={book} />,
       },
     });
   };

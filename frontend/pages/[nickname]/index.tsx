@@ -21,7 +21,7 @@ export default function ShelfPage() {
 
   const { nickname } = router.query as { nickname: string };
 
-  const { data: userProfile } = useQuery(
+  const { data: profile } = useQuery(
     ['getUser'],
     () => getUserApi(nickname.slice(1)),
     DISABLE_REFETCH_OPTIONS
@@ -35,11 +35,11 @@ export default function ShelfPage() {
   return (
     <>
       <StudyHead
-        userNickname={userProfile.nickname}
-        userDescription={userProfile.description}
-        userImage={userProfile.profile_image}
+        userNickname={profile.nickname}
+        userDescription={profile.description}
+        userImage={profile.profile_image}
       />
-      <UserProfile userProfile={userProfile} />
+      <UserProfile profile={profile} />
       <TabFilter tab={tab} handleTab={handleTab} />
       {tab === 'knot' && <KnotTab nickname={nickname} />}
       {tab === 'bookmark' && <BookmarkTab nickname={nickname} />}

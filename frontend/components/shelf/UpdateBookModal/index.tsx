@@ -29,7 +29,7 @@ interface BookProps {
   book: IBookScraps;
 }
 
-export default function BookEditModal({ book }: BookProps) {
+function UpdateBookModal({ book }: BookProps) {
   const queryClient = useQueryClient();
   const [newBook, setNewBook] = useState(book);
   const { closeEveryModal } = useModal();
@@ -171,3 +171,5 @@ export default function BookEditModal({ book }: BookProps) {
     </BookEditModalContainer>
   );
 }
+
+export default UpdateBookModal;

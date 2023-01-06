@@ -17,11 +17,11 @@ import {
 } from './styled';
 
 interface UserProfileProps {
-  userProfile: IUser;
+  profile: IUser;
 }
 
-export default function UserProfile({ userProfile }: UserProfileProps) {
-  const ProfileEditModal = dynamic(() => import('@components/shelf/ProfileEditModal'));
+export default function UserProfile({ profile }: UserProfileProps) {
+  const UpdateProfileModal = dynamic(() => import('@components/shelf/UpdateProfileModal'));
 
   const { signInUser } = useUser();
   const { openModal } = useModal();
@@ -31,7 +31,7 @@ export default function UserProfile({ userProfile }: UserProfileProps) {
       modalType: 'Modal',
       modalProps: {
         title: '회원 정보 수정하기',
-        children: <ProfileEditModal profile={userProfile} />,
+        children: <UpdateProfileModal profile={profile} />,
       },
     });
   };
@@ -39,13 +39,13 @@ export default function UserProfile({ userProfile }: UserProfileProps) {
   return (
     <ProfileContainer>
       <UserThumbnail>
-        <Image src={userProfile.profile_image} alt="thumbnail" width={128} height={128} priority />
+        <Image src={profile.profile_image} alt="thumbnail" width={128} height={128} priority />
       </UserThumbnail>
       <UserInformation>
-        <Nickname>{userProfile.nickname}</Nickname>
-        <Description>{userProfile.description}</Description>
+        <Nickname>{profile.nickname}</Nickname>
+        <Description>{profile.description}</Description>
       </UserInformation>
-      {signInUser.id === userProfile.id && (
+      {signInUser.id === profile.id && (
         <ProfileEditButton onClick={handleProfileEditModalOpen}>
           <EditIcon />
           <TextSmall>프로필 수정</TextSmall>
