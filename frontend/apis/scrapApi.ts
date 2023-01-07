@@ -24,16 +24,18 @@ export const createScrapApi = async (data: CreateScrapApi) => {
   return response.data;
 };
 
+export const updateScrapsOrderApi = async (data: IScrap[]) => {
+  const url = `/api/scraps`;
+
+  const response = await api({ url, method: 'PATCH', data });
+
+  return response.data;
+};
+
 export const deleteScrapApi = async (scrapId: number) => {
   const url = `/api/scraps/${scrapId}`;
 
   const response = await api({ url, method: 'DELETE' });
-
-  return response.data;
-};
-export const updateScrapsOrderApi = async (data: IScrap[]) => {
-  const url = `/api/scraps`;
-  const response = await api({ url, method: 'PATCH', data });
 
   return response.data;
 };

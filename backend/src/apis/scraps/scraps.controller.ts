@@ -11,19 +11,13 @@ const getScraps = async (req: Request, res: Response) => {
 };
 
 const createScrap = async (req: Request, res: Response) => {
-  const { book_id, article_id, scraps } = req.body;
+  const { order, is_original, book_id, article_id } = req.body;
 
-  scraps.forEach(async (scrap: Scrap) => {
-    if (scrap.id === 0) {
-      await scrapsService.createScrap({
-        order: scrap.order,
-        is_original: false,
-        book_id,
-        article_id: article_id,
-      });
-    } else {
-      await scrapsService.updateScrapOrder(scrap);
-    }
+  await scrapsService.createScrap({
+    order,
+    is_original,
+    book_id,
+    article_id,
   });
 
   return res.status(201).send({ book_id, article_id });
