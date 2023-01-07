@@ -1,9 +1,8 @@
 import styled from 'styled-components';
 
+import { ModalInner } from '@components/modal/BasicModal/styled';
 import { TextLinkMedium } from '@styles/common';
 import { Flex } from '@styles/layout';
-
-import { ModalInner } from '../BasicModal/styled';
 
 export const ConfirmModalInner = styled(ModalInner)`
   display: flex;

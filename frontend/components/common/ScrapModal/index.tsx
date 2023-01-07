@@ -7,6 +7,7 @@ import ModalButton from '@components/modal/ModalButton';
 import useApiError from '@hooks/useApiError';
 import useModal from '@hooks/useModal';
 import { IArticle, IBookScraps } from '@interfaces';
+import { toastSuccess } from '@utils/toast';
 
 import { ScrapModalContainer, SelectItem, SelectWrapper } from './styled';
 
@@ -20,11 +21,16 @@ export default function ScrapModal({ book, article = null }: ScrapModalProps) {
   const { closeModal } = useModal();
   const { mutateAsync: createScrap } = useMutation(createScrapApi, {
     onError: useApiError,
+    onSuccess: () => {
+      toastSuccess(`<${article?.title}> 글이 스크랩되었습니다.`);
+    },
   });
   const { mutate: updateBook } = useMutation(updateBookApi, {
     onError: useApiError,
     onSuccess: () => {
       queryClient.invalidateQueries(['getUserBooks', { nickname: book.user.nickname }]);
+
+      toastSuccess(`<${book.title}> 책이 저장되었습니다.`);
 
       closeModal();
     },

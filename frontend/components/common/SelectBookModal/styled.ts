@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { FlexColumn } from '@styles/layout';
 
 export const SelectBookModalContainer = styled(FlexColumn)`
+  height: 100%;
   gap: 32px;
 `;
 
@@ -11,6 +12,10 @@ export const SelectWrapper = styled.div`
   background-color: #fff;
   border: 1px solid var(--grey-02-color);
   overflow: auto;
+
+  @media ${({ theme }) => theme.devices.mobile} {
+    flex: 1;
+  }
 `;
 
 export const SelectItem = styled.div`
