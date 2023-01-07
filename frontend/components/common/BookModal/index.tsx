@@ -10,11 +10,11 @@ import { IArticle, IBookScraps } from '@interfaces';
 
 import { SelectBookModalContainer, SelectItem, SelectWrapper } from './styled';
 
-interface SelectBookModalProps {
+interface BookModalProps {
   article: IArticle;
 }
 
-export default function SelectBookModal({ article }: SelectBookModalProps) {
+export default function BookModal({ article }: BookModalProps) {
   const ScrapModal = dynamic(() => import('@components/common/ScrapModal'));
 
   const { signInUser } = useUser();
