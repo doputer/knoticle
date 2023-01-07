@@ -48,7 +48,7 @@ export default function Article({
   article,
   getOwnerBook,
 }: ArticleProps) {
-  const ScrapModal = dynamic(() => import('@components/article/ScrapModal'));
+  const ScrapModal = dynamic(() => import('@components/common/SelectBookModal'));
 
   const router = useRouter();
   const { signInUser, isSignInUser } = useUser();
