@@ -1,5 +1,6 @@
 import { HighlightStyle, syntaxHighlighting } from '@codemirror/language';
 import { tags as t } from '@lezer/highlight';
+import { EditorView } from 'codemirror';
 
 export default function theme() {
   const highlightStyle = HighlightStyle.define([
@@ -31,5 +32,18 @@ export default function theme() {
     { tag: [t.bool, t.special(t.variableName)], color: '#005cc5', fontFamily: 'consolas' },
   ]);
 
-  return [syntaxHighlighting(highlightStyle)];
+  return [
+    syntaxHighlighting(highlightStyle),
+    EditorView.lineWrapping,
+    EditorView.theme({
+      '.cm-content': {
+        padding: 0,
+        lineHeight: 2,
+        fontFamily: 'Noto Sans KR',
+      },
+      '.cm-line': {
+        padding: 0,
+      },
+    }),
+  ];
 }

@@ -16,7 +16,6 @@ import articleBuffer from '@atoms/articleBuffer';
 import LabeledInput from '@components/common/LabeledInput';
 import useCodeMirror from '@components/write/Editor/core/useCodeMirror';
 import useInput from '@hooks/useInput';
-import { IArticle } from '@interfaces';
 
 import {
   CodeMirrorWrapper,
@@ -28,11 +27,7 @@ import {
   EditorWrapper,
 } from './styled';
 
-interface EditorProps {
-  originalArticle?: IArticle;
-}
-
-function Editor({ originalArticle = undefined }: EditorProps) {
+function Editor() {
   const {
     ref,
     document,
@@ -42,18 +37,9 @@ function Editor({ originalArticle = undefined }: EditorProps) {
     insertCursor,
     handleImage,
   } = useCodeMirror();
+  const { input: title, setInput: setTitle, handleInputChange: handleTitleChange } = useInput();
   const [buffer, setBuffer] = useRecoilState(articleBuffer);
   const [article, setArticle] = useRecoilState(articleState);
-  const { input: title, setInput: setTitle, handleInputChange } = useInput();
-
-  useEffect(() => {
-    if (originalArticle) {
-      setBuffer({
-        title: originalArticle.title,
-        content: originalArticle.content,
-      });
-    }
-  }, [originalArticle]);
 
   useEffect(() => {
     if (!buffer.title && !buffer.content) return;
@@ -65,16 +51,18 @@ function Editor({ originalArticle = undefined }: EditorProps) {
   }, [buffer]);
 
   useEffect(() => {
-    setArticle({
-      ...article,
-      title,
-      content: document,
-    });
+    setArticle({ ...article, title, content: document });
   }, [title, document]);
 
   return (
     <EditorContainer>
-      <LabeledInput label="제목" type="text" name="title" onChange={handleInputChange} />
+      <LabeledInput
+        label="제목"
+        type="text"
+        name="title"
+        defaultValue={title}
+        onChange={handleTitleChange}
+      />
       <EditorWrapper>
         <EditorButtonWrapper>
           <EditorButton onClick={() => insertStartToggle('# ')}>
