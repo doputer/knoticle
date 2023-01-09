@@ -5,13 +5,15 @@ import { useEffect, useState } from 'react';
 
 import { getArticleApi } from '@apis/articleApi';
 import { getUserKnottedBooksApi } from '@apis/bookApi';
-import EditHead from '@components/write/EditHead';
 import Editor from '@components/write/Editor';
+import Preview from '@components/write/Preview';
+import WriteBar from '@components/write/WriteBar';
+import WriteHead from '@components/write/WriteHead';
 import useFetch from '@hooks/useFetch';
 import useModal from '@hooks/useModal';
 import useUser from '@hooks/useUser';
 import { IArticleBook } from '@interfaces';
-import { PageNoScrollWrapper } from '@styles/layout';
+import { Flex, FlexColumn } from '@styles/layout';
 import { toastError } from '@utils/toast';
 
 export default function WritePage() {
@@ -26,10 +28,6 @@ export default function WritePage() {
 
   const { data: books, execute: getUserKnottedBooks } = useFetch(getUserKnottedBooksApi);
   const { data: article, execute: getArticle } = useFetch(getArticleApi);
-
-  const syncHeight = () => {
-    document.documentElement.style.setProperty('--window-inner-height', `${window.innerHeight}px`);
-  };
 
   const handleCreateArticleModalOpen = () => {
     openModal({
@@ -52,14 +50,6 @@ export default function WritePage() {
   };
 
   useEffect(() => {
-    syncHeight();
-
-    window.addEventListener('resize', syncHeight);
-
-    return () => window.removeEventListener('resize', syncHeight);
-  }, []);
-
-  useEffect(() => {
     getUserKnottedBooks(signInUser.nickname);
   }, [signInUser.nickname]);
 
@@ -79,14 +69,20 @@ export default function WritePage() {
   }, [article]);
 
   return (
-    <PageNoScrollWrapper>
-      <EditHead />
-      <Editor
-        handleModalOpen={
-          originalArticle ? handleUpdateArticleModalOpen : handleCreateArticleModalOpen
-        }
-        originalArticle={originalArticle}
-      />
-    </PageNoScrollWrapper>
+    <>
+      <WriteHead />
+      <Flex>
+        <FlexColumn style={{ flex: 1, height: '100vh' }}>
+          <Editor originalArticle={originalArticle} />
+          <WriteBar
+            handleModalOpen={
+              originalArticle ? handleUpdateArticleModalOpen : handleCreateArticleModalOpen
+            }
+            isModifyMode={!!originalArticle}
+          />
+        </FlexColumn>
+        <Preview />
+      </Flex>
+    </>
   );
 }

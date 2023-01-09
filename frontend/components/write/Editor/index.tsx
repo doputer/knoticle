@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 import { useRecoilState } from 'recoil';
 
@@ -13,8 +13,7 @@ import LinkIcon from '@assets/ico_link.svg';
 import QuoteIcon from '@assets/ico_quote.svg';
 import articleState from '@atoms/article';
 import articleBuffer from '@atoms/articleBuffer';
-import Content from '@components/common/Content';
-import EditBar from '@components/write/EditBar';
+import LabeledInput from '@components/common/LabeledInput';
 import useCodeMirror from '@components/write/Editor/core/useCodeMirror';
 import useInput from '@hooks/useInput';
 import { IArticle } from '@interfaces';
@@ -24,18 +23,16 @@ import {
   EditorButton,
   EditorButtonSplit,
   EditorButtonWrapper,
+  EditorContainer,
   EditorImageInput,
-  EditorInner,
   EditorWrapper,
-  TitleInput,
 } from './styled';
 
 interface EditorProps {
-  handleModalOpen: () => void;
   originalArticle?: IArticle;
 }
 
-export default function Editor({ handleModalOpen, originalArticle = undefined }: EditorProps) {
+function Editor({ originalArticle = undefined }: EditorProps) {
   const {
     ref,
     document,
@@ -46,14 +43,11 @@ export default function Editor({ handleModalOpen, originalArticle = undefined }:
     handleImage,
   } = useCodeMirror();
   const [buffer, setBuffer] = useRecoilState(articleBuffer);
-
-  const [isModifyMode, setIsModifyMode] = useState(false);
   const [article, setArticle] = useRecoilState(articleState);
-  const title = useInput();
+  const { input: title, setInput: setTitle, handleInputChange } = useInput();
 
   useEffect(() => {
     if (originalArticle) {
-      setIsModifyMode(true);
       setBuffer({
         title: originalArticle.title,
         content: originalArticle.content,
@@ -64,7 +58,7 @@ export default function Editor({ handleModalOpen, originalArticle = undefined }:
   useEffect(() => {
     if (!buffer.title && !buffer.content) return;
 
-    title.setValue(buffer.title);
+    setTitle(buffer.title);
     replaceDocument(buffer.content);
 
     setBuffer({ title: '', content: '' });
@@ -73,15 +67,15 @@ export default function Editor({ handleModalOpen, originalArticle = undefined }:
   useEffect(() => {
     setArticle({
       ...article,
-      title: title.value,
+      title,
       content: document,
     });
-  }, [title.value, document]);
+  }, [title, document]);
 
   return (
-    <EditorWrapper>
-      <EditorInner>
-        <TitleInput placeholder="제목을 입력해주세요" {...title} />
+    <EditorContainer>
+      <LabeledInput label="제목" type="text" name="title" onChange={handleInputChange} />
+      <EditorWrapper>
         <EditorButtonWrapper>
           <EditorButton onClick={() => insertStartToggle('# ')}>
             <H1Icon />
@@ -124,14 +118,10 @@ export default function Editor({ handleModalOpen, originalArticle = undefined }:
             />
           </EditorButton>
         </EditorButtonWrapper>
-        <CodeMirrorWrapper>
-          <div ref={ref} />
-        </CodeMirrorWrapper>
-        <EditBar handleModalOpen={handleModalOpen} isModifyMode={isModifyMode} />
-      </EditorInner>
-      <EditorInner>
-        <Content title={article.title} content={article.content} />
-      </EditorInner>
-    </EditorWrapper>
+        <CodeMirrorWrapper ref={ref} />
+      </EditorWrapper>
+    </EditorContainer>
   );
 }
+
+export default Editor;

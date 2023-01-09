@@ -12,14 +12,14 @@ import useFetch from '@hooks/useFetch';
 import useModal from '@hooks/useModal';
 import { toastSuccess } from '@utils/toast';
 
-import { Bar, ButtonGroup, ExitButton, PublishButton, TemporaryButton } from './styled';
+import { ButtonGroup, DoneButton, ExitButton, TemporaryButton, WriteBarContainer } from './styled';
 
 interface EditBarProps {
   handleModalOpen: () => void;
   isModifyMode: boolean;
 }
 
-export default function EditBar({ handleModalOpen, isModifyMode }: EditBarProps) {
+export default function WriteBar({ handleModalOpen, isModifyMode }: EditBarProps) {
   const { openModal } = useModal();
 
   const article = useRecoilValue(articleState);
@@ -75,19 +75,17 @@ export default function EditBar({ handleModalOpen, isModifyMode }: EditBarProps)
   }, [temporaryArticle]);
 
   return (
-    <Bar>
+    <WriteBarContainer>
       <ButtonGroup>
-        <ExitButton tabIndex={-1} onClick={() => handleExitButton()}>
+        <ExitButton tabIndex={-1} onClick={handleExitButton}>
           <BackIcon />
         </ExitButton>
       </ButtonGroup>
       <ButtonGroup>
-        <TemporaryButton onClick={() => handleLoadButton()}>불러오기</TemporaryButton>
-        <TemporaryButton onClick={() => handleSaveButton()}>저장하기</TemporaryButton>
-        <PublishButton onClick={handleModalOpen}>
-          {isModifyMode ? '수정하기' : '발행하기'}
-        </PublishButton>
+        <TemporaryButton onClick={handleLoadButton}>불러오기</TemporaryButton>
+        <TemporaryButton onClick={handleSaveButton}>저장하기</TemporaryButton>
+        <DoneButton onClick={handleModalOpen}>{isModifyMode ? '수정하기' : '발행하기'}</DoneButton>
       </ButtonGroup>
-    </Bar>
+    </WriteBarContainer>
   );
 }

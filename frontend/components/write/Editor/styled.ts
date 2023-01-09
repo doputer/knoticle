@@ -1,65 +1,50 @@
 import styled from 'styled-components';
 
-import { Flex } from '@styles/layout';
+import { Flex, FlexColumn } from '@styles/layout';
 
-export const EditorWrapper = styled.div`
-  width: 100%;
-  height: calc(var(--window-inner-height));
-  display: flex;
-
-  > div:nth-child(2) {
-    background-color: #f9f9f9;
-  }
+export const EditorContainer = styled(FlexColumn)`
+  flex: 1;
+  padding: 32px;
+  background-color: var(--white-color);
+  gap: 16px;
+  box-sizing: border-box;
+  overflow: hidden;
 `;
 
-export const EditorInner = styled.div`
+export const EditorWrapper = styled.div`
   flex: 1;
+  background-color: #fff;
+  border: 1px solid var(--grey-02-color);
+  border-radius: 8px;
   overflow: auto;
-  padding: 32px;
-  position: relative;
-
-  @media ${({ theme }) => theme.devices.tablet} {
-    &:nth-child(2) {
-      display: none;
-    }
-  }
 `;
 
 export const EditorButtonWrapper = styled(Flex)`
-  margin-bottom: 16px;
-  padding-bottom: 8px;
-  border-bottom: 1px solid var(--grey-02-color);
+  padding: 8px;
   align-items: center;
   gap: 8px;
-  overflow-x: auto;
-  -ms-overflow-style: none;
-  &::-webkit-scrollbar {
-    display: none;
-  }
+  background-color: #fff;
+  border-bottom: 1px solid var(--grey-02-color);
+  position: sticky;
+  top: 0px;
+  z-index: 100;
+  box-sizing: border-box;
+  flex-wrap: wrap;
 `;
 
-export const EditorButton = styled.button`
+export const EditorButton = styled.button.attrs({ tabIndex: -1 })`
   padding: 4px;
-  width: 36px;
-  height: 36px;
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
-  box-sizing: border-box;
 
-  &:hover {
+  :hover {
     background-color: var(--light-orange-color);
   }
 
-  img,
   label {
     width: 24px;
     height: 24px;
-  }
-
-  > div {
-    color: var(--title-active-color);
   }
 `;
 
@@ -72,21 +57,9 @@ export const EditorButtonSplit = styled.div`
   height: 16px;
 `;
 
-export const TitleInput = styled.input`
-  padding: 0;
-  width: 100%;
-  border: none;
-  outline: none;
-  font-family: 'Noto Sans KR';
-  font-size: 24px;
-  font-weight: 700;
-  margin-bottom: 16px;
-`;
-
 export const CodeMirrorWrapper = styled.div`
+  padding: 16px;
   font-size: 16px;
-  height: calc(var(--window-inner-height) - 220px);
-  overflow: auto;
 
   .cm-editor.cm-focused {
     outline: none;
