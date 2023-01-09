@@ -3,13 +3,13 @@ import Image from 'next/image';
 import { useMutation, useQueryClient } from 'react-query';
 
 import { createBookApi } from '@apis/bookApi';
-import { createImageApi } from '@apis/imageApi';
 import EditIcon from '@assets/ico_edit.svg';
 import Thumbnail from '@assets/img_book_thumbnail.jpg';
 import LabeledInput from '@components/common/LabeledInput';
 import ModalButton from '@components/modal/ModalButton';
 import useApiError from '@hooks/useApiError';
 import useForm from '@hooks/useForm';
+import useImage from '@hooks/useImage';
 import useModal from '@hooks/useModal';
 import useUser from '@hooks/useUser';
 import { toastSuccess } from '@utils/toast';
@@ -27,8 +27,7 @@ function CreateBookModal() {
   const { closeEveryModal } = useModal();
   const { signInUser } = useUser();
   const { form, setForm, handleInputChange } = useForm({ title: '', thumbnail_image: '' });
-  const { mutate: createImage } = useMutation(createImageApi, {
-    onError: useApiError,
+  const { handleImage } = useImage({
     onSuccess: (image) => {
       setForm({ ...form, thumbnail_image: image.imagePath });
     },
@@ -43,17 +42,6 @@ function CreateBookModal() {
       closeEveryModal();
     },
   });
-
-  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    event.stopPropagation();
-    event.preventDefault();
-
-    if (!event.target.files) return;
-
-    const formData = new FormData();
-    formData.append('image', event.target.files[0]);
-    createImage(formData);
-  };
 
   const handleOkButtonClick = () => {
     createBook(form);
@@ -77,8 +65,8 @@ function CreateBookModal() {
           <ThumbnailImageInput
             id="file"
             type="file"
-            accept="image/jpg, image/png, image/jpeg"
-            onChange={handleImageUpload}
+            accept="image/png,image/jpg,image/jpeg"
+            onChange={(event) => event.target.files && handleImage(event.target.files[0])}
           />
         </ThumbnailImage>
       </ThumbnailImageWrapper>

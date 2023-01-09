@@ -4,13 +4,13 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useMutation } from 'react-query';
 
-import { createImageApi } from '@apis/imageApi';
 import { updateUserApi } from '@apis/userApi';
 import EditIcon from '@assets/ico_edit.svg';
 import LabeledInput from '@components/common/LabeledInput';
 import ModalButton from '@components/modal/ModalButton';
 import useApiError from '@hooks/useApiError';
 import useForm from '@hooks/useForm';
+import useImage from '@hooks/useImage';
 import useModal from '@hooks/useModal';
 import { IUser } from '@interfaces';
 import { toastSuccess } from '@utils/toast';
@@ -33,6 +33,11 @@ function UpdateProfileModal({ profile }: ProfileEditModalProps) {
   const [validation, setValidation] = useState({
     nickname: true,
   });
+  const { handleImage } = useImage({
+    onSuccess: (image) => {
+      setForm({ ...form, profile_image: image.imagePath });
+    },
+  });
   const { mutate: updateUser } = useMutation(updateUserApi, {
     onError: useApiError,
     onSuccess: () => {
@@ -43,23 +48,6 @@ function UpdateProfileModal({ profile }: ProfileEditModalProps) {
       router.push(`/@${form.nickname}`);
     },
   });
-  const { mutate: createImage } = useMutation(createImageApi, {
-    onError: useApiError,
-    onSuccess: (image) => {
-      setForm({ ...form, profile_image: image.imagePath });
-    },
-  });
-
-  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    event.stopPropagation();
-    event.preventDefault();
-
-    if (!event.target.files) return;
-
-    const formData = new FormData();
-    formData.append('image', event.target.files[0]);
-    createImage(formData);
-  };
 
   const validNickname = (nickname: string) =>
     /^[a-zA-Z가-힣0-9]{2,16}$/.test(nickname)
@@ -81,8 +69,8 @@ function UpdateProfileModal({ profile }: ProfileEditModalProps) {
           <ProfileImageInput
             id="file"
             type="file"
-            accept="image/jpg, image/png, image/jpeg"
-            onChange={handleImageUpload}
+            accept="image/png,image/jpg,image/jpeg"
+            onChange={(event) => event.target.files && handleImage(event.target.files[0])}
           />
         </ProfileImage>
       </ProfileImageWrapper>

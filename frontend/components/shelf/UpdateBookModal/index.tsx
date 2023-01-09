@@ -4,11 +4,11 @@ import { useState } from 'react';
 import { useMutation, useQueryClient } from 'react-query';
 
 import { updateBookApi } from '@apis/bookApi';
-import { createImageApi } from '@apis/imageApi';
 import EditIcon from '@assets/ico_edit.svg';
 import LabeledInput from '@components/common/LabeledInput';
 import ModalButton from '@components/modal/ModalButton';
 import useApiError from '@hooks/useApiError';
+import useImage from '@hooks/useImage';
 import useModal from '@hooks/useModal';
 import { IBookScraps } from '@interfaces';
 import { toastSuccess } from '@utils/toast';
@@ -29,8 +29,7 @@ function UpdateBookModal({ book }: BookProps) {
   const queryClient = useQueryClient();
   const [newBook, setNewBook] = useState(book);
   const { closeModal } = useModal();
-  const { mutate: createImage } = useMutation(createImageApi, {
-    onError: useApiError,
+  const { handleImage } = useImage({
     onSuccess: (image) => {
       setNewBook({ ...newBook, thumbnail_image: image.imagePath });
     },
@@ -45,17 +44,6 @@ function UpdateBookModal({ book }: BookProps) {
       closeModal();
     },
   });
-
-  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    event.stopPropagation();
-    event.preventDefault();
-
-    if (!event.target.files) return;
-
-    const formData = new FormData();
-    formData.append('image', event.target.files[0]);
-    createImage(formData);
-  };
 
   const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
@@ -90,8 +78,8 @@ function UpdateBookModal({ book }: BookProps) {
           <ThumbnailImageInput
             id="file"
             type="file"
-            accept="image/jpg, image/png, image/jpeg"
-            onChange={handleImageUpload}
+            accept="image/png,image/jpg,image/jpeg"
+            onChange={(event) => event.target.files && handleImage(event.target.files[0])}
           />
         </ThumbnailImage>
       </ThumbnailImageWrapper>

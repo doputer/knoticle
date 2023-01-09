@@ -93,16 +93,14 @@ function Editor() {
             <LinkIcon />
           </EditorButton>
           <EditorButton>
-            <label htmlFor="image">
+            <label htmlFor="file">
               <ImageIcon />
             </label>
             <EditorImageInput
-              id="image"
+              id="file"
               type="file"
               accept="image/png,image/jpg,image/jpeg,image/gif"
-              onChange={(event) => {
-                if (event.target.files) handleImage(event.target.files[0]);
-              }}
+              onChange={(event) => event.target.files && handleImage(event.target.files[0])}
             />
           </EditorButton>
         </EditorButtonWrapper>
