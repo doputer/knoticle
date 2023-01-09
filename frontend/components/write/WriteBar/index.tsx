@@ -1,6 +1,7 @@
+import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 
-import { useEffect } from 'react';
+import { useMutation, useQuery } from 'react-query';
 
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 
@@ -8,33 +9,54 @@ import { createTemporaryArticleApi, getTemporaryArticleApi } from '@apis/article
 import BackIcon from '@assets/ico_back.svg';
 import articleState from '@atoms/article';
 import articleBuffer from '@atoms/articleBuffer';
-import useFetch from '@hooks/useFetch';
+import useApiError from '@hooks/useApiError';
 import useModal from '@hooks/useModal';
 import { toastSuccess } from '@utils/toast';
 
-import { ButtonGroup, DoneButton, ExitButton, TemporaryButton, WriteBarContainer } from './styled';
+import {
+  ButtonGroup,
+  ExitButton,
+  PublishButton,
+  TemporaryButton,
+  WriteBarContainer,
+} from './styled';
 
-interface EditBarProps {
-  handleModalOpen: () => void;
-  isModifyMode: boolean;
-}
+export default function WriteBar() {
+  const BookModal = dynamic(() => import('@components/common/BookModal'));
 
-export default function WriteBar({ handleModalOpen, isModifyMode }: EditBarProps) {
+  const router = useRouter();
   const { openModal } = useModal();
-
   const article = useRecoilValue(articleState);
   const setBuffer = useSetRecoilState(articleBuffer);
-  const router = useRouter();
+  const { refetch: getTemporaryArticle } = useQuery(
+    ['getTemporaryArticle'],
+    getTemporaryArticleApi,
+    {
+      enabled: false,
+      onError: useApiError,
+      onSuccess: (temporaryArticle) => {
+        setBuffer({
+          title: temporaryArticle.title,
+          content: temporaryArticle.content,
+        });
 
-  const { data: temporaryArticle, execute: getTemporaryArticle } = useFetch(getTemporaryArticleApi);
-  const { execute: createTemporaryArticle } = useFetch(createTemporaryArticleApi);
+        toastSuccess('임시 저장된 글을 불러왔습니다.');
+      },
+    }
+  );
+  const { mutate: createTemporaryArticle } = useMutation(createTemporaryArticleApi, {
+    onError: useApiError,
+    onSuccess: () => {
+      toastSuccess('글을 임시 저장했습니다.');
+    },
+  });
 
-  const handleLoadButton = () => {
+  const handlePublishButton = () => {
     openModal({
-      modalType: 'Confirm',
+      modalType: 'Modal',
       modalProps: {
-        message: '현재 작성하신 글이 사라집니다.\n정말 불러오시겠습니까?',
-        handleConfirm: () => getTemporaryArticle(),
+        title: '글 발행하기',
+        children: <BookModal article={article} />,
       },
     });
   };
@@ -46,9 +68,17 @@ export default function WriteBar({ handleModalOpen, isModifyMode }: EditBarProps
         message: '기존에 임시 저장한 글이 사라집니다.\n정말 저장하시겠습니까?',
         handleConfirm: () => {
           createTemporaryArticle({ title: article.title, content: article.content });
-
-          toastSuccess('글을 임시 저장했습니다.');
         },
+      },
+    });
+  };
+
+  const handleLoadButton = () => {
+    openModal({
+      modalType: 'Confirm',
+      modalProps: {
+        message: '현재 작성하신 글이 사라집니다.\n정말 불러오시겠습니까?',
+        handleConfirm: getTemporaryArticle,
       },
     });
   };
@@ -63,17 +93,6 @@ export default function WriteBar({ handleModalOpen, isModifyMode }: EditBarProps
     });
   };
 
-  useEffect(() => {
-    if (!temporaryArticle) return;
-
-    setBuffer({
-      title: temporaryArticle.title,
-      content: temporaryArticle.content,
-    });
-
-    toastSuccess('임시 저장된 글을 불러왔습니다.');
-  }, [temporaryArticle]);
-
   return (
     <WriteBarContainer>
       <ButtonGroup>
@@ -84,7 +103,7 @@ export default function WriteBar({ handleModalOpen, isModifyMode }: EditBarProps
       <ButtonGroup>
         <TemporaryButton onClick={handleLoadButton}>불러오기</TemporaryButton>
         <TemporaryButton onClick={handleSaveButton}>저장하기</TemporaryButton>
-        <DoneButton onClick={handleModalOpen}>{isModifyMode ? '수정하기' : '발행하기'}</DoneButton>
+        <PublishButton onClick={handlePublishButton}>발행하기</PublishButton>
       </ButtonGroup>
     </WriteBarContainer>
   );

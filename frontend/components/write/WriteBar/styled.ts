@@ -34,7 +34,7 @@ export const TemporaryButton = styled(Button)`
   border: 1px solid var(--grey-01-color);
 `;
 
-export const DoneButton = styled(Button)`
+export const PublishButton = styled(Button)`
   color: var(--white-color);
   background-color: var(--primary-color);
   border: 1px solid var(--grey-01-color);
