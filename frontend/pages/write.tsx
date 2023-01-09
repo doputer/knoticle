@@ -5,8 +5,8 @@ import { useEffect, useState } from 'react';
 
 import { getArticleApi } from '@apis/articleApi';
 import { getUserKnottedBooksApi } from '@apis/bookApi';
-import EditHead from '@components/edit/EditHead';
-import Editor from '@components/edit/Editor';
+import EditHead from '@components/write/EditHead';
+import Editor from '@components/write/Editor';
 import useFetch from '@hooks/useFetch';
 import useModal from '@hooks/useModal';
 import useUser from '@hooks/useUser';
@@ -15,8 +15,8 @@ import { PageNoScrollWrapper } from '@styles/layout';
 import { toastError } from '@utils/toast';
 
 export default function WritePage() {
-  const PublishModal = dynamic(() => import('@components/edit/PublishModal'));
-  const ModifyModal = dynamic(() => import('@components/edit/ModifyModal'));
+  const PublishModal = dynamic(() => import('@components/write/PublishModal'));
+  const ModifyModal = dynamic(() => import('@components/write/ModifyModal'));
 
   const router = useRouter();
   const { openModal } = useModal();

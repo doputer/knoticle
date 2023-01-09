@@ -14,8 +14,8 @@ import QuoteIcon from '@assets/ico_quote.svg';
 import articleState from '@atoms/article';
 import articleBuffer from '@atoms/articleBuffer';
 import Content from '@components/common/Content';
-import EditBar from '@components/edit/EditBar';
-import useCodeMirror from '@components/edit/Editor/core/useCodeMirror';
+import EditBar from '@components/write/EditBar';
+import useCodeMirror from '@components/write/Editor/core/useCodeMirror';
 import useInput from '@hooks/useInput';
 import { IArticle } from '@interfaces';
 
