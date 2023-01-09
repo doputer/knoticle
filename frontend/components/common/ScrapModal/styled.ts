@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
 import { FlexColumn } from '@styles/layout';
 
@@ -8,42 +8,36 @@ export const ScrapModalContainer = styled(FlexColumn)`
 `;
 
 export const SelectWrapper = styled.div`
-  height: 250px;
   background-color: #fff;
-  border: 1px solid var(--grey-02-color);
-  overflow: auto;
+
+  > ul {
+    height: 250px;
+    border: 1px solid var(--grey-02-color);
+    overflow-y: auto;
+
+    > li {
+      padding: 0 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      > div {
+        flex: 1;
+        line-height: 50px;
+        user-select: none;
+      }
+
+      > svg {
+        cursor: grab;
+      }
+    }
+  }
 
   @media ${({ theme }) => theme.devices.mobile} {
     flex: 1;
+
+    > ul {
+      height: 100%;
+    }
   }
-`;
-
-export const SelectItem = styled.div<{ isActive: boolean }>`
-  padding: 0 8px;
-  height: 50px;
-  line-height: 50px;
-  transition: all 0.2s ease;
-
-  &.space-top {
-    padding-top: 50px;
-  }
-
-  &.space-bottom {
-    padding-bottom: 50px;
-  }
-
-  :hover {
-    background-color: var(--grey-03-color);
-    cursor: pointer;
-  }
-
-  ${({ isActive }) =>
-    isActive &&
-    css`
-      background-color: var(--light-orange-color);
-
-      :hover {
-        background-color: var(--light-orange-color);
-      }
-    `}
 `;

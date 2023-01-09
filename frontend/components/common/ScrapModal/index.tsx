@@ -1,15 +1,41 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useMutation, useQueryClient } from 'react-query';
+
+import { Reorder, useDragControls } from 'framer-motion';
 
 import { updateBookApi } from '@apis/bookApi';
 import { createScrapApi } from '@apis/scrapApi';
+import DragIcon from '@assets/ico_drag.svg';
 import ModalButton from '@components/modal/ModalButton';
 import useApiError from '@hooks/useApiError';
 import useModal from '@hooks/useModal';
-import { IArticle, IBookScraps } from '@interfaces';
+import { IArticle, IBookScraps, IScrap } from '@interfaces';
+import { Ellipsis } from '@styles/layout';
 import { toastSuccess } from '@utils/toast';
 
-import { ScrapModalContainer, SelectItem, SelectWrapper } from './styled';
+import { ScrapModalContainer, SelectWrapper } from './styled';
+
+interface ItemProps {
+  scrap: IScrap;
+  isTarget: boolean;
+}
+
+function Item({ scrap, isTarget }: ItemProps) {
+  const dragControls = useDragControls();
+
+  return (
+    <Reorder.Item
+      key={scrap.id}
+      value={scrap}
+      dragListener={false}
+      dragControls={dragControls}
+      style={{ backgroundColor: isTarget ? 'var(--light-orange-color)' : '' }}
+    >
+      <Ellipsis>{scrap.article.title}</Ellipsis>
+      <DragIcon onPointerDown={(event) => dragControls.start(event)} />
+    </Reorder.Item>
+  );
+}
 
 interface ScrapModalProps {
   book: IBookScraps;
@@ -36,42 +62,6 @@ export default function ScrapModal({ book, article = null }: ScrapModalProps) {
     },
   });
   const [newBook, setNewBook] = useState(book);
-  const dragItem = useRef(0);
-  const dragOverItem = useRef(0);
-
-  const handleDragStart = (event: React.DragEvent<HTMLDivElement>, id: number) => {
-    dragItem.current = id;
-  };
-
-  const handleDragEnter = (event: React.DragEvent<HTMLDivElement>, id: number) => {
-    dragOverItem.current = id;
-
-    const $target = event.target as HTMLDivElement;
-
-    if (dragItem.current < id) $target.classList.add('space-bottom');
-    else if (dragItem.current > id) $target.classList.add('space-top');
-  };
-
-  const handleDragLeave = (event: React.DragEvent<HTMLDivElement>, id: number) => {
-    dragOverItem.current = id;
-
-    const $target = event.target as HTMLDivElement;
-
-    if (dragItem.current < id) $target.classList.remove('space-bottom');
-    else if (dragItem.current > id) $target.classList.remove('space-top');
-  };
-
-  const handleDrop = () => {
-    const copyScraps = [...newBook.scraps];
-    const dragItemContent = copyScraps[dragItem.current];
-
-    copyScraps.splice(dragItem.current, 1);
-    copyScraps.splice(dragOverItem.current, 0, dragItemContent);
-    dragItem.current = 0;
-    dragOverItem.current = 0;
-
-    setNewBook({ ...newBook, scraps: copyScraps });
-  };
 
   const handleOkButtonClick = async () => {
     const newScrapIndex = newBook.scraps.findIndex((scrap) => scrap.id === 0);
@@ -119,19 +109,16 @@ export default function ScrapModal({ book, article = null }: ScrapModalProps) {
   return (
     <ScrapModalContainer>
       <SelectWrapper>
-        {newBook.scraps.map((scrap, index) => (
-          <SelectItem
-            key={scrap.id}
-            onDragStart={(event) => handleDragStart(event, index)}
-            onDragEnter={(event) => handleDragEnter(event, index)}
-            onDragLeave={(event) => handleDragLeave(event, index)}
-            onDragEnd={handleDrop}
-            draggable
-            isActive={scrap.article.id === article?.id}
-          >
-            {scrap.article.title}
-          </SelectItem>
-        ))}
+        <Reorder.Group
+          axis="y"
+          values={newBook.scraps}
+          onReorder={(scraps) => setNewBook({ ...newBook, scraps })}
+          layoutScroll
+        >
+          {newBook.scraps.map((scrap) => (
+            <Item key={scrap.id} scrap={scrap} isTarget={scrap.article.id === article?.id} />
+          ))}
+        </Reorder.Group>
       </SelectWrapper>
       <ModalButton theme="primary" onClick={handleOkButtonClick}>
         저장하기
