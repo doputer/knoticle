@@ -7,11 +7,11 @@ import { useRecoilValue, useSetRecoilState } from 'recoil';
 
 import { createTemporaryArticleApi, getTemporaryArticleApi } from '@apis/articleApi';
 import BackIcon from '@assets/ico_back.svg';
-import articleState from '@atoms/article';
-import articleBuffer from '@atoms/articleBuffer';
+import articleBufferState from '@atoms/articleBufferState';
+import articleState from '@atoms/articleState';
 import useApiError from '@hooks/useApiError';
 import useModal from '@hooks/useModal';
-import { toastSuccess } from '@utils/toast';
+import { toastError, toastSuccess } from '@utils/toast';
 
 import {
   ButtonGroup,
@@ -27,7 +27,7 @@ export default function WriteBar() {
   const router = useRouter();
   const { openModal } = useModal();
   const article = useRecoilValue(articleState);
-  const setBuffer = useSetRecoilState(articleBuffer);
+  const setBuffer = useSetRecoilState(articleBufferState);
   const { refetch: getTemporaryArticle } = useQuery(
     ['getTemporaryArticle'],
     getTemporaryArticleApi,
@@ -52,6 +52,11 @@ export default function WriteBar() {
   });
 
   const handlePublishButton = () => {
+    if (!article.title) {
+      toastError('글 제목이 비어있습니다.');
+      return;
+    }
+
     openModal({
       modalType: 'Modal',
       modalProps: {

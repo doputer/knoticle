@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 
 import { modifyArticleApi } from '@apis/articleApi';
-import articleState from '@atoms/article';
+import articleState from '@atoms/articleState';
 import scrapState from '@atoms/scrap';
 import DragArticle from '@components/common/DragDrop';
 import Dropdown from '@components/common/Dropdown';

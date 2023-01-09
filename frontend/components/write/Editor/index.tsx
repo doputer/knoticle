@@ -11,8 +11,8 @@ import ImageIcon from '@assets/ico_image.svg';
 import ItalicIcon from '@assets/ico_italic.svg';
 import LinkIcon from '@assets/ico_link.svg';
 import QuoteIcon from '@assets/ico_quote.svg';
-import articleState from '@atoms/article';
-import articleBuffer from '@atoms/articleBuffer';
+import articleBufferState from '@atoms/articleBufferState';
+import articleState from '@atoms/articleState';
 import LabeledInput from '@components/common/LabeledInput';
 import useCodeMirror from '@components/write/Editor/core/useCodeMirror';
 import useInput from '@hooks/useInput';
@@ -38,7 +38,7 @@ function Editor() {
     handleImage,
   } = useCodeMirror();
   const { input: title, setInput: setTitle, handleInputChange: handleTitleChange } = useInput();
-  const [buffer, setBuffer] = useRecoilState(articleBuffer);
+  const [buffer, setBuffer] = useRecoilState(articleBufferState);
   const [article, setArticle] = useRecoilState(articleState);
 
   useEffect(() => {

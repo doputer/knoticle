@@ -1,6 +1,6 @@
 import { useRecoilValue } from 'recoil';
 
-import articleState from '@atoms/article';
+import articleState from '@atoms/articleState';
 import Content from '@components/common/Content';
 
 import { PreviewContainer, PreviewTitle } from './styled';
