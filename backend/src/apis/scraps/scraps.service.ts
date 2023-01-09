@@ -41,7 +41,21 @@ const getScraps = async () => {
 const createScrap = async (dto: CreateScrap) => {
   const { order, is_original, book_id, article_id } = dto;
 
-  const scrap = await prisma.scrap.create({
+  await prisma.scrap.updateMany({
+    data: {
+      order: {
+        increment: 1,
+      },
+    },
+    where: {
+      book_id,
+      order: {
+        gte: order,
+      },
+    },
+  });
+
+  const createdScrap = await prisma.scrap.create({
     data: {
       order,
       is_original,
@@ -58,20 +72,7 @@ const createScrap = async (dto: CreateScrap) => {
     },
   });
 
-  return scrap;
-};
-
-const checkScrapExists = async (dto: CreateScrap) => {
-  const { book_id, article_id } = dto;
-
-  const scrap = await prisma.scrap.findFirst({
-    where: {
-      book_id,
-      article_id,
-    },
-  });
-
-  if (scrap) throw new ResourceConflict(Message.SCRAP_OVERLAP);
+  return createdScrap;
 };
 
 const updateScrapOrder = async (scrap: Scrap) => {
@@ -135,7 +136,6 @@ const deleteScrap = async (scrapId: number) => {
 export default {
   getScraps,
   createScrap,
-  checkScrapExists,
   updateScrapOrder,
   updateScrapBookId,
   deleteScrap,

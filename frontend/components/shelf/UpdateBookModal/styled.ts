@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { TextLinkSmall, TextLinkXSmall } from '@styles/common';
+import { TextLinkXSmall } from '@styles/common';
 import { FlexColumn } from '@styles/layout';
 
 export const BookEditModalContainer = styled(FlexColumn)`
@@ -41,38 +41,6 @@ export const ThumbnailImage = styled.div`
 
 export const ThumbnailImageInput = styled.input`
   display: none;
-`;
-
-export const ScrapListWrapper = styled.div`
-  position: relative;
-`;
-
-export const ScrapList = styled(FlexColumn)`
-  padding: 8px 16px 0 16px;
-  height: 128px;
-  color: var(--grey-01-color);
-  background-color: #fff;
-  border: 1px solid var(--grey-02-color);
-  border-radius: 8px;
-  overflow: auto;
-`;
-
-export const Scrap = styled(TextLinkSmall)`
-  line-height: 32px;
-  box-sizing: border-box;
-  transition: all 0.2s ease;
-
-  &.space-top {
-    padding-top: 16px;
-  }
-
-  &.space-bottom {
-    padding-bottom: 16px;
-  }
-
-  > div {
-    pointer-events: none;
-  }
 `;
 
 export const Label = styled(TextLinkXSmall)`

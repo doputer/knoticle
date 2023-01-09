@@ -7,19 +7,18 @@ export const ModalButtonContainer = styled.button<{ theme: 'primary' | 'second' 
   width: 100%;
   height: 50px;
   border-radius: 8px;
-  border: none;
 
-  ${(props) =>
-    props.theme === 'primary'
-      ? css`
-          background-color: var(--primary-color);
-          color: var(--white-color);
-        `
-      : css`
-          background-color: transparent;
-          color: var(--title-active-color);
-          border: 1px solid var(--primary-color);
-        `}
+  ${({ theme }) =>
+    (theme === 'primary' &&
+      css`
+        color: var(--white-color);
+        background-color: var(--primary-color);
+      `) ||
+    css`
+      color: var(--title-active-color);
+      background-color: transparent;
+      border: 1px solid var(--primary-color);
+    `}
 
   :disabled {
     background-color: var(--grey-02-color);
@@ -27,7 +26,7 @@ export const ModalButtonContainer = styled.button<{ theme: 'primary' | 'second' 
   }
 `;
 
-export const Label = styled(TextSmall)`
+export const ModalButtonInner = styled(TextSmall)`
   display: flex;
   justify-content: center;
   align-items: center;

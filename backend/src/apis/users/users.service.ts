@@ -33,6 +33,7 @@ const getUserBooks = async (nickname: string) => {
               id: true,
               article: {
                 select: {
+                  id: true,
                   title: true,
                 },
               },

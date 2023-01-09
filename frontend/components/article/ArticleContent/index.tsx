@@ -48,7 +48,7 @@ export default function Article({
   article,
   getOwnerBook,
 }: ArticleProps) {
-  const ScrapModal = dynamic(() => import('@components/article/ScrapModal'));
+  const BookModal = dynamic(() => import('@components/common/BookModal'));
 
   const router = useRouter();
   const { signInUser, isSignInUser } = useUser();
@@ -111,7 +111,7 @@ export default function Article({
       modalType: 'Modal',
       modalProps: {
         title: '글 스크랩하기',
-        children: <ScrapModal article={article} />,
+        children: <BookModal article={article} />,
       },
     });
   };

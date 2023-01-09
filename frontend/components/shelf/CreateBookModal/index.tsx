@@ -7,7 +7,7 @@ import { createImageApi } from '@apis/imageApi';
 import EditIcon from '@assets/ico_edit.svg';
 import Thumbnail from '@assets/img_book_thumbnail.jpg';
 import LabeledInput from '@components/common/LabeledInput';
-import ModalButton from '@components/common/ModalButton';
+import ModalButton from '@components/modal/ModalButton';
 import useApiError from '@hooks/useApiError';
 import useForm from '@hooks/useForm';
 import useModal from '@hooks/useModal';
@@ -38,7 +38,7 @@ function CreateBookModal() {
     onSuccess: () => {
       toastSuccess('책이 생성되었습니다.');
 
-      queryClient.invalidateQueries(['knotBooks', { nickname: signInUser.nickname }]);
+      queryClient.invalidateQueries(['getUserBooks', { nickname: signInUser.nickname }]);
 
       closeEveryModal();
     },

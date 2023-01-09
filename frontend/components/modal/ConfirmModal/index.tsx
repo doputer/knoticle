@@ -1,9 +1,10 @@
 import CloseIcon from '@assets/ico_close.svg';
 import IconButton from '@components/common/IconButton';
-import ModalButton from '@components/common/ModalButton';
+import ModalButton from '@components/modal/ModalButton';
 import useModal from '@hooks/useModal';
 
-import { Dimmed, ModalBody, ModalContainer, ModalFooter, ModalHeader, ModalInner } from './styled';
+import { Dimmed, ModalContainer } from '../BasicModal/styled';
+import { ConfirmModalInner, ModalBody, ModalFooter, ModalHeader } from './styled';
 
 export interface ConfirmModalProps {
   message: string;
@@ -16,7 +17,7 @@ export default function ConfirmModal({ message, handleConfirm }: ConfirmModalPro
   return (
     <ModalContainer>
       <Dimmed onClick={closeEveryModal} />
-      <ModalInner>
+      <ConfirmModalInner>
         <ModalHeader>
           <IconButton icon={<CloseIcon />} onClick={closeEveryModal} />
         </ModalHeader>
@@ -35,7 +36,7 @@ export default function ConfirmModal({ message, handleConfirm }: ConfirmModalPro
             확인
           </ModalButton>
         </ModalFooter>
-      </ModalInner>
+      </ConfirmModalInner>
     </ModalContainer>
   );
 }

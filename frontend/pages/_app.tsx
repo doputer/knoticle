@@ -9,7 +9,7 @@ import { RecoilRoot } from 'recoil';
 import { ThemeProvider } from 'styled-components';
 
 import Authentication from '@components/common/Authentication';
-import GlobalModal from '@components/common/GlobalModal';
+import GlobalModal from '@components/modal/GlobalModal';
 import GlobalStyle from '@styles/GlobalStyle';
 import theme from '@styles/theme';
 

@@ -9,7 +9,7 @@ import articleState from '@atoms/article';
 import scrapState from '@atoms/scrap';
 import DragArticle from '@components/common/DragDrop';
 import Dropdown from '@components/common/Dropdown';
-import ModalButton from '@components/common/ModalButton';
+import ModalButton from '@components/modal/ModalButton';
 import useFetch from '@hooks/useFetch';
 import { IArticle, IArticleBook, IBook, IBookScraps, IScrap } from '@interfaces';
 import encodeURL from '@utils/encode-url';

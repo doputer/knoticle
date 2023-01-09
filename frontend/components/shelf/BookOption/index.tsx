@@ -19,6 +19,7 @@ interface BookOptionProps {
 
 function BookOption({ book }: BookOptionProps) {
   const UpdateBookModal = dynamic(() => import('@components/shelf/UpdateBookModal'));
+  const ScrapModal = dynamic(() => import('@components/common/ScrapModal'));
 
   const queryClient = useQueryClient();
   const { openModal } = useModal();
@@ -27,7 +28,7 @@ function BookOption({ book }: BookOptionProps) {
     onSuccess: () => {
       toastSuccess('책이 삭제되었습니다.');
 
-      queryClient.invalidateQueries(['knotBooks', { nickname: book.user.nickname }]);
+      queryClient.invalidateQueries(['getUserBooks', { nickname: book.user.nickname }]);
     },
   });
   const [dropdown, setDropdown] = useState(false);
@@ -54,6 +55,16 @@ function BookOption({ book }: BookOptionProps) {
     });
   };
 
+  const handleScrapModalOpen = () => {
+    openModal({
+      modalType: 'Modal',
+      modalProps: {
+        title: '스크랩 수정하기',
+        children: <ScrapModal book={book} />,
+      },
+    });
+  };
+
   const handleDropdownToggle = (event?: React.MouseEvent) => {
     event?.stopPropagation();
     setDropdown(!dropdown);
@@ -72,8 +83,9 @@ function BookOption({ book }: BookOptionProps) {
       <IconButton icon={<MoreIcon />} onClick={handleDropdownToggle} />
       {dropdown && (
         <Dropdown>
-          <DropdownItem onClick={handleUpdateBookModalOpen}>수정하기</DropdownItem>
-          <DropdownItem onClick={handleDeleteBookModalOpen}>삭제하기</DropdownItem>
+          <DropdownItem onClick={handleUpdateBookModalOpen}>책 수정하기</DropdownItem>
+          <DropdownItem onClick={handleDeleteBookModalOpen}>책 삭제하기</DropdownItem>
+          <DropdownItem onClick={handleScrapModalOpen}>스크랩 수정하기</DropdownItem>
         </Dropdown>
       )}
     </BookOptionContainer>
