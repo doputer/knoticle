@@ -3,6 +3,7 @@ import {
   CreateTemporaryArticle,
   GetArticle,
   SearchArticles,
+  UpdateArticle,
 } from '@apis/articles/articles.interface';
 import { prisma } from '@config/orm.config';
 
@@ -102,7 +103,7 @@ const searchArticles = async (searchArticles: SearchArticles) => {
 };
 
 const createArticle = async (dto: CreateArticle) => {
-  const { title, content, book_id } = dto;
+  const { title, content, book_id, order } = dto;
 
   const article = await prisma.article.create({
     data: {
@@ -113,13 +114,20 @@ const createArticle = async (dto: CreateArticle) => {
           id: book_id,
         },
       },
+      scraps: {
+        create: {
+          order,
+          is_original: true,
+          book_id,
+        },
+      },
     },
   });
 
   return article;
 };
 
-const updateArticle = async (articleId: number, dto: CreateArticle) => {
+const updateArticle = async (articleId: number, dto: UpdateArticle) => {
   const { title, content, book_id } = dto;
 
   const article = await prisma.article.update({

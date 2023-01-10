@@ -3,10 +3,10 @@ import { atom } from 'recoil';
 const articleState = atom({
   key: 'articleState',
   default: {
-    id: -1,
+    id: 0,
     title: '',
     content: '',
-    book_id: -1,
+    book_id: 0,
   },
 });
 

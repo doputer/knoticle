@@ -37,28 +37,15 @@ const searchArticles = async (req: Request, res: Response) => {
 };
 
 const createArticle = async (req: Request, res: Response) => {
-  const { article, scraps } = req.body;
+  const { title, content, book_id, order } = req.body;
 
-  if (!article.title.length) throw new Forbidden(Message.ARTICLE_INVALID_TITLE);
+  if (!title.length) throw new Forbidden(Message.ARTICLE_INVALID_TITLE);
 
   const createdArticle = await articlesService.createArticle({
-    title: article.title,
-    content: article.content,
-    book_id: article.book_id,
-  });
-
-  // forEach와 async,await을 같이사용하는 것이 맞나? 다른방법은 없나?
-  scraps.forEach(async (scrap: Scrap) => {
-    if (scrap.id === 0) {
-      await scrapsService.createScrap({
-        order: scrap.order,
-        is_original: true,
-        book_id: article.book_id,
-        article_id: createdArticle.id,
-      });
-    } else {
-      await scrapsService.updateScrapOrder(scrap);
-    }
+    title,
+    content,
+    book_id,
+    order,
   });
 
   return res.status(201).send({ createdArticle });
