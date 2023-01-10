@@ -1,8 +1,7 @@
 import { Request, Response } from 'express';
 
 import { Scrap } from '@apis/scraps/scraps.interface';
-
-import scrapsService from './scraps.service';
+import scrapsService from '@apis/scraps/scraps.service';
 
 const getScraps = async (req: Request, res: Response) => {
   const scraps = await scrapsService.getScraps();
@@ -24,11 +23,9 @@ const createScrap = async (req: Request, res: Response) => {
 };
 
 const updateScrapsOrder = async (req: Request, res: Response) => {
-  const scraps = req.body;
+  const { scraps } = req.body;
 
-  scraps.forEach(async (scrap: Scrap) => {
-    await scrapsService.updateScrapOrder(scrap);
-  });
+  await Promise.all(scraps.map((scrap: Scrap) => scrapsService.updateScrapOrder(scrap)));
 
   res.status(200).send(scraps);
 };

@@ -24,7 +24,11 @@ export const createScrapApi = async (data: CreateScrapApi) => {
   return response.data;
 };
 
-export const updateScrapsOrderApi = async (data: IScrap[]) => {
+interface UpdateScrapOrderApi {
+  scraps: IScrap[];
+}
+
+export const updateScrapOrderApi = async (data: UpdateScrapOrderApi) => {
   const url = `/api/scraps`;
 
   const response = await api({ url, method: 'PATCH', data });
