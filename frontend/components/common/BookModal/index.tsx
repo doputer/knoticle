@@ -22,7 +22,7 @@ export default function BookModal({ article }: BookModalProps) {
   const { data: userBooks } = useQuery<IBookScraps[]>(
     ['getUserBooks', { nickname: signInUser.nickname }],
     () => getUserBooksApi(signInUser.nickname),
-    { refetchOnWindowFocus: false }
+    { refetchOnWindowFocus: false, refetchOnMount: false }
   );
 
   const handleItemClick = (book: IBookScraps) => {
