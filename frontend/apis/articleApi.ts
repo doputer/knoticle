@@ -1,13 +1,21 @@
 import api from '@utils/api';
 
-interface GetArticleApi {
+export const getArticleApi = async (articleId: string) => {
+  const url = `/api/articles/${articleId}`;
+
+  const response = await api({ url, method: 'GET' });
+
+  return response.data;
+};
+
+interface GetOwnerArticleApi {
   articleTitle: string;
   bookTitle: string;
   owner: string;
 }
 
-export const getArticleApi = async (data: GetArticleApi) => {
-  const url = `/api/articles`;
+export const getOwnerArticleApi = async (data: GetOwnerArticleApi) => {
+  const url = `/api/articles/owner`;
 
   const response = await api({ url, method: 'GET', params: data });
 
@@ -50,8 +58,12 @@ export const createArticleApi = async (data: CreateArticleApi) => {
   return response.data;
 };
 
-export const modifyArticleApi = async (articleId: number, data: CreateArticleApi) => {
-  const url = `/api/articles/${articleId}`;
+interface UpdateArticleApi extends CreateArticleApi {
+  id: number;
+}
+
+export const updateArticleApi = async (data: UpdateArticleApi) => {
+  const url = `/api/articles/${data.id}`;
 
   const response = await api({ url, method: 'PATCH', data });
 
