@@ -52,10 +52,10 @@ export default function Sidebar({ book, article, isOpen, handleSideBarToggle }: 
 
         <ArticleNavigation>
           <NavigationTitle>목차</NavigationTitle>
-          {scraps.map((scrap) => {
+          {scraps.map((scrap, index) => {
             return scrap.article.id === articleId ? (
               <NavigationItem key={scrap.id} current>
-                {scrap.order}. {scrap.article.title}
+                {index + 1}. {scrap.article.title}
               </NavigationItem>
             ) : (
               <Link
@@ -63,7 +63,7 @@ export default function Sidebar({ book, article, isOpen, handleSideBarToggle }: 
                 href={`/@${user.nickname}/${encodeURL(book.title, scrap.article.title)}`}
               >
                 <NavigationItem current={false}>
-                  {scrap.order}. {scrap.article.title}
+                  {index + 1}. {scrap.article.title}
                 </NavigationItem>
               </Link>
             );

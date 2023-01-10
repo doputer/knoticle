@@ -12,6 +12,7 @@ import EditorTheme from './theme';
 import useView from './useView';
 
 export default function useCodeMirror() {
+  const [isReady, setReady] = useState(false);
   const [document, setDocument] = useState('');
   const [element, setElement] = useState<HTMLElement>();
   const { setView, replaceDocument, insertStartToggle, insertBetweenToggle, insertCursor } =
@@ -86,11 +87,13 @@ export default function useCodeMirror() {
     });
 
     setView(view);
+    setReady(true);
 
     return () => view.destroy();
   }, [element]);
 
   return {
+    isReady,
     ref,
     document,
     replaceDocument,

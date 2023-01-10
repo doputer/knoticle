@@ -29,6 +29,7 @@ import {
 
 function Editor() {
   const {
+    isReady,
     ref,
     document,
     replaceDocument,
@@ -42,13 +43,14 @@ function Editor() {
   const [article, setArticle] = useRecoilState(articleState);
 
   useEffect(() => {
+    if (!isReady) return;
     if (!buffer.title && !buffer.content) return;
 
     setTitle(buffer.title);
     replaceDocument(buffer.content);
 
     setBuffer({ title: '', content: '' });
-  }, [buffer]);
+  }, [isReady, buffer]);
 
   useEffect(() => {
     setArticle({ ...article, title, content: document });

@@ -5,7 +5,7 @@ import { useMutation, useQueryClient } from 'react-query';
 
 import { Reorder, useDragControls } from 'framer-motion';
 
-import { createArticleApi } from '@apis/articleApi';
+import { createArticleApi, updateArticleApi } from '@apis/articleApi';
 import { createScrapApi, updateScrapOrderApi } from '@apis/scrapApi';
 import DragIcon from '@assets/ico_drag.svg';
 import ModalButton from '@components/modal/ModalButton';
@@ -56,6 +56,14 @@ export default function ScrapModal({ book, article = null }: ScrapModalProps) {
       router.push(`/@${book.user.nickname}/${book.title}/${article?.title}`);
     },
   });
+  const { mutateAsync: updateArticle } = useMutation(updateArticleApi, {
+    onError: useApiError,
+    onSuccess: () => {
+      toastSuccess(`<${article?.title}> 글이 수정되었습니다.`);
+
+      router.push(`/@${book.user.nickname}/${book.title}/${article?.title}`);
+    },
+  });
   const { mutateAsync: createScrap } = useMutation(createScrapApi, {
     onError: useApiError,
     onSuccess: () => {
@@ -65,9 +73,10 @@ export default function ScrapModal({ book, article = null }: ScrapModalProps) {
   const { mutate: updateScrapOrder } = useMutation(updateScrapOrderApi, {
     onError: useApiError,
     onSuccess: () => {
-      queryClient.invalidateQueries(['getUserBooks', { nickname: book.user.nickname }]);
-
       closeEveryModal();
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries(['getUserBooks', 'getOwnerBook']);
     },
   });
   const [newBook, setNewBook] = useState(book);
@@ -82,6 +91,18 @@ export default function ScrapModal({ book, article = null }: ScrapModalProps) {
           content: article.content,
           book_id: book.id,
           order: newScrapIndex + 1,
+        });
+      } else if (!article.book_id) {
+        const targetScrapIndex = newBook.scraps.findIndex(
+          (scrap) => scrap.article.id === article?.id
+        );
+
+        await updateArticle({
+          id: article.id,
+          title: article.title,
+          content: article.content,
+          book_id: book.id,
+          order: targetScrapIndex + 1,
         });
       } else if (newScrapIndex !== -1) {
         await createScrap({
