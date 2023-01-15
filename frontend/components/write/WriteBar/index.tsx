@@ -60,8 +60,8 @@ export default function WriteBar() {
     openModal({
       modalType: 'Modal',
       modalProps: {
-        title: '글 발행하기',
-        children: <BookModal article={article} />,
+        title: article.mode === 'CREATE' ? '글 발행하기' : '글 수정하기',
+        children: <BookModal article={article} mode={article.mode} />,
       },
     });
   };
@@ -108,7 +108,9 @@ export default function WriteBar() {
       <ButtonGroup>
         <TemporaryButton onClick={handleLoadButton}>불러오기</TemporaryButton>
         <TemporaryButton onClick={handleSaveButton}>저장하기</TemporaryButton>
-        <PublishButton onClick={handlePublishButton}>발행하기</PublishButton>
+        <PublishButton onClick={handlePublishButton}>
+          {article.mode === 'CREATE' ? '발행하기' : '수정하기'}
+        </PublishButton>
       </ButtonGroup>
     </WriteBarContainer>
   );

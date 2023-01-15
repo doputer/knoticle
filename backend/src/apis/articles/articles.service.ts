@@ -167,7 +167,11 @@ const updateArticle = async (articleId: number, dto: UpdateArticle) => {
   await prisma.scrap.update({
     data: {
       order,
-      book_id,
+      book: {
+        connect: {
+          id: book_id,
+        },
+      },
     },
     where: {
       id: scrap.id,

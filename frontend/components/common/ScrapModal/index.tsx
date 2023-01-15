@@ -3,48 +3,34 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useMutation, useQueryClient } from 'react-query';
 
-import { Reorder, useDragControls } from 'framer-motion';
+import { Reorder } from 'framer-motion';
 
 import { createArticleApi, updateArticleApi } from '@apis/articleApi';
 import { createScrapApi, updateScrapOrderApi } from '@apis/scrapApi';
-import DragIcon from '@assets/ico_drag.svg';
 import ModalButton from '@components/modal/ModalButton';
 import useApiError from '@hooks/useApiError';
 import useModal from '@hooks/useModal';
-import { IArticle, IBookScraps, IScrap } from '@interfaces';
-import { Ellipsis } from '@styles/layout';
+import { IBookScraps } from '@interfaces';
 import { toastSuccess } from '@utils/toast';
 
+import Item from './Item';
 import { ScrapModalContainer, SelectWrapper } from './styled';
-
-interface ItemProps {
-  scrap: IScrap;
-  isTarget: boolean;
-}
-
-function Item({ scrap, isTarget }: ItemProps) {
-  const dragControls = useDragControls();
-
-  return (
-    <Reorder.Item
-      key={scrap.id}
-      value={scrap}
-      dragListener={false}
-      dragControls={dragControls}
-      style={{ backgroundColor: isTarget ? 'var(--light-orange-color)' : '' }}
-    >
-      <Ellipsis>{scrap.article.title}</Ellipsis>
-      <DragIcon onPointerDown={(event) => dragControls.start(event)} />
-    </Reorder.Item>
-  );
-}
 
 interface ScrapModalProps {
   book: IBookScraps;
-  article?: IArticle | null;
+  article?: {
+    id: number;
+    title: string;
+    content: string;
+  };
+  mode?: 'CREATE' | 'UPDATE' | 'SCRAP';
 }
 
-export default function ScrapModal({ book, article = null }: ScrapModalProps) {
+export default function ScrapModal({
+  book,
+  article = undefined,
+  mode = undefined,
+}: ScrapModalProps) {
   const router = useRouter();
   const queryClient = useQueryClient();
   const { closeEveryModal } = useModal();
@@ -82,17 +68,17 @@ export default function ScrapModal({ book, article = null }: ScrapModalProps) {
   const [newBook, setNewBook] = useState(book);
 
   const handleOkButtonClick = async () => {
-    const newScrapIndex = newBook.scraps.findIndex((scrap) => scrap.id === 0);
-
     if (article) {
-      if (!article.id) {
+      const newScrapIndex = newBook.scraps.findIndex((scrap) => scrap.id === 0);
+
+      if (mode === 'CREATE') {
         await createAricle({
           title: article.title,
           content: article.content,
           book_id: book.id,
           order: newScrapIndex + 1,
         });
-      } else if (!article.book_id) {
+      } else if (mode === 'UPDATE') {
         const targetScrapIndex = newBook.scraps.findIndex(
           (scrap) => scrap.article.id === article?.id
         );
@@ -104,13 +90,15 @@ export default function ScrapModal({ book, article = null }: ScrapModalProps) {
           book_id: book.id,
           order: targetScrapIndex + 1,
         });
-      } else if (newScrapIndex !== -1) {
-        await createScrap({
-          order: newScrapIndex + 1,
-          is_original: false,
-          book_id: book.id,
-          article_id: article.id,
-        });
+      } else if (mode === 'SCRAP') {
+        if (!book.scraps.some((scrap) => scrap.article.id === article.id)) {
+          await createScrap({
+            order: newScrapIndex + 1,
+            is_original: false,
+            book_id: book.id,
+            article_id: article.id,
+          });
+        }
       }
     }
 

@@ -1,12 +1,19 @@
 import { atom } from 'recoil';
 
-const articleState = atom({
+interface ArticleType {
+  id: number;
+  title: string;
+  content: string;
+  mode: 'CREATE' | 'UPDATE' | 'SCRAP';
+}
+
+const articleState = atom<ArticleType>({
   key: 'articleState',
   default: {
     id: 0,
     title: '',
     content: '',
-    book_id: 0,
+    mode: 'CREATE',
   },
 });
 

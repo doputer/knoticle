@@ -26,8 +26,8 @@ export default function WritePage() {
       refetchOnWindowFocus: false,
       enabled: false,
       onSuccess: (article: IArticle) => {
-        setBuffer(article);
-        setArticle({ ...article, book_id: 0 });
+        setBuffer({ title: article.title, content: article.content });
+        setArticle((prev) => ({ ...prev, id: article.id, mode: 'UPDATE' }));
       },
     }
   );
