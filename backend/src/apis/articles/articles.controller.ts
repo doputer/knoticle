@@ -2,14 +2,21 @@ import { Request, Response } from 'express';
 
 import { GetArticle, SearchArticles } from '@apis/articles/articles.interface';
 import articlesService from '@apis/articles/articles.service';
-import { Scrap } from '@apis/scraps/scraps.interface';
 import scrapsService from '@apis/scraps/scraps.service';
 import { Forbidden, Message } from '@errors';
 
 const getArticle = async (req: Request, res: Response) => {
+  const { articleId } = req.params;
+
+  const article = await articlesService.getArticle(Number(articleId));
+
+  return res.status(200).send(article);
+};
+
+const getOnwerArticle = async (req: Request, res: Response) => {
   const { articleTitle, bookTitle, owner } = req.query as unknown as GetArticle;
 
-  const article = await articlesService.getArticle({
+  const article = await articlesService.getOnwerArticle({
     articleTitle,
     bookTitle,
     owner,
@@ -37,57 +44,35 @@ const searchArticles = async (req: Request, res: Response) => {
 };
 
 const createArticle = async (req: Request, res: Response) => {
-  const { article, scraps } = req.body;
+  const { title, content, book_id, order } = req.body;
 
-  if (!article.title.length) throw new Forbidden(Message.ARTICLE_INVALID_TITLE);
+  if (!title.length) throw new Forbidden(Message.ARTICLE_INVALID_TITLE);
 
   const createdArticle = await articlesService.createArticle({
-    title: article.title,
-    content: article.content,
-    book_id: article.book_id,
-  });
-
-  // forEach와 async,await을 같이사용하는 것이 맞나? 다른방법은 없나?
-  scraps.forEach(async (scrap: Scrap) => {
-    if (scrap.id === 0) {
-      await scrapsService.createScrap({
-        order: scrap.order,
-        is_original: true,
-        book_id: article.book_id,
-        article_id: createdArticle.id,
-      });
-    } else {
-      await scrapsService.updateScrapOrder(scrap);
-    }
+    title,
+    content,
+    book_id,
+    order,
   });
 
   return res.status(201).send({ createdArticle });
 };
 
 const updateArticle = async (req: Request, res: Response) => {
-  const { article, scraps } = req.body;
+  const { title, content, book_id, order } = req.body;
 
-  if (!article.title.length) throw new Forbidden(Message.ARTICLE_INVALID_TITLE);
+  if (!title.length) throw new Forbidden(Message.ARTICLE_INVALID_TITLE);
 
   const articleId = Number(req.params.articleId);
 
-  const modifiedArticle = await articlesService.updateArticle(articleId, {
-    title: article.title,
-    content: article.content,
-    book_id: article.book_id,
+  const updatedArticle = await articlesService.updateArticle(articleId, {
+    title,
+    content,
+    book_id,
+    order,
   });
 
-  const result: any[] = [];
-
-  scraps.forEach(async (scrap: Scrap) => {
-    if (scrap.id === 0) {
-      result.push(await scrapsService.updateScrapBookId(articleId, article.book_id, scrap));
-    } else {
-      result.push(await scrapsService.updateScrapOrder(scrap));
-    }
-  });
-
-  return res.status(201).send({ modifiedArticle, result });
+  return res.status(200).send(updatedArticle);
 };
 
 const deleteArticle = async (req: Request, res: Response) => {
@@ -125,6 +110,7 @@ const createTemporaryArticle = async (req: Request, res: Response) => {
 
 export default {
   getArticle,
+  getOnwerArticle,
   searchArticles,
   createArticle,
   updateArticle,

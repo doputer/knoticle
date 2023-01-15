@@ -25,7 +25,8 @@ router.get('/auth', guard, tokenErrorHandler, catchAsync(authController.checkSig
 router.get('/articles/temporary', guard, catchAsync(articlesController.getTemporaryArticle));
 router.post('/articles/temporary', guard, catchAsync(articlesController.createTemporaryArticle));
 router.get('/articles/search', decoder, catchAsync(articlesController.searchArticles));
-router.get('/articles', catchAsync(articlesController.getArticle));
+router.get('/articles/owner', catchAsync(articlesController.getOnwerArticle));
+router.get('/articles/:articleId', catchAsync(articlesController.getArticle));
 router.post('/articles', guard, catchAsync(articlesController.createArticle));
 router.patch('/articles/:articleId', guard, catchAsync(articlesController.updateArticle));
 router.delete(

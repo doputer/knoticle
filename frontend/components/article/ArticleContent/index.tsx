@@ -111,7 +111,7 @@ export default function Article({
       modalType: 'Modal',
       modalProps: {
         title: '글 스크랩하기',
-        children: <BookModal article={article} />,
+        children: <BookModal article={article} mode="SCRAP" />,
       },
     });
   };
@@ -152,8 +152,6 @@ export default function Article({
     router.push(`/write?id=${article.id}`);
   };
 
-  if (article.deleted_at) return <div>삭제된 글입니다.</div>;
-
   return (
     <ArticleContainer>
       <TocWrapper>
@@ -177,7 +175,7 @@ export default function Article({
               </ArticleButton>
             </>
           )}
-          {isSignInUser && (
+          {isSignInUser && owner !== signInUser.nickname && (
             <ArticleButton onClick={handleScrapModalOpen}>
               <StarIcon />
               <TextSmall>스크랩</TextSmall>
@@ -211,7 +209,7 @@ export default function Article({
         />
       </ArticleNavigatorWrapper>
 
-      <Content content={article.content} />
+      {!article.deleted_at ? <Content content={article.content} /> : <>삭제된 글입니다.</>}
     </ArticleContainer>
   );
 }

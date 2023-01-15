@@ -48,17 +48,6 @@ export const PageInnerSmall = styled(FlexColumnAlignCenter)`
   padding: 0px 10px;
 `;
 
-export const TopBar = styled.nav`
-  height: 67px;
-`;
-
-export const PageNoScrollWrapper = styled.div`
-  overflow: hidden;
-  position: fixed;
-  top: 0px;
-  width: 100%;
-`;
-
 export const PageGNBHide = styled.div<{ isscrolldown: 'true' | 'false' }>`
   @media ${({ theme }) => theme.devices.mobile} {
     position: absolute;

@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import { ReactElement, useEffect, useState } from 'react';
 import { dehydrate, QueryClient, useQuery } from 'react-query';
 
-import { getArticleApi } from '@apis/articleApi';
+import { getOwnerArticleApi } from '@apis/articleApi';
 import { getOwnerBookApi } from '@apis/bookApi';
 import Article from '@components/article/ArticleContent';
 import Sidebar from '@components/article/Sidebar';
@@ -35,8 +35,8 @@ export default function ArticlePage() {
     }
   );
   const { data: article } = useQuery<IArticleBook>(
-    ['getArticle'],
-    () => getArticleApi({ articleTitle, bookTitle, owner: owner.slice(1) }),
+    ['getOwnerArticle'],
+    () => getOwnerArticleApi({ articleTitle, bookTitle, owner: owner.slice(1) }),
     DISABLE_REFETCH_OPTIONS
   );
 
@@ -85,8 +85,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   const queryClient = new QueryClient();
 
-  await queryClient.prefetchQuery(['getArticle'], () =>
-    getArticleApi({ articleTitle, bookTitle, owner: owner.slice(1) })
+  await queryClient.prefetchQuery(['getOwnerArticle'], () =>
+    getOwnerArticleApi({ articleTitle, bookTitle, owner: owner.slice(1) })
   );
 
   return {

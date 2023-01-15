@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 import { useRecoilState } from 'recoil';
 
@@ -11,32 +11,25 @@ import ImageIcon from '@assets/ico_image.svg';
 import ItalicIcon from '@assets/ico_italic.svg';
 import LinkIcon from '@assets/ico_link.svg';
 import QuoteIcon from '@assets/ico_quote.svg';
-import articleState from '@atoms/article';
-import articleBuffer from '@atoms/articleBuffer';
-import Content from '@components/common/Content';
-import EditBar from '@components/edit/EditBar';
-import useCodeMirror from '@components/edit/Editor/core/useCodeMirror';
+import articleBufferState from '@atoms/articleBufferState';
+import articleState from '@atoms/articleState';
+import LabeledInput from '@components/common/LabeledInput';
+import useCodeMirror from '@components/write/Editor/core/useCodeMirror';
 import useInput from '@hooks/useInput';
-import { IArticle } from '@interfaces';
 
 import {
   CodeMirrorWrapper,
   EditorButton,
   EditorButtonSplit,
   EditorButtonWrapper,
+  EditorContainer,
   EditorImageInput,
-  EditorInner,
   EditorWrapper,
-  TitleInput,
 } from './styled';
 
-interface EditorProps {
-  handleModalOpen: () => void;
-  originalArticle?: IArticle;
-}
-
-export default function Editor({ handleModalOpen, originalArticle = undefined }: EditorProps) {
+function Editor() {
   const {
+    isReady,
     ref,
     document,
     replaceDocument,
@@ -45,43 +38,34 @@ export default function Editor({ handleModalOpen, originalArticle = undefined }:
     insertCursor,
     handleImage,
   } = useCodeMirror();
-  const [buffer, setBuffer] = useRecoilState(articleBuffer);
-
-  const [isModifyMode, setIsModifyMode] = useState(false);
+  const { input: title, setInput: setTitle, handleInputChange: handleTitleChange } = useInput();
+  const [buffer, setBuffer] = useRecoilState(articleBufferState);
   const [article, setArticle] = useRecoilState(articleState);
-  const title = useInput();
 
   useEffect(() => {
-    if (originalArticle) {
-      setIsModifyMode(true);
-      setBuffer({
-        title: originalArticle.title,
-        content: originalArticle.content,
-      });
-    }
-  }, [originalArticle]);
-
-  useEffect(() => {
+    if (!isReady) return;
     if (!buffer.title && !buffer.content) return;
 
-    title.setValue(buffer.title);
+    setTitle(buffer.title);
     replaceDocument(buffer.content);
 
     setBuffer({ title: '', content: '' });
-  }, [buffer]);
+  }, [isReady, buffer]);
 
   useEffect(() => {
-    setArticle({
-      ...article,
-      title: title.value,
-      content: document,
-    });
-  }, [title.value, document]);
+    setArticle({ ...article, title, content: document });
+  }, [title, document]);
 
   return (
-    <EditorWrapper>
-      <EditorInner>
-        <TitleInput placeholder="제목을 입력해주세요" {...title} />
+    <EditorContainer>
+      <LabeledInput
+        label="제목"
+        type="text"
+        name="title"
+        defaultValue={title}
+        onChange={handleTitleChange}
+      />
+      <EditorWrapper>
         <EditorButtonWrapper>
           <EditorButton onClick={() => insertStartToggle('# ')}>
             <H1Icon />
@@ -111,27 +95,21 @@ export default function Editor({ handleModalOpen, originalArticle = undefined }:
             <LinkIcon />
           </EditorButton>
           <EditorButton>
-            <label htmlFor="image">
+            <label htmlFor="file">
               <ImageIcon />
             </label>
             <EditorImageInput
-              id="image"
+              id="file"
               type="file"
               accept="image/png,image/jpg,image/jpeg,image/gif"
-              onChange={(event) => {
-                if (event.target.files) handleImage(event.target.files[0]);
-              }}
+              onChange={(event) => event.target.files && handleImage(event.target.files[0])}
             />
           </EditorButton>
         </EditorButtonWrapper>
-        <CodeMirrorWrapper>
-          <div ref={ref} />
-        </CodeMirrorWrapper>
-        <EditBar handleModalOpen={handleModalOpen} isModifyMode={isModifyMode} />
-      </EditorInner>
-      <EditorInner>
-        <Content title={article.title} content={article.content} />
-      </EditorInner>
-    </EditorWrapper>
+        <CodeMirrorWrapper ref={ref} />
+      </EditorWrapper>
+    </EditorContainer>
   );
 }
+
+export default Editor;

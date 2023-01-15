@@ -3,10 +3,21 @@ import {
   CreateTemporaryArticle,
   GetArticle,
   SearchArticles,
+  UpdateArticle,
 } from '@apis/articles/articles.interface';
 import { prisma } from '@config/orm.config';
 
-const getArticle = async ({ articleTitle, bookTitle, owner }: GetArticle) => {
+const getArticle = async (articleId: number) => {
+  const article = await prisma.article.findFirst({
+    where: {
+      id: articleId,
+    },
+  });
+
+  return article;
+};
+
+const getOnwerArticle = async ({ articleTitle, bookTitle, owner }: GetArticle) => {
   const article = await prisma.article.findFirst({
     include: {
       book: {
@@ -102,9 +113,34 @@ const searchArticles = async (searchArticles: SearchArticles) => {
 };
 
 const createArticle = async (dto: CreateArticle) => {
-  const { title, content, book_id } = dto;
+  const { title, content, book_id, order } = dto;
 
-  const article = await prisma.article.create({
+  const createdArticle = await prisma.article.create({
+    data: {
+      title,
+      content,
+      book: {
+        connect: {
+          id: book_id,
+        },
+      },
+      scraps: {
+        create: {
+          order,
+          is_original: true,
+          book_id,
+        },
+      },
+    },
+  });
+
+  return createdArticle;
+};
+
+const updateArticle = async (articleId: number, dto: UpdateArticle) => {
+  const { title, content, book_id, order } = dto;
+
+  const updatedArticle = await prisma.article.update({
     data: {
       title,
       content,
@@ -114,30 +150,35 @@ const createArticle = async (dto: CreateArticle) => {
         },
       },
     },
-  });
-
-  return article;
-};
-
-const updateArticle = async (articleId: number, dto: CreateArticle) => {
-  const { title, content, book_id } = dto;
-
-  const article = await prisma.article.update({
     where: {
       id: articleId,
     },
+  });
+
+  const scrap = await prisma.scrap.findFirst({
+    where: {
+      article: {
+        id: updatedArticle.id,
+      },
+      is_original: true,
+    },
+  });
+
+  await prisma.scrap.update({
     data: {
-      title,
-      content,
+      order,
       book: {
         connect: {
           id: book_id,
         },
       },
     },
+    where: {
+      id: scrap.id,
+    },
   });
 
-  return article;
+  return updatedArticle;
 };
 
 const deleteArticle = async (articleId: number) => {
@@ -190,6 +231,7 @@ const createTemporaryArticle = async (dto: CreateTemporaryArticle) => {
 
 export default {
   getArticle,
+  getOnwerArticle,
   searchArticles,
   createArticle,
   updateArticle,

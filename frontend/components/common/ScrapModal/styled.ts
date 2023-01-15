@@ -14,23 +14,6 @@ export const SelectWrapper = styled.div`
     height: 250px;
     border: 1px solid var(--grey-02-color);
     overflow-y: auto;
-
-    > li {
-      padding: 0 8px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-
-      > div {
-        flex: 1;
-        line-height: 50px;
-        user-select: none;
-      }
-
-      > svg {
-        cursor: grab;
-      }
-    }
   }
 
   @media ${({ theme }) => theme.devices.mobile} {

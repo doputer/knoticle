@@ -16,6 +16,14 @@ export interface CreateArticle {
   title: string;
   content: string;
   book_id: number;
+  order: number;
+}
+
+export interface UpdateArticle {
+  title: string;
+  content: string;
+  book_id: number;
+  order: number;
 }
 
 export interface CreateTemporaryArticle {

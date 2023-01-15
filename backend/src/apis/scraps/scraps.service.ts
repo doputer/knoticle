@@ -1,7 +1,5 @@
 import { CreateScrap, Scrap } from '@apis/scraps/scraps.interface';
 import { prisma } from '@config/orm.config';
-import { ResourceConflict } from '@errors/error';
-import Message from '@errors/message';
 
 const getScraps = async () => {
   const scraps = await prisma.scrap.findMany({
