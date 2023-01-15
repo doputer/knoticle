@@ -31,6 +31,7 @@ const getUserBooks = async (nickname: string) => {
           scraps: {
             select: {
               id: true,
+              is_original: true,
               article: {
                 select: {
                   id: true,
